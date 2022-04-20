@@ -2,7 +2,7 @@ CREATE TABLE users (
     user_id int(11) NOT NULL AUTO_INCREMENT,
     fname varchar(255)  NOT NULL,
     lname varchar(255) NOT NULL,
-    email varchar(255) NOT NULL,
+    email varchar(255) NOT NULL UNIQUE ,
     salt varchar(255) NOT NULL,
     password varchar(255) NOT NULL,
     PRIMARY KEY (user_id)
