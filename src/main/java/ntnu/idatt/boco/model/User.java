@@ -1,57 +1,57 @@
 package ntnu.idatt.boco.model;
 
 public class User {
+    private int userId;
     private String fname;
     private String lname;
-    private String password;
     private String email;
-    private int id;
+    private byte[] salt;
+    private byte[] password;
 
     public User() {}
-    public User(String fname, String lname, String email, String password) {
+
+    public User(int userId, String fname, String lname, String email, byte[] salt, byte[] password) {
+        this.userId = userId;
         this.fname = fname;
         this.lname = lname;
         this.email = email;
+        this.salt = salt;
         this.password = password;
     }
 
-    public User(String fname, String lname, String email, String password, int id) {
-        this.fname = fname;
-        this.lname = lname;
-        this.email = email;
-        this.password = password;
-        this.id = id;
+    public int getUserId() {
+        return userId;
     }
 
     public String getFname() {
         return fname;
     }
+
     public String getLname() {
         return lname;
     }
+
     public String getEmail() {
         return email;
     }
-    public String getPassword() {
-        return password;
+
+    public byte[] getSalt() {
+        return salt;
     }
-    public int getId() {
-        return id;
+
+    public byte[] getPassword() {
+        return password;
     }
 
     public void setFname(String fname) {
         this.fname = fname;
     }
+
     public void setLname(String lname) {
         this.lname = lname;
     }
+
     public void setEmail(String email) {
         this.email = email;
-    }
-    public void setPassword(String password) {
-        this.password = password;
-    }
-    public void setId(int id) {
-        this.id = id;
     }
 }
