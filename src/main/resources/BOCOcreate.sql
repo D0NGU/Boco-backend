@@ -1,4 +1,4 @@
-CREATE TABLE user (
+CREATE TABLE users (
     user_id int(11) NOT NULL AUTO_INCREMENT,
     fname varchar(255)  NOT NULL,
     lname varchar(255) NOT NULL,
@@ -8,7 +8,7 @@ CREATE TABLE user (
     PRIMARY KEY (user_id)
 );
 
-CREATE TABLE review (
+CREATE TABLE reviews (
     review_id int(11) not null AUTO_INCREMENT,
     text varchar(255),
     stars int(1) not null,
@@ -18,28 +18,28 @@ CREATE TABLE review (
     PRIMARY KEY (review_id)
 );
 
-ALTER TABLE review
+ALTER TABLE reviews
     ADD CONSTRAINT FK_author
-        FOREIGN KEY (author) REFERENCES user(user_id);
+        FOREIGN KEY (author) REFERENCES users(user_id);
 
-ALTER TABLE review
+ALTER TABLE reviews
     ADD CONSTRAINT FK_subject
-        FOREIGN KEY (subject) REFERENCES user(user_id);
+        FOREIGN KEY (subject) REFERENCES users(user_id);
 
-ALTER TABLE review
+ALTER TABLE reviews
     ADD CONSTRAINT valid_stars CHECK (stars>=1 AND stars<=5);
 
-CREATE TABLE category (
+CREATE TABLE categories (
     category varchar(255) not null,
     main_category varchar(255),
     PRIMARY KEY (category)
 );
 
-ALTER TABLE category
+ALTER TABLE categories
     ADD CONSTRAINT FK_main_category
-        FOREIGN KEY (main_category) REFERENCES category(category);
+        FOREIGN KEY (main_category) REFERENCES categories(category);
 
-CREATE TABLE product (
+CREATE TABLE products (
     product_id int(11) not null AUTO_INCREMENT,
     name varchar(255) not null,
     description varchar(255),
@@ -51,15 +51,15 @@ CREATE TABLE product (
     PRIMARY KEY (product_id)
 );
 
-ALTER TABLE product
+ALTER TABLE products
     ADD CONSTRAINT FK_owner
-        FOREIGN KEY (user_id) REFERENCES user(user_id);
+        FOREIGN KEY (user_id) REFERENCES users(user_id);
 
-ALTER TABLE product
+ALTER TABLE products
     ADD CONSTRAINT FK_category
-        FOREIGN KEY (category) REFERENCES category(category);
+        FOREIGN KEY (category) REFERENCES categories(category);
 
-CREATE TABLE rental(
+CREATE TABLE rentals(
     rental_id int(11) not null AUTO_INCREMENT,
     date_from date not null,
     date_to date not null,
@@ -68,10 +68,10 @@ CREATE TABLE rental(
     PRIMARY KEY (rental_id)
 );
 
-ALTER TABLE rental
+ALTER TABLE rentals
     ADD CONSTRAINT FK_renter
-        FOREIGN KEY (user_id) REFERENCES user(user_id);
+        FOREIGN KEY (user_id) REFERENCES users(user_id);
 
-ALTER TABLE rental
+ALTER TABLE rentals
     ADD CONSTRAINT FK_product
-        FOREIGN KEY (product_id) REFERENCES product(product_id);
+        FOREIGN KEY (product_id) REFERENCES products(product_id);
