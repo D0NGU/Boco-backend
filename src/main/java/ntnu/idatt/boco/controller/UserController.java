@@ -15,9 +15,9 @@ public class UserController {
     @Autowired
     UserRepository userRepository;
 
-    @DeleteMapping("/delete/{email}")
-    public void deleteUser(@PathVariable int email){
-        logger.info("Delete requested by " + email);
+    @DeleteMapping("/delete")
+    public void deleteUser(@PathVariable User user){
+        logger.info("Delete requested by " + user.getEmail());
         try{
             //TODO delete user, need method in repo
         }catch (Exception e){
