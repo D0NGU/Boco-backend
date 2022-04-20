@@ -3,8 +3,10 @@ CREATE TABLE user (
     fname varchar(255)  NOT NULL,
     lname varchar(255) NOT NULL,
     email varchar(255) NOT NULL,
+    salt varbinary(64) NOT NULL,
+    password varbinary(64) NOT NULL,
     PRIMARY KEY (user_id)
-)ENGINE=InnoDB;
+);
 
 CREATE TABLE review (
     review_id int(11) not null AUTO_INCREMENT,
@@ -14,7 +16,7 @@ CREATE TABLE review (
     author int(11) not null,
     subject int(11) not null,
     PRIMARY KEY (review_id)
-)ENGINE=InnoDB;
+);
 
 ALTER TABLE review
     ADD CONSTRAINT FK_author
@@ -31,7 +33,7 @@ CREATE TABLE category (
     category varchar(255) not null,
     main_category varchar(255),
     PRIMARY KEY (category)
-)ENGINE=InnoDB;
+);
 
 ALTER TABLE category
     ADD CONSTRAINT FK_main_category
@@ -47,7 +49,7 @@ CREATE TABLE product (
     user_id int(11),
     category varchar(255),
     PRIMARY KEY (product_id)
-)ENGINE=InnoDB;
+);
 
 ALTER TABLE product
     ADD CONSTRAINT FK_owner
@@ -64,7 +66,7 @@ CREATE TABLE rental(
     product_id int(11),
     user_id int(11),
     PRIMARY KEY (rental_id)
-)ENGINE=InnoDB;
+);
 
 ALTER TABLE rental
     ADD CONSTRAINT FK_renter
