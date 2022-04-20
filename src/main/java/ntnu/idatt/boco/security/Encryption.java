@@ -9,6 +9,9 @@ import java.util.Random;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
+/** 
+ * This class contains methods relating to encryption and decryption of user passwords.
+ */
 public class Encryption {
     private static final Random RANDOM = new SecureRandom();
     private static final int ITERATIONS = 10000;

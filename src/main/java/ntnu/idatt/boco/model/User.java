@@ -5,12 +5,12 @@ public class User {
     private String fname;
     private String lname;
     private String email;
-    private byte[] salt;
-    private byte[] password;
+    private String salt;
+    private String password;
 
     public User() {}
 
-    public User(int userId, String fname, String lname, String email, byte[] salt, byte[] password) {
+    public User(int userId, String fname, String lname, String email, String salt, String password) {
         this.userId = userId;
         this.fname = fname;
         this.lname = lname;
@@ -35,11 +35,11 @@ public class User {
         return email;
     }
 
-    public byte[] getSalt() {
+    public String getSalt() {
         return salt;
     }
 
-    public byte[] getPassword() {
+    public String getPassword() {
         return password;
     }
 

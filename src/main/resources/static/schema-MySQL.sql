@@ -3,8 +3,8 @@ CREATE TABLE users (
     fname varchar(255)  NOT NULL,
     lname varchar(255) NOT NULL,
     email varchar(255) NOT NULL,
-    salt varbinary(64) NOT NULL,
-    password varbinary(64) NOT NULL,
+    salt varchar(255) NOT NULL,
+    password varchar(255) NOT NULL,
     PRIMARY KEY (user_id)
 );
 
