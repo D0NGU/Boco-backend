@@ -1,14 +1,11 @@
 package ntnu.idatt.boco.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import ntnu.idatt.boco.model.User;
 import ntnu.idatt.boco.security.Encryption;
-
-import java.nio.charset.StandardCharsets;
 
 @Repository
 public class UserRepository {
@@ -23,13 +20,22 @@ public class UserRepository {
     }
 
     public String getHashedPasswordFromDatabase(String Email){
-        return jdbcTemplate.queryForObject("SELECT password FROM users WHERE email =? ", new Object[]{Email}, String.class);
+        return jdbcTemplate.queryForObject("SELECT password FROM users WHERE email =? ", String.class , Email);
+    }
+
+    public int changePasswordInDatabase(User user, String newPassword){
+        boolean correctPass = Encryption.isExpectedPassword(user.getPassword().toCharArray(), user.getSalt().getBytes(), getHashedPasswordFromDatabase(user.getEmail()).getBytes());
+        if(correctPass){
+            return jdbcTemplate.update("UPDATE users SET password = ? WHERE user_id = ?;", newPassword, user.getUserId());
+        }else{
+            return 0;
+        }
     }
 
     public int deleteUser(User user){
         boolean correctPass = Encryption.isExpectedPassword(user.getPassword().toCharArray(), user.getSalt().getBytes(), getHashedPasswordFromDatabase(user.getEmail()).getBytes());
         if(correctPass){
-            return jdbcTemplate.update("DELETE FROM users WHERE email = ?;",new Object[]{user.getUserId()});
+            return jdbcTemplate.update("DELETE FROM users WHERE user_id = ?;", user.getUserId());
         }else{
             return 0;
         }
