@@ -52,16 +52,15 @@ public class AuthController {
                 return new ResponseEntity<>("Duplicate email", HttpStatus.NOT_FOUND);
             };
             // Check if password is correct
-            String expectedHash = databaseRepository.getHashedPasswordByEmail(login.getEmail());
-            String salt = databaseRepository.getSaltByEmail(login.getEmail());
-            if (Encryption.isExpectedPassword(login.getPassword(), salt.getBytes(), expectedHash.getBytes())) {
+            byte[] expectedHash = databaseRepository.getHashedPasswordByEmail(login.getEmail());
+            byte[] salt = databaseRepository.getSaltByEmail(login.getEmail());
+            if (Encryption.isExpectedPassword(login.getPassword(), salt, expectedHash)) {
                 logger.info(login.getEmail() + ": Successfull login");
                 return new ResponseEntity<>("Successfull login", HttpStatus.OK);
             } else {
                 logger.info(login.getEmail() + ": Wrong password");
                 return new ResponseEntity<>("Wrong password", HttpStatus.FORBIDDEN);
-            }
-            
+            }  
         } catch (Exception e) {
             logger.info("Login error");
             e.printStackTrace();

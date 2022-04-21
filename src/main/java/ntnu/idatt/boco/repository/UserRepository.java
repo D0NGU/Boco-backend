@@ -18,12 +18,12 @@ public class UserRepository {
                             new Object[] { user.getFname(), user.getLname(), hashedPassword, user.getEmail(), salt });
     }
 
-    public String getHashedPasswordByEmail(String email) {
-        return jdbcTemplate.queryForObject("SELECT password FROM users WHERE email ='"+email+"';", String.class);
+    public byte[] getHashedPasswordByEmail(String email) {
+        return jdbcTemplate.queryForObject("SELECT password FROM users WHERE email ='"+email+"';", byte[].class);
     }
 
-    public String getSaltByEmail(String email) {
-        return jdbcTemplate.queryForObject("SELECT salt FROM users WHERE email ='"+email+"';", String.class);
+    public byte[] getSaltByEmail(String email) {
+        return jdbcTemplate.queryForObject("SELECT salt FROM users WHERE email ='"+email+"';", byte[].class);
     }
 
     public boolean existsByEmail(String email) {
@@ -32,7 +32,7 @@ public class UserRepository {
     }
 
     public int changePasswordInDatabase(User user, String newPassword){
-        boolean correctPass = Encryption.isExpectedPassword(user.getPassword(), user.getSalt().getBytes(), getHashedPasswordByEmail(user.getEmail()).getBytes());
+        boolean correctPass = Encryption.isExpectedPassword(user.getPassword(), user.getSalt().getBytes(), getHashedPasswordByEmail(user.getEmail()));
         if(correctPass){
             return jdbcTemplate.update("UPDATE users SET password = ? WHERE user_id = ?;", newPassword, user.getUserId());
         }else{
@@ -41,7 +41,7 @@ public class UserRepository {
     }
 
     public int deleteUser(User user){
-        boolean correctPass = Encryption.isExpectedPassword(user.getPassword(), user.getSalt().getBytes(), getHashedPasswordByEmail(user.getEmail()).getBytes());
+        boolean correctPass = Encryption.isExpectedPassword(user.getPassword(), user.getSalt().getBytes(), getHashedPasswordByEmail(user.getEmail()));
         if(correctPass) {
             return jdbcTemplate.update("DELETE FROM users WHERE email = ?;", new Object[] { user.getUserId() });
         } else {
