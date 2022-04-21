@@ -13,10 +13,9 @@ public class UserRepository {
 
     public int saveUserToDatabase(User user) {
         byte[] salt = Encryption.getNextSalt();
-        String saltString = new String(salt);
-        String hashedPassword = new String(Encryption.hash(user.getPassword(), salt));
+        byte[] hashedPassword = Encryption.hash(user.getPassword(), salt);
         return jdbcTemplate.update("INSERT INTO users (fname, lname, password, email, salt) VALUES (?,?,?,?,?);",
-                            new Object[] { user.getFname(), user.getLname(), hashedPassword, user.getEmail(), saltString });
+                            new Object[] { user.getFname(), user.getLname(), hashedPassword, user.getEmail(), salt });
     }
 
     public String getHashedPasswordByEmail(String email) {
