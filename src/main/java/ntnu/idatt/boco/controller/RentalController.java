@@ -19,13 +19,15 @@ public class RentalController {
     RentalRepository rentalRepository;
 
     @PostMapping("/rental")
-    public ResponseEntity<Integer> registerNewRental(@RequestBody Rental rental) {
+    public ResponseEntity<String> registerNewRental(@RequestBody Rental rental) {
         logger.info("New rental registration requested");
         try {
-            return new ResponseEntity<>(rentalRepository.saveRentalToDatabase(rental), HttpStatus.OK);
+            rentalRepository.saveRentalToDatabase(rental);
+            logger.info("Success - rental registered");
+            return new ResponseEntity<>("Registered successfully!", HttpStatus.CREATED);
         } catch(Exception e) {
             logger.error("Rental registration error", e);
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

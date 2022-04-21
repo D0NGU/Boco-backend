@@ -3,6 +3,7 @@ package ntnu.idatt.boco.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -19,18 +20,23 @@ import ntnu.idatt.boco.repository.UserRepository;
 @RequestMapping("/api/auth")
 public class AuthController {
     Logger logger = LoggerFactory.getLogger(AuthController.class);
-    @Autowired
-    UserRepository databaseRepository;
+    @Autowired UserRepository databaseRepository;
 
     @PostMapping("/signup")
-    public void registerNewAccount(@RequestBody User user) {
+    public ResponseEntity<String> registerNewAccount(@RequestBody User user) {
         logger.info("Signup Requested for " + user.getEmail());
         try {
             databaseRepository.saveUserToDatabase(user);
-        } catch (Exception e) {
-            logger.info("Signup error");
+            logger.info("Success - user registered");
+            return new ResponseEntity<>("Registered successfully!", HttpStatus.CREATED);
+        } catch (DuplicateKeyException e) {
+            logger.info("Error registering user - Email in use");
             e.printStackTrace();
-            //return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Duplicate email", HttpStatus.CONFLICT);
+        } catch (Exception e) {
+            logger.info("Error registering user");
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
