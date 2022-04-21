@@ -28,7 +28,7 @@ public class UserRepository {
     }
 
     public boolean existsByEmail(String email) {
-        String query = "SELECT EXISTS(SELECT * FROM users WHERE email='"+email+"'');";
+        String query = "SELECT EXISTS(SELECT * FROM users WHERE email='"+email+"');";
         return jdbcTemplate.queryForObject(query, Boolean.class);
     }
 
