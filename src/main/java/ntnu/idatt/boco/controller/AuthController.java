@@ -42,14 +42,14 @@ public class AuthController {
         }
     }
 
-   /* @PostMapping("/signin")
+    @PostMapping("/signin")
     public ResponseEntity<String> loginUser(@RequestBody LoginRequest login) {
         logger.info(login.getEmail() + ": Login requested");
         try {
             // Check if user exists
             if (!databaseRepository.existsByEmail(login.getEmail())) {
                 logger.info(login.getEmail() + ": User does not exist");
-                return new ResponseEntity<>("Duplicate email", HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>("User does not exist", HttpStatus.NOT_FOUND);
             };
             // Check if password is correct
             byte[] expectedHash = databaseRepository.getHashedPasswordByEmail(login.getEmail());
@@ -66,7 +66,7 @@ public class AuthController {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }*/
+    }
 
     @PostMapping("/signout")
     public void signoutAccount(@RequestBody User user) {
