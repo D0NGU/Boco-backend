@@ -26,17 +26,17 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<String> registerNewAccount(@RequestBody User user) {
-        logger.info("Signup Requested for " + user.getEmail());
+        logger.info(user.getEmail() + ": Signup Requested");
         try {
             databaseRepository.saveUserToDatabase(user);
-            logger.info("Success - user registered");
+            logger.info(user.getEmail() + ": User registered");
             return new ResponseEntity<>("Registered successfully!", HttpStatus.CREATED);
         } catch (DuplicateKeyException e) {
-            logger.info("Error registering user - Email in use");
+            logger.info(user.getEmail() + "Error - Email in use");
             e.printStackTrace();
             return new ResponseEntity<>("Duplicate email", HttpStatus.CONFLICT);
         } catch (Exception e) {
-            logger.info("Error registering user");
+            logger.info(user.getEmail() + "Error registering user");
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -54,7 +54,7 @@ public class AuthController {
             // Check if password is correct
             String expectedHash = databaseRepository.getHashedPasswordByEmail(login.getEmail());
             String salt = databaseRepository.getSaltByEmail(login.getEmail());
-            if (Encryption.isExpectedPassword(login.getPassword().toCharArray(), salt.getBytes(), expectedHash.getBytes())) {
+            if (Encryption.isExpectedPassword(login.getPassword(), salt.getBytes(), expectedHash.getBytes())) {
                 logger.info(login.getEmail() + ": Successfull login");
                 return new ResponseEntity<>("Successfull login", HttpStatus.OK);
             } else {

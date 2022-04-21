@@ -14,7 +14,7 @@ public class UserRepository {
     public int saveUserToDatabase(User user) {
         byte[] salt = Encryption.getNextSalt();
         String saltString = new String(salt);
-        String hashedPassword = new String(Encryption.hash(user.getPassword().toCharArray(), salt));
+        String hashedPassword = new String(Encryption.hash(user.getPassword(), salt));
         return jdbcTemplate.update("INSERT INTO users (fname, lname, password, email, salt) VALUES (?,?,?,?,?);",
                             new Object[] { user.getFname(), user.getLname(), hashedPassword, user.getEmail(), saltString });
     }
@@ -33,7 +33,7 @@ public class UserRepository {
     }
 
     public int changePasswordInDatabase(User user, String newPassword){
-        boolean correctPass = Encryption.isExpectedPassword(user.getPassword().toCharArray(), user.getSalt().getBytes(), getHashedPasswordByEmail(user.getEmail()).getBytes());
+        boolean correctPass = Encryption.isExpectedPassword(user.getPassword(), user.getSalt().getBytes(), getHashedPasswordByEmail(user.getEmail()).getBytes());
         if(correctPass){
             return jdbcTemplate.update("UPDATE users SET password = ? WHERE user_id = ?;", newPassword, user.getUserId());
         }else{
@@ -42,7 +42,7 @@ public class UserRepository {
     }
 
     public int deleteUser(User user){
-        boolean correctPass = Encryption.isExpectedPassword(user.getPassword().toCharArray(), user.getSalt().getBytes(), getHashedPasswordByEmail(user.getEmail()).getBytes());
+        boolean correctPass = Encryption.isExpectedPassword(user.getPassword(), user.getSalt().getBytes(), getHashedPasswordByEmail(user.getEmail()).getBytes());
         if(correctPass) {
             return jdbcTemplate.update("DELETE FROM users WHERE email = ?;", new Object[] { user.getUserId() });
         } else {

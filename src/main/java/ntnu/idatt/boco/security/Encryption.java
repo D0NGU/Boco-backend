@@ -15,7 +15,7 @@ import javax.crypto.spec.PBEKeySpec;
 public class Encryption {
     private static final Random RANDOM = new SecureRandom();
     private static final int ITERATIONS = 10000;
-    private static final int KEY_LENGTH = 256;
+    private static final int KEY_LENGTH = 128;
 
     /**
      * Returns a random salt to be used to hash a password.
@@ -33,12 +33,11 @@ public class Encryption {
      * @param salt     a 16 bytes salt, should be generated using {@link ntnu.idatt.boco.security.Encryption#getNextSalt() getNextSalt()}
      * @return the hashed password
      */
-    public static byte[] hash(char[] password, byte[] salt) {
-        PBEKeySpec spec = new PBEKeySpec(password, salt, ITERATIONS, KEY_LENGTH);
-        Arrays.fill(password, Character.MIN_VALUE);
+    public static byte[] hash(String password, byte[] salt) {
+        PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), salt, ITERATIONS, KEY_LENGTH);
         try {
-            SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-            return skf.generateSecret(spec).getEncoded();
+            SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+            return factory.generateSecret(spec).getEncoded();
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             throw new AssertionError("Error while hashing a password: " + e.getMessage(), e);
         } finally {
@@ -53,14 +52,9 @@ public class Encryption {
      * @param expectedHash the expected hashed value of the password
      * @return true if the given password and salt match the hashed value, false otherwise
      */
-    public static boolean isExpectedPassword(char[] password, byte[] salt, byte[] expectedHash) {
+    public static boolean isExpectedPassword(String password, byte[] salt, byte[] expectedHash) {
         byte[] pwdHash = hash(password, salt);
-        Arrays.fill(password, Character.MIN_VALUE);
-        if (pwdHash.length != expectedHash.length) return false;
-        for (int i = 0; i < pwdHash.length; i++) {
-            if (pwdHash[i] != expectedHash[i]) return false;
-        }
-        return true;
+        return Arrays.equals(pwdHash, expectedHash);
     }
 
 }
