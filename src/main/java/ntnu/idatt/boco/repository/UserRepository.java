@@ -32,6 +32,15 @@ public class UserRepository {
         return jdbcTemplate.queryForObject(query, Boolean.class);
     }
 
+    public int changePasswordInDatabase(User user, String newPassword){
+        boolean correctPass = Encryption.isExpectedPassword(user.getPassword().toCharArray(), user.getSalt().getBytes(), getHashedPasswordByEmail(user.getEmail()).getBytes());
+        if(correctPass){
+            return jdbcTemplate.update("UPDATE users SET password = ? WHERE user_id = ?;", newPassword, user.getUserId());
+        }else{
+            return 0;
+        }
+    }
+
     public int deleteUser(User user){
         boolean correctPass = Encryption.isExpectedPassword(user.getPassword().toCharArray(), user.getSalt().getBytes(), getHashedPasswordByEmail(user.getEmail()).getBytes());
         if(correctPass) {
