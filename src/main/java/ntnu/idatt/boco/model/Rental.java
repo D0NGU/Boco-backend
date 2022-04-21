@@ -1,16 +1,16 @@
 package ntnu.idatt.boco.model;
 
-import java.time.LocalDate;
+import java.sql.Date;
 
 public class Rental {
     private int rentalId;
-    private LocalDate dateFrom;
-    private LocalDate dateTo;
+    private Date dateFrom;
+    private Date dateTo;
     private int productId;
     private int userId;
 
     public Rental() {}
-    public Rental(int rentalId, LocalDate dateFrom, LocalDate dateTo, int productId, int userId) {
+    public Rental(int rentalId, Date dateFrom, Date dateTo, int productId, int userId) {
         this.rentalId = rentalId;
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
@@ -32,19 +32,19 @@ public class Rental {
 
     public int getRentalId() { return rentalId; }
 
-    public LocalDate getDateFrom() { return dateFrom; }
+    public Date getDateFrom() { return dateFrom; }
 
-    public LocalDate getDateTo() { return dateTo; }
+    public Date getDateTo() { return dateTo; }
 
     public int getProductId() { return productId; }
 
     public int getUserId() { return userId; }
 
-    public void setDateFrom(LocalDate dateFrom) {
+    public void setDateFrom(Date dateFrom) {
         this.dateFrom = dateFrom;
     }
 
-    public void setDateTo(LocalDate dateTo) {
+    public void setDateTo(Date dateTo) {
         this.dateTo = dateTo;
     }
 }
