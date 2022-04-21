@@ -24,6 +24,14 @@ public class Product {
         this.category = category;
     }
 
+    public Product(String description, String address, Double price, boolean unlisted, String category) {
+        this.description = description;
+        this.address = address;
+        this.price = price;
+        this.unlisted = unlisted;
+        this.category = category;
+    }
+
 
     public int getId() {
         return id;

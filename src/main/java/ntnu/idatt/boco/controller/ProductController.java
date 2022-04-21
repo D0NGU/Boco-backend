@@ -24,6 +24,12 @@ public class ProductController {
         repository.newProduct(product);
     }
 
+    @PostMapping("/edit/{id}")
+    public void editProduct(@PathVariable String id,@RequestBody Product product) {
+        logger.info("Editing product: " +id);
+        repository.editProduct(product, id);
+    }
+
 
     @GetMapping("/")
     @ResponseBody

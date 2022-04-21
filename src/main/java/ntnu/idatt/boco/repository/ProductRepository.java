@@ -24,6 +24,11 @@ public class ProductRepository {
                 new Object[] {product.getName(), product.getDescription(), product.getAddress(), product.getPrice(), product.isUnlisted(), product.getUserId(), product.getCategory()});
     }
 
+    public void editProduct(Product product, String id) {
+        jdbcTemplate.update("UPDATE products SET description=?, address=?, price=?, unlisted=?, category=? WHERE product_id=?",
+                new Object[] {product.getDescription(), product.getAddress(), product.getPrice(), product.isUnlisted(), product.getCategory(), id});
+    }
+
     public List<Product> getAll() {
         return jdbcTemplate.query("SELECT * FROM products", BeanPropertyRowMapper.newInstance(Product.class));
     }
