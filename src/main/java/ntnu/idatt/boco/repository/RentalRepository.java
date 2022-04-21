@@ -11,7 +11,7 @@ public class RentalRepository {
     private JdbcTemplate jdbcTemplate;
 
     public int saveRentalToDatabase(Rental rental) {
-        return jdbcTemplate.update("INSERT INTO rentals (rental_id, date_from, date_to, product_id, user_id) VALUES (?,?,?,?,?);",
-                new Object[] { rental.getRentalId(), rental.getDateFrom(), rental.getDateTo(), rental.getProductId(), rental.getUserId()});
+        return jdbcTemplate.update("INSERT INTO rentals (date_from, date_to, product_id, user_id) VALUES (?,?,?,?);",
+                new Object[] { rental.getDateFrom(), rental.getDateTo(), rental.getProductId(), rental.getUserId()});
     }
 }
