@@ -27,10 +27,10 @@ public class UserRepository {
         return jdbcTemplate.queryForObject("SELECT salt FROM users WHERE email ='"+email+"';", String.class);
     }
 
-    public boolean existsByEmail(String email) {
+    /*public boolean existsByEmail(String email) {
         String query = "SELECT EXISTS(SELECT * FROM users WHERE email="+email+");";
         return jdbcTemplate.queryForObject(query, Boolean.class);
-    }
+    }*/
 
     public int changePasswordInDatabase(User user, String newPassword){
         boolean correctPass = Encryption.isExpectedPassword(user.getPassword().toCharArray(), user.getSalt().getBytes(), getHashedPasswordByEmail(user.getEmail()).getBytes());

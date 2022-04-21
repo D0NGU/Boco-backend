@@ -18,6 +18,13 @@ public class ProductController {
     @Autowired
     ProductRepository repository;
 
+    @PostMapping("/new")
+    public void newProduct(@RequestBody Product product) {
+        logger.info("Saving new product: " +product.getName());
+        repository.newProduct(product);
+    }
+
+
     @GetMapping("/")
     @ResponseBody
     public List<Product> getAll() {

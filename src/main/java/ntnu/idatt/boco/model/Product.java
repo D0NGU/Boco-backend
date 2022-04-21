@@ -24,6 +24,7 @@ public class Product {
         this.category = category;
     }
 
+
     public int getId() {
         return id;
     }
@@ -86,5 +87,19 @@ public class Product {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", address='" + address + '\'' +
+                ", price=" + price +
+                ", unlisted=" + unlisted +
+                ", userId=" + userId +
+                ", category='" + category + '\'' +
+                '}';
     }
 }

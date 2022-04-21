@@ -42,7 +42,7 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/signin")
+   /* @PostMapping("/signin")
     public ResponseEntity<String> loginUser(@RequestBody LoginRequest login) {
         logger.info(login.getEmail() + ": Login requested");
         try {
@@ -67,7 +67,7 @@ public class AuthController {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
+    }*/
 
     @PostMapping("/signout")
     public void signoutAccount(@RequestBody User user) {
