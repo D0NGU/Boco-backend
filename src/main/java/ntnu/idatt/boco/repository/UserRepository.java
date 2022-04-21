@@ -1,14 +1,11 @@
 package ntnu.idatt.boco.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import ntnu.idatt.boco.model.User;
 import ntnu.idatt.boco.security.Encryption;
-
-import java.nio.charset.StandardCharsets;
 
 @Repository
 public class UserRepository {
@@ -22,8 +19,8 @@ public class UserRepository {
                     new Object[] { user.getFname(), user.getLname(), hashedPassword, user.getEmail(), saltString });
     }
 
-    public String getHashedPasswordFromDatabase(String Email){
-        return jdbcTemplate.queryForObject("SELECT password FROM users WHERE email =? ", new Object[]{Email}, String.class);
+    public String getHashedPasswordFromDatabase(String email){
+        return jdbcTemplate.queryForObject("SELECT password FROM users WHERE email ='"+email+"'", String.class);
     }
 
     public int deleteUser(User user){
