@@ -18,6 +18,18 @@ public class Rental {
         this.userId = userId;
     }
 
+    public void setRentalId(int rentalId) {
+        this.rentalId = rentalId;
+    }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
     public int getRentalId() { return rentalId; }
 
     public LocalDate getDateFrom() { return dateFrom; }
