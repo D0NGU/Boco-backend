@@ -19,8 +19,13 @@ public class CategoryRepository {
         return jdbcTemplate.query("SELECT * FROM categories", BeanPropertyRowMapper.newInstance(Category.class));
     }
 
+    /**
+     * Method for finding all sub categories of a given category
+     * @param main the name of the main category
+     * @param categories list of categories to filter through
+     * @return all the sub categories
+     */
     public List<Category> getSubCategories(String main, List<Category> categories) {
-        System.out.println("Searching for " + main);
         List<Category> subs = new ArrayList<>();
 
         Iterator<Category> it = categories.iterator();
