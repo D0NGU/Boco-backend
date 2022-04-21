@@ -30,7 +30,7 @@ public class ProductController {
         return repository.getFromCategory(category);
     }
 
-    @GetMapping("/product/{id]")
+    @GetMapping("/product/{id}")
     @ResponseBody
     public Product getById(@PathVariable String id) {
         return repository.getProduct(id);

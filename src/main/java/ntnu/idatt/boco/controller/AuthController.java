@@ -19,13 +19,14 @@ import ntnu.idatt.boco.repository.UserRepository;
 @RequestMapping("/api/auth")
 public class AuthController {
     Logger logger = LoggerFactory.getLogger(AuthController.class);
-    @Autowired UserRepository databaseRepository;
+    @Autowired
+    UserRepository databaseRepository;
 
     @PostMapping("/signup")
     public void registerNewAccount(@RequestBody User user) {
         logger.info("Signup Requested for " + user.getEmail());
         try {
-            // TODO Register user
+            databaseRepository.saveUserToDatabase(user);
         } catch (Exception e) {
             logger.info("Signup error");
             e.printStackTrace();
@@ -37,7 +38,7 @@ public class AuthController {
     public void signinAccount(@RequestBody User user) {
         logger.info("Login requested by " + user.getEmail());
         try {
-            // TODO Signin user
+            databaseRepository.saveUserToDatabase(user);
         } catch (Exception e) {
             logger.info("Login error");
             e.printStackTrace();
