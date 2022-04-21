@@ -52,4 +52,20 @@ public class Review {
             this.stars = stars;
         }
     }
+
+    public void setReviewId(int reviewId) {
+        this.reviewId = reviewId;
+    }
+
+    public void setOwner(boolean owner) {
+        this.owner = owner;
+    }
+
+    public void setAuthor(int author) {
+        this.author = author;
+    }
+
+    public void setSubject(int subject) {
+        this.subject = subject;
+    }
 }
