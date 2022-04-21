@@ -1,23 +1,16 @@
-image: maven:latest
+image: maven
 
 stages:
-    - build
-    - test
+  - build
+  - test
 
-build:
+compile:
   stage: build
-  only:
-    - master
-    - merge_requests
   script:
-    - echo "BUILD"
-    - mvn clean compile
+    - mvn compile
 
 test:
   stage: test
-  only:
-    - master
-    - merge_requests
   script:
-    - echo "TEST"
-    - mvn clean test
+    - mvn verify
+
