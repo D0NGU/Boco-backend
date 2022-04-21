@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ntnu.idatt.boco.model.LoginRequest;
 import ntnu.idatt.boco.model.User;
 import ntnu.idatt.boco.repository.UserRepository;
+import ntnu.idatt.boco.security.Encryption;
 
 @CrossOrigin
 @RestController
@@ -41,26 +43,34 @@ public class AuthController {
     }
 
     @PostMapping("/signin")
-    public void signinAccount(@RequestBody User user) {
-        logger.info("Login requested by " + user.getEmail());
+    public ResponseEntity<String> loginUser(@RequestBody LoginRequest login) {
+        logger.info(login.getEmail() + ": Login requested");
         try {
-            databaseRepository.saveUserToDatabase(user);
+            // Check if user exists
+            if (!databaseRepository.existsByEmail(login.getEmail())) {
+                logger.info(login.getEmail() + ": User does not exist");
+                return new ResponseEntity<>("Duplicate email", HttpStatus.NOT_FOUND);
+            };
+            // Check if password is correct
+            String expectedHash = databaseRepository.getHashedPasswordByEmail(login.getEmail());
+            String salt = databaseRepository.getSaltByEmail(login.getEmail());
+            if (Encryption.isExpectedPassword(login.getPassword().toCharArray(), salt.getBytes(), expectedHash.getBytes())) {
+                logger.info(login.getEmail() + ": Successfull login");
+                return new ResponseEntity<>("Successfull login", HttpStatus.OK);
+            } else {
+                logger.info(login.getEmail() + ": Wrong password");
+                return new ResponseEntity<>("Wrong password", HttpStatus.FORBIDDEN);
+            }
+            
         } catch (Exception e) {
             logger.info("Login error");
             e.printStackTrace();
-            //return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PostMapping("/signout")
     public void signoutAccount(@RequestBody User user) {
-        logger.info("Logout requested by " + user.getEmail());
-        try {
-            // TODO Signout user
-        } catch (Exception e) {
-            logger.info("Logout error");
-            e.printStackTrace();
-            //return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        // TODO
     }
 }
