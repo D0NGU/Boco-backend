@@ -11,7 +11,7 @@ build:
     - merge_requests
   script:
     - echo "BUILD"
-    - mvn clean compile -e
+    - mvn clean compile
 
 test:
   stage: test
@@ -20,4 +20,4 @@ test:
     - merge_requests
   script:
     - echo "TEST"
-    - mvn clean test -e
+    - mvn clean test
