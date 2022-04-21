@@ -30,8 +30,8 @@ ALTER TABLE reviews
     ADD CONSTRAINT valid_stars CHECK (stars>=1 AND stars<=5);
 
 CREATE TABLE categories (
-    category varchar(255) not null,
-    main_category varchar(255),
+    category varchar(20) not null,
+    main_category varchar(20),
     PRIMARY KEY (category)
 );
 
@@ -46,8 +46,10 @@ CREATE TABLE products (
     address varchar(255),
     price double,
     unlisted boolean,
-    user_id int(11),
-    category varchar(255),
+    available_from date,
+    available_to date,
+    user_id int(11) NOT NULL,
+    category varchar(20),
     PRIMARY KEY (product_id)
 );
 
