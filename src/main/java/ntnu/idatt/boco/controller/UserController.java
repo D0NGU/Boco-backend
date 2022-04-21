@@ -2,6 +2,7 @@ package ntnu.idatt.boco.controller;
 
 import ntnu.idatt.boco.model.User;
 import ntnu.idatt.boco.repository.UserRepository;
+import ntnu.idatt.boco.security.Encryption;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +20,20 @@ public class UserController {
     UserRepository userRepository;
 
     @DeleteMapping("/delete")
-    public ResponseEntity<Integer> deleteUser(@PathVariable User user){
+    public ResponseEntity<String> deleteUser(@RequestBody User user){
         logger.info("Delete requested by " + user.getEmail());
         try{
-            return new ResponseEntity<>(userRepository.deleteUser(user), HttpStatus.OK);
+            byte[] salt = userRepository.getSaltByEmail(user.getEmail());
+            byte[] hashedPass = userRepository.getHashedPasswordByEmail(user.getEmail());
+            boolean correctPass = Encryption.isExpectedPassword(user.getPassword(), salt, hashedPass);
+            if(correctPass){
+                userRepository.deleteUser(user);
+                logger.info(user.getEmail() + ": Successfully was deleted");
+                return new ResponseEntity<>("Deletion was successful", HttpStatus.OK);
+            }else{
+                return new ResponseEntity<>("Wrong password", HttpStatus.FORBIDDEN);
+            }
+
         }catch (Exception e){
             logger.info("Delete failed");
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -30,10 +41,20 @@ public class UserController {
     }
 
     @PostMapping("/edit")
-    public ResponseEntity<Integer> editPassword(@RequestBody User user, @RequestParam String newPassword){
+    public ResponseEntity<String> editPassword(@RequestBody User user, @RequestParam String newPassword){
         logger.info("Edit user requested by " + user.getEmail());
         try{
-            return new ResponseEntity<>(userRepository.changePasswordInDatabase(user, newPassword), HttpStatus.OK);
+            byte[] salt = userRepository.getSaltByEmail(user.getEmail());
+            byte[] hashedPass = userRepository.getHashedPasswordByEmail(user.getEmail());
+            boolean correctPass = Encryption.isExpectedPassword(user.getPassword(), salt, hashedPass);
+            if(correctPass){
+                userRepository.changePasswordInDatabase(user, newPassword);
+                logger.info(user.getEmail() + ": Successfully edited password");
+                return new ResponseEntity<>("Successful", HttpStatus.OK);
+            }else{
+                logger.info(user.getEmail() + ": Wrong old password");
+                return new ResponseEntity<>("Wrong old password", HttpStatus.FORBIDDEN);
+            }
         }catch (Exception e ){
             logger.info("Edit user failed");
             e.printStackTrace();

@@ -32,20 +32,11 @@ public class UserRepository {
     }
 
     public int changePasswordInDatabase(User user, String newPassword){
-        boolean correctPass = Encryption.isExpectedPassword(user.getPassword(), user.getSalt().getBytes(), getHashedPasswordByEmail(user.getEmail()));
-        if(correctPass){
-            return jdbcTemplate.update("UPDATE users SET password = ? WHERE user_id = ?;", newPassword, user.getUserId());
-        }else{
-            return 0;
-        }
+        byte[] hashedPassword = Encryption.hash(newPassword, getSaltByEmail(user.getEmail()));
+        return jdbcTemplate.update("UPDATE users SET password = ? WHERE email = ?;", hashedPassword, user.getEmail());
     }
 
     public int deleteUser(User user){
-        boolean correctPass = Encryption.isExpectedPassword(user.getPassword(), user.getSalt().getBytes(), getHashedPasswordByEmail(user.getEmail()));
-        if(correctPass) {
-            return jdbcTemplate.update("DELETE FROM users WHERE email = ?;", new Object[] { user.getUserId() });
-        } else {
-            return 0;
-        }
+        return jdbcTemplate.update("DELETE FROM users WHERE email = ?;", user.getEmail());
     }
 }
