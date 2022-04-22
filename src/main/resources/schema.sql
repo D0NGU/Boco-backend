@@ -27,8 +27,8 @@ CREATE TABLE categories (
 
 CREATE TABLE products (
     product_id INTEGER NOT NULL AUTO_INCREMENT,
-    name VARCHAR(75) NOT NULL,
-    description VARCHAR(255),
+    title VARCHAR(75) NOT NULL,
+    description VARCHAR(MAX),
     address VARCHAR(255),
     price DECIMAL,
     unlisted BOOLEAN,
