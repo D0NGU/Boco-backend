@@ -1,5 +1,6 @@
 package ntnu.idatt.boco.repository;
 
+import ntnu.idatt.boco.model.EditUserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -31,9 +32,9 @@ public class UserRepository {
         return jdbcTemplate.queryForObject(query, Boolean.class);
     }
 
-    public int changePasswordInDatabase(User user, String newPassword){
-        byte[] hashedPassword = Encryption.hash(newPassword, getSaltByEmail(user.getEmail()));
-        return jdbcTemplate.update("UPDATE users SET password = ? WHERE email = ?;", hashedPassword, user.getEmail());
+    public int changePasswordInDatabase(String email, String newPassword){
+        byte[] hashedPassword = Encryption.hash(newPassword, getSaltByEmail(email));
+        return jdbcTemplate.update("UPDATE users SET password = ? WHERE email = ?;", hashedPassword, email);
     }
 
     public int deleteUser(User user){

@@ -1,5 +1,6 @@
 package ntnu.idatt.boco.controller;
 
+import ntnu.idatt.boco.model.EditUserRequest;
 import ntnu.idatt.boco.model.Product;
 import ntnu.idatt.boco.model.User;
 import ntnu.idatt.boco.repository.ProductRepository;
@@ -42,19 +43,20 @@ public class UserController {
 
         }catch (Exception e){
             logger.info("Delete failed");
+            logger.error("Error: " + e);
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PostMapping("/edit")
-    public ResponseEntity<String> editPassword(@RequestBody User user, @RequestParam String newPassword){
+    public ResponseEntity<String> editPassword(@RequestBody EditUserRequest user){
         logger.info("Edit user requested by " + user.getEmail());
         try{
             byte[] salt = userRepository.getSaltByEmail(user.getEmail());
             byte[] hashedPass = userRepository.getHashedPasswordByEmail(user.getEmail());
-            boolean correctPass = Encryption.isExpectedPassword(user.getPassword(), salt, hashedPass);
+            boolean correctPass = Encryption.isExpectedPassword(user.getOldPassword(), salt, hashedPass);
             if(correctPass){
-                userRepository.changePasswordInDatabase(user, newPassword);
+                userRepository.changePasswordInDatabase(user.getEmail(), user.getNewPassword());
                 logger.info(user.getEmail() + ": Successfully edited password");
                 return new ResponseEntity<>("Successful", HttpStatus.OK);
             }else{
