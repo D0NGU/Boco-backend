@@ -47,4 +47,15 @@ public class Rental {
     public void setDateTo(Date dateTo) {
         this.dateTo = dateTo;
     }
+
+    @Override
+    public String toString() {
+        return "Rental{" +
+                "rentalId=" + rentalId +
+                ", dateFrom=" + dateFrom +
+                ", dateTo=" + dateTo +
+                ", productId=" + productId +
+                ", userId=" + userId +
+                '}';
+    }
 }
