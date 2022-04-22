@@ -36,18 +36,22 @@ public class ProductService {
         List<AvailabilityWindow> available = new ArrayList<>();
 
         for (Rental rental : rentals) {
-            requested.add(new AvailabilityWindow(sqlDatePlusDays(rental.getDateFrom(),-1), sqlDatePlusDays(rental.getDateTo(),+1)));
+            requested.add(new AvailabilityWindow(rental.getDateFrom(), rental.getDateTo()));
         }
 
         requested.sort(Comparator.comparing(AvailabilityWindow::getFrom));
 
-        available.add(new AvailabilityWindow(product.getAvailableFrom(), requested.get(0).getFrom()));
+        if (!product.getAvailableFrom().equals(requested.get(0).getFrom())) {
+            available.add(new AvailabilityWindow(product.getAvailableFrom(), sqlDatePlusDays(requested.get(0).getFrom(), -1)));
+        }
 
         for (int i = 0; i < (requested.size() - 1); i++) {
             available.add(new AvailabilityWindow(requested.get(i).getTo(), requested.get(i+1).getFrom()));
         }
 
-        available.add(new AvailabilityWindow(requested.get(requested.size()-1).getTo(), product.getAvailableTo()));
+        if (!requested.get(requested.size()-1).getTo().equals(product.getAvailableTo())) {
+            available.add(new AvailabilityWindow(sqlDatePlusDays(requested.get(requested.size()-1).getTo(), +1), product.getAvailableTo()));
+        }
 
         return available;
     }
