@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -35,8 +36,12 @@ public class ProductRepository {
 
     public List<Product> getFromCategory(String category) {
         List<Category> categories = categoryRepository.getSubCategories(category, categoryRepository.getAll());
+        List<Object> catNames = new ArrayList<>();
+        for (Category cat : categories) {
+            catNames.add(cat.getCategory());
+        }
         String inSql = String.join(",", Collections.nCopies(categories.size(), "?"));
-        return jdbcTemplate.query(String.format("SELECT * FROM products WHERE (%s)", inSql), BeanPropertyRowMapper.newInstance(Product.class), categories.toArray());
+        return jdbcTemplate.query(String.format("SELECT * FROM products WHERE category IN (%s)", inSql), BeanPropertyRowMapper.newInstance(Product.class), catNames.toArray());
     }
 
     public Product getProduct(String productId) {
