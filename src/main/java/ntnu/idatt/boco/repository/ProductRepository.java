@@ -51,4 +51,9 @@ public class ProductRepository {
     public List<Product> getFromUserId(String productId) {
         return jdbcTemplate.query("SELECT * FROM products WHERE user_id = ?", BeanPropertyRowMapper.newInstance(Product.class), productId);
     }
+
+    public List<Product> searchProductByWord(String word) {
+        String sql = "SELECT product_id,title,description,address,price,unlisted,available_from,available_to,user_id,category FROM products LEFT JOIN (FT_SEARCH_DATA('"+word+"', 0, 0)) ON products.product_id=keys[1] WHERE keys IS NOT NULL;";
+        return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Product.class));
+    }
 }

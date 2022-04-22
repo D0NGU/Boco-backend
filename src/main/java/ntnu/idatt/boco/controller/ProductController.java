@@ -24,7 +24,7 @@ public class ProductController {
     @Autowired RentalRepository rentalRepository;
     @Autowired ProductService service;
 
-    @PostMapping("/create")
+    @PostMapping("/product/create")
     public ResponseEntity<String> newProduct(@RequestBody Product product) {
         logger.info("Creating new product: " + product.getName());
         //productRepository.newProduct(product);
@@ -80,7 +80,7 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/category/{category}")
+    @GetMapping("/{category}")
     @ResponseBody
     public ResponseEntity<List<Product>> getByCategory(@PathVariable String category) {
         logger.info("Getting all products in " + category);
@@ -107,5 +107,11 @@ public class ProductController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
+    }
+
+    @GetMapping
+    @ResponseBody
+    public List<Product> getProductFromSearch(@RequestParam String q) {
+        return productRepository.searchProductByWord(q);
     }
 }
