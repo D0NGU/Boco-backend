@@ -95,10 +95,17 @@ public class ProductController {
 
     @GetMapping("/product/{productId}/availability")
     @ResponseBody
-    public List<AvailabilityWindow> getAvailability(@PathVariable String productId) {
-        Product product = productRepository.getProduct(productId);
-        List<Rental> rentals = rentalRepository.getRentals(productId);
+    public ResponseEntity<List<AvailabilityWindow>> getAvailability(@PathVariable String productId) {
+        logger.info("Request for availability window for product " + productId);
+        try {
+            Product product = productRepository.getProduct(productId);
+            List<Rental> rentals = rentalRepository.getRentals(productId);
+            return new ResponseEntity<>(service.getAvailability(product, rentals), HttpStatus.OK);
+        } catch (Exception e) {
+            logger.info("Could not get availability for product " + productId);
+            logger.error("Error: " + e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
-        return service.getAvailability(product, rentals);
     }
 }
