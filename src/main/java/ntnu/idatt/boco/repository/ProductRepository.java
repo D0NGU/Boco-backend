@@ -42,4 +42,8 @@ public class ProductRepository {
     public Product getProduct(String id) {
         return jdbcTemplate.queryForObject("SELECT * FROM products WHERE product_id = ?", BeanPropertyRowMapper.newInstance(Product.class), id);
     }
+
+    public List<Product> getFromUserId(String id) {
+        return jdbcTemplate.query("SELECT * FROM products WHERE user_id = ?", BeanPropertyRowMapper.newInstance(Product.class));
+    }
 }

@@ -1,6 +1,8 @@
 package ntnu.idatt.boco.controller;
 
+import ntnu.idatt.boco.model.Product;
 import ntnu.idatt.boco.model.User;
+import ntnu.idatt.boco.repository.ProductRepository;
 import ntnu.idatt.boco.repository.UserRepository;
 import ntnu.idatt.boco.security.Encryption;
 import org.slf4j.Logger;
@@ -10,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @CrossOrigin
 @RestController
@@ -18,6 +22,8 @@ public class UserController {
     Logger logger = LoggerFactory.getLogger(UserController.class);
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    ProductRepository productRepository;
 
     @DeleteMapping("/delete")
     public ResponseEntity<String> deleteUser(@RequestBody User user){
@@ -60,6 +66,12 @@ public class UserController {
             e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @PostMapping("/products/{userId}")
+    @ResponseBody
+    public List<Product> getUsersProducts(@PathVariable String userId) {
+        return productRepository.getFromUserId(userId);
     }
 }
 
