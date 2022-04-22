@@ -22,7 +22,7 @@ public class RentalRepository {
      * @return a list containing all rentals with the correct product_id
      */
     public List<Rental> getRentals(String productId) {
-        return jdbcTemplate.query("SELECT * FROM rentals WHERE product_id = ?;", BeanPropertyRowMapper.newInstance(Rental.class), productId);
+        return jdbcTemplate.query("SELECT * FROM rentals WHERE product_id = ? ORDER BY date_from;", BeanPropertyRowMapper.newInstance(Rental.class), productId);
     }
 
     /**
