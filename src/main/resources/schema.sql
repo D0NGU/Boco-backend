@@ -57,7 +57,7 @@ ALTER TABLE reviews
 ALTER TABLE reviews
     ADD CONSTRAINT FK_subject
         FOREIGN KEY (subject) 
-        REFERENCES users(user_id);
+        REFERENCES users(user_id) ON DELETE CASCADE;
 
 ALTER TABLE reviews
     ADD CONSTRAINT valid_stars 
@@ -71,7 +71,7 @@ ALTER TABLE categories
 ALTER TABLE products
     ADD CONSTRAINT FK_owner
         FOREIGN KEY (user_id) 
-        REFERENCES users(user_id);
+        REFERENCES users(user_id) ON DELETE CASCADE;
 
 ALTER TABLE products
     ADD CONSTRAINT FK_category
@@ -81,9 +81,9 @@ ALTER TABLE products
 ALTER TABLE rentals
     ADD CONSTRAINT FK_renter
         FOREIGN KEY (user_id) 
-        REFERENCES users(user_id);
+        REFERENCES users(user_id) ON DELETE CASCADE;
 
 ALTER TABLE rentals
     ADD CONSTRAINT FK_product
         FOREIGN KEY (product_id) 
-        REFERENCES products(product_id);
+        REFERENCES products(product_id) ON DELETE CASCADE;

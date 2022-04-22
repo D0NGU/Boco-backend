@@ -72,8 +72,16 @@ public class UserController {
 
     @PostMapping("/products/{userId}")
     @ResponseBody
-    public List<Product> getUsersProducts(@PathVariable String userId) {
-        return productRepository.getFromUserId(userId);
+    public ResponseEntity<List<Product>> getUsersProducts(@PathVariable String userId) {
+        logger.info("Request for products by user " + userId);
+        try {
+            logger.info("Retrieved user products successfully");
+            return new ResponseEntity<>(productRepository.getFromUserId(userId), HttpStatus.OK);
+        } catch (Exception e) {
+            logger.info("Error retrieving user products");
+            logger.error("Error: " + e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
 
