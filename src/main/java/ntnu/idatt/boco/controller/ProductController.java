@@ -27,7 +27,7 @@ public class ProductController {
     @PostMapping("/create")
     public ResponseEntity<String> newProduct(@RequestBody Product product) {
         logger.info("Creating new product: " + product.getName());
-        productRepository.newProduct(product);
+        //productRepository.newProduct(product);
         try {
             productRepository.newProduct(product);
             logger.info("Product created");
@@ -39,12 +39,12 @@ public class ProductController {
         }
     }
 
-    @PostMapping("/edit/{id}")
-    public ResponseEntity<String> editProduct(@PathVariable String id,@RequestBody Product product) {
-        logger.info("Editing product: " + id);
+    @PostMapping("/edit/{productId}")
+    public ResponseEntity<String> editProduct(@PathVariable String productId,@RequestBody Product product) {
+        logger.info("Editing product: " + productId);
         try {
-            productRepository.editProduct(product, id);
-            logger.info("Editing product: " + id);
+            productRepository.editProduct(product, productId);
+            logger.info("Editing product: " + productId);
             return new ResponseEntity<>("Created successfully!", HttpStatus.CREATED);
         } catch (Exception e) {
             logger.info("Error editing product");
@@ -53,12 +53,12 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{productId}")
     @ResponseBody
-    public ResponseEntity<Product> getById(@PathVariable String id) {
-        logger.info("Getting product " + id);
+    public ResponseEntity<Product> getById(@PathVariable String productId) {
+        logger.info("Getting product " + productId);
         try {
-            return new ResponseEntity<>(productRepository.getProduct(id), HttpStatus.OK);
+            return new ResponseEntity<>(productRepository.getProduct(productId), HttpStatus.OK);
         } catch (Exception e) {
             logger.info("Error getting product");
             e.printStackTrace();
@@ -93,11 +93,11 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/product/{id}/availability")
+    @GetMapping("/product/{productId}/availability")
     @ResponseBody
-    public List<AvailabilityWindow> getAvailability(@PathVariable String id) {
-        Product product = productRepository.getProduct(id);
-        List<Rental> rentals = rentalRepository.getRentals(id);
+    public List<AvailabilityWindow> getAvailability(@PathVariable String productId) {
+        Product product = productRepository.getProduct(productId);
+        List<Rental> rentals = rentalRepository.getRentals(productId);
 
         return service.getAvailability(product, rentals);
     }
