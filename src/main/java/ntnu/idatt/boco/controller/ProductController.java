@@ -24,7 +24,7 @@ public class ProductController {
     @Autowired RentalRepository rentalRepository;
     @Autowired ProductService service;
 
-    @PostMapping("/create")
+    @PostMapping("/product/create")
     public ResponseEntity<String> newProduct(@RequestBody Product product) {
         logger.info("Creating new product: " + product.getName());
         productRepository.newProduct(product);
@@ -39,7 +39,7 @@ public class ProductController {
         }
     }
 
-    @PostMapping("/edit/{id}")
+    @PostMapping("/product/{id}/edit")
     public ResponseEntity<String> editProduct(@PathVariable String id,@RequestBody Product product) {
         logger.info("Editing product: " + id);
         try {
@@ -53,7 +53,7 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/product/{id}")
     @ResponseBody
     public ResponseEntity<Product> getById(@PathVariable String id) {
         logger.info("Getting product " + id);
@@ -80,7 +80,7 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/category/{category}")
+    @GetMapping("/{category}")
     @ResponseBody
     public ResponseEntity<List<Product>> getByCategory(@PathVariable String category) {
         logger.info("Getting all products in " + category);
@@ -100,5 +100,11 @@ public class ProductController {
         List<Rental> rentals = rentalRepository.getRentals(id);
 
         return service.getAvailability(product, rentals);
+    }
+
+    @GetMapping
+    @ResponseBody
+    public List<Product> getProductFromSearch(@RequestParam String q) {
+        return productRepository.searchProductByWord(q);
     }
 }
