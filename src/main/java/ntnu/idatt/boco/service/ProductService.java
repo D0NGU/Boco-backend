@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -24,7 +26,7 @@ public class ProductService {
     /**
      * Method to get a list of time windows where a product is available for rental.
      * The method takes a product and uses its listing period as lower and upper bound.
-     * It then takes a list of rentals sorted on from date to create a list of availability windows.
+     * It then takes a list of rentals to create a list of availability windows.
      * @param product The product to find availability for
      * @param rentals List of all rentals for the product
      * @return list of windows where the product is available.
@@ -36,6 +38,8 @@ public class ProductService {
         for (Rental rental : rentals) {
             requested.add(new AvailabilityWindow(sqlDatePlusDays(rental.getDateFrom(),-1), sqlDatePlusDays(rental.getDateTo(),+1)));
         }
+
+        requested.sort(Comparator.comparing(AvailabilityWindow::getFrom));
 
         available.add(new AvailabilityWindow(product.getAvailableFrom(), requested.get(0).getFrom()));
 
