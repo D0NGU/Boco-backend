@@ -8,10 +8,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.test.context.ActiveProfiles;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import javax.sql.DataSource;
 
+@ActiveProfiles("test")
 @SpringBootTest
 public class UserRepositoryTests {
     @Autowired
