@@ -4,7 +4,7 @@ import java.sql.Date;
 
 public class Product {
     private int productId;
-    private String name;
+    private String title;
     private String description;
     private String address;
     private Double price;
@@ -17,9 +17,9 @@ public class Product {
     public Product () {
     }
 
-    public Product(int productId, String name, String description, String address, Double price, boolean unlisted, Date availableFrom, Date availableTo, int userId, String category) {
+    public Product(int productId, String title, String description, String address, Double price, boolean unlisted, Date availableFrom, Date availableTo, int userId, String category) {
         this.productId = productId;
-        this.name = name;
+        this.title = title;
         this.description = description;
         this.address = address;
         this.price = price;
@@ -44,8 +44,8 @@ public class Product {
         return productId;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
     public String getDescription() {
@@ -104,8 +104,8 @@ public class Product {
         this.productId = productId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public void setUserId(int userId) {
@@ -124,7 +124,7 @@ public class Product {
     public String toString() {
         return "Product{" +
                 "productId=" + productId +
-                ", name='" + name + '\'' +
+                ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", address='" + address + '\'' +
                 ", price=" + price +

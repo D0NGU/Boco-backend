@@ -21,8 +21,8 @@ public class ProductRepository {
     CategoryRepository categoryRepository;
 
     public void newProduct(Product product) {
-        jdbcTemplate.update("INSERT INTO products(name, description, address, price, unlisted, available_from, available_to, user_id, category) VALUES (?,?,?,?,?,?,?,?,?)",
-                new Object[] {product.getName(), product.getDescription(), product.getAddress(), product.getPrice(), product.isUnlisted(), product.getAvailableFrom(), product.getAvailableTo(), product.getUserId(), product.getCategory()});
+        jdbcTemplate.update("INSERT INTO products(title, description, address, price, unlisted, available_from, available_to, user_id, category) VALUES (?,?,?,?,?,?,?,?,?)",
+                new Object[] {product.getTitle(), product.getDescription(), product.getAddress(), product.getPrice(), product.isUnlisted(), product.getAvailableFrom(), product.getAvailableTo(), product.getUserId(), product.getCategory()});
     }
 
     public void editProduct(Product product, String productId) {

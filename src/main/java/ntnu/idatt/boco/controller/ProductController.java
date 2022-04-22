@@ -26,7 +26,7 @@ public class ProductController {
 
     @PostMapping("/product/create")
     public ResponseEntity<String> newProduct(@RequestBody Product product) {
-        logger.info("Creating new product: " + product.getName());
+        logger.info("Creating new product: " + product.getTitle());
         //productRepository.newProduct(product);
         try {
             productRepository.newProduct(product);
@@ -39,7 +39,7 @@ public class ProductController {
         }
     }
 
-    @PostMapping("/edit/{productId}")
+    @PostMapping("/product/{productId}/edit")
     public ResponseEntity<String> editProduct(@PathVariable String productId,@RequestBody Product product) {
         logger.info("Editing product: " + productId);
         try {
