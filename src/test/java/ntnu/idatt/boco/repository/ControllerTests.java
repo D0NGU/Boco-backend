@@ -11,6 +11,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
  * This test class contains test-methods for the methods in the controllers
  */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@ActiveProfiles("test") // Makes the tests use the test database instead of the normal one
+@ActiveProfiles("test")// Makes the tests use the test database instead of the normal one
 @SpringBootTest
 public class ControllerTests {
     @Autowired
@@ -73,8 +74,8 @@ public class ControllerTests {
     @Test
     @Order(5)
     public void successfullyRegisteredNewProduct() {
-        Product product = new Product(1, "Hammer", "Description", "Address", 20.0,
-                false, new Date(122, 5, 12), new Date(122, 5, 16), 1, "verktøy");
+        Product product = new Product(3, "Hammer", "Description", "Address", 20.0,
+                false, new Date(122, 5, 12), new Date(122, 5, 16), 2, "verktøy");
         assertEquals("Created successfully!", productController.newProduct(product).getBody());
     }
 
@@ -99,16 +100,16 @@ public class ControllerTests {
     @Test
     @Order(8)
     public void successfullyRetrievedProductById() {
-        Product product = new Product(1, "Hammer", "Something else", "New address", 200.0,
-                false, new Date(122, 5, 12), new Date(122, 5, 16), 1, "verktøy");
-        assertEquals(product.toString(), productController.getById("1").getBody().toString());
+        Product product = new Product(3, "Hammer", "Something else", "New address", 200.0,
+                false, new Date(122, 5, 12), new Date(122, 5, 16), 2, "verktøy");
+        assertEquals(product.toString(), productController.getById("3").getBody().toString());
     }
 
     @Test
     @Order(9)
     public void successfullyRetrievedProductsByCategory() {
-        Product product = new Product(1, "Hammer", "Something else", "New address", 200.0,
-                false, new Date(122, 5, 12), new Date(122, 5, 16), 1, "verktøy");
+        Product product = new Product(3, "Hammer", "Something else", "New address", 200.0,
+                false, new Date(122, 5, 12), new Date(122, 5, 16), 2, "verktøy");
         List<Product> list = new ArrayList<>();
         list.add(product);
         assertEquals(list.toString(), productController.getByCategory("verktøy").getBody().toString());
