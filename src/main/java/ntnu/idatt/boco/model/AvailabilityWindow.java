@@ -1,6 +1,7 @@
 package ntnu.idatt.boco.model;
 
 import java.sql.Date;
+import java.util.Objects;
 
 public class AvailabilityWindow {
     private Date from;
@@ -28,5 +29,23 @@ public class AvailabilityWindow {
 
     public void setTo(Date to) {
         this.to = to;
+    }
+
+    @Override
+    public String toString() {
+        return "AvailabilityWindow is from " + from + " to " + to;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AvailabilityWindow that = (AvailabilityWindow) o;
+        return Objects.equals(from, that.from) && Objects.equals(to, that.to);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(from, to);
     }
 }
