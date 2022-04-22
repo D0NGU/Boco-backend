@@ -31,11 +31,11 @@ public class ProductServiceTest {
         rentals.add(new Rental());
         rentals.add(new Rental());
 
-        rentals.get(0).setDateFrom(Date.valueOf("2022-01-05"));
-        rentals.get(0).setDateTo(Date.valueOf("2022-01-10"));
+        rentals.get(0).setDateFrom(Date.valueOf("2022-01-16"));
+        rentals.get(0).setDateTo(Date.valueOf("2022-01-17"));
 
-        rentals.get(1).setDateFrom(Date.valueOf("2022-01-16"));
-        rentals.get(1).setDateTo(Date.valueOf("2022-01-17"));
+        rentals.get(1).setDateFrom(Date.valueOf("2022-01-05"));
+        rentals.get(1).setDateTo(Date.valueOf("2022-01-10"));
 
         List<AvailabilityWindow> expected = new ArrayList<>();
 

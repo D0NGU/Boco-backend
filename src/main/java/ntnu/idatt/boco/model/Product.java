@@ -3,7 +3,7 @@ package ntnu.idatt.boco.model;
 import java.sql.Date;
 
 public class Product {
-    private int id;
+    private int productId;
     private String name;
     private String description;
     private String address;
@@ -17,8 +17,8 @@ public class Product {
     public Product () {
     }
 
-    public Product(int id, String name, String description, String address, Double price, boolean unlisted, Date availableFrom, Date availableTo, int userId, String category) {
-        this.id = id;
+    public Product(int productId, String name, String description, String address, Double price, boolean unlisted, Date availableFrom, Date availableTo, int userId, String category) {
+        this.productId = productId;
         this.name = name;
         this.description = description;
         this.address = address;
@@ -40,8 +40,8 @@ public class Product {
         this.category = category;
     }
 
-    public int getId() {
-        return id;
+    public int getProductId() {
+        return productId;
     }
 
     public String getName() {
@@ -100,8 +100,8 @@ public class Product {
         this.category = category;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setProductId(int productId) {
+        this.productId = productId;
     }
 
     public void setName(String name) {
@@ -123,7 +123,7 @@ public class Product {
     @Override
     public String toString() {
         return "Product{" +
-                "id=" + id +
+                "productId=" + productId +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", address='" + address + '\'' +
