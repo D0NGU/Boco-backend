@@ -22,23 +22,18 @@ public class Review {
     public int getReviewId() {
         return reviewId;
     }
-
     public String getText() {
         return text;
     }
-
     public int getStars() {
         return stars;
     }
-
     public boolean isOwner() {
         return owner;
     }
-
     public int getAuthor() {
         return author;
     }
-
     public int getSubject() {
         return subject;
     }
@@ -46,25 +41,20 @@ public class Review {
     public void setText(String text) {
         this.text = text;
     }
-
     public void setStars(int stars) {
         if (stars>=1 && stars<=5) {
             this.stars = stars;
         }
     }
-
     public void setReviewId(int reviewId) {
         this.reviewId = reviewId;
     }
-
     public void setOwner(boolean owner) {
         this.owner = owner;
     }
-
     public void setAuthor(int author) {
         this.author = author;
     }
-
     public void setSubject(int subject) {
         this.subject = subject;
     }

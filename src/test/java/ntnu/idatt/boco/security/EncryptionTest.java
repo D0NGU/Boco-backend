@@ -10,7 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class EncryptionTest {
-    // Test data consist of the password 'test123', a premade salt and the hashed value
+    // Test data consist of the password 'test123', a premade salt and the pre-hashed password
     private final byte[] SALT = DatatypeConverter.parseHexBinary("9eb8eb1886c3184fa3f3d963c1578f40");
     private final String PASSWORD = "test123";
     private final String WRONG_PASSWORD = "3tset21";

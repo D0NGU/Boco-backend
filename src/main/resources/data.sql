@@ -22,8 +22,3 @@ INSERT INTO users (fname, lname, password, email, salt)
 INSERT INTO products(title, description, address, price, unlisted, available_from, available_to, user_id, category)
     VALUES ('John Deere 7280R', 'Pent brukt traktor!', 'Myrangvegen 4, 2040 Kløfta', 450, false, '2022-04-11', '2022-06-20', 1, 'kjøretøy'),
     ('Valtra 34CX', 'Meget pent brukt traktor!!', 'Myrangvegen 6, 2040 Kløfta', 200, false, '2022-02-01', '2022-09-25', 1, 'kjøretøy');
-
--- Create index table for fulltext search. The index is updated in realtime.
-CREATE ALIAS IF NOT EXISTS FT_INIT FOR "org.h2.fulltext.FullText.init";
-CALL FT_INIT();
-CALL FT_CREATE_INDEX('PUBLIC', 'PRODUCTS', 'TITLE,DESCRIPTION');

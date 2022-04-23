@@ -1,4 +1,4 @@
-package ntnu.idatt.boco.repository;
+package ntnu.idatt.boco;
 
 import ntnu.idatt.boco.controller.AuthController;
 import ntnu.idatt.boco.controller.ProductController;
@@ -12,9 +12,8 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.jdbc.Sql;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,17 +77,16 @@ public class ControllerTests {
     @Order(5)
     public void successfullyRegisteredNewProduct() {
         Product product = new Product(3, "Hammer", "Description", "Address", 20.0,
-                false, new Date(122, 5, 12), new Date(122, 5, 16), 2, "verktøy");
+                false, LocalDate.of(2022, 5, 12), LocalDate.of(2022, 5, 16), 2, "verktøy");
         assertEquals("Created successfully!", productController.newProduct(product).getBody());
     }
 
     @Test
     @Order(6)
     public void successfullyRetrievedAllProducts() {
-        Product product1 = new Product(1, "John Deere 7280R", "Pent brukt traktor!", "Myrangvegen 4, 2040 Kløfta", 450.0, false,  new Date(122, 4, 11), new Date(122, 6, 20),1, "kjøretøy");
-        Product product2 = new Product(2,"Valtra 34CX", "Meget pent brukt traktor!!", "Myrangvegen 6, 2040 Kløfta", 200.0, false, new Date(122, 2, 1), new Date(122, 9, 25), 1, "kjøretøy");
-        Product product = new Product(3, "Hammer", "Description", "Address", 20.0,
-                false, new Date(122, 5, 12), new Date(122, 5, 16), 2, "verktøy");
+        Product product1 = new Product(1, "John Deere 7280R", "Pent brukt traktor!", "Myrangvegen 4, 2040 Kløfta", 450.0, false,  LocalDate.of(2022, 4, 11), LocalDate.of(2022, 6, 20),1, "kjøretøy");
+        Product product2 = new Product(2,"Valtra 34CX", "Meget pent brukt traktor!!", "Myrangvegen 6, 2040 Kløfta", 200.0, false, LocalDate.of(2022, 2, 1), LocalDate.of(2022, 9, 25), 1, "kjøretøy");
+        Product product = new Product(3, "Hammer", "Description", "Address", 20.0, false, LocalDate.of(2022, 5, 12), LocalDate.of(2022, 5, 16), 2, "verktøy");
         List<Product> list = new ArrayList<>();
         list.add(product1);
         list.add(product2);
@@ -100,7 +98,7 @@ public class ControllerTests {
     @Order(7)
     public void successfullyEditedProduct(){
         Product product = new Product(3, "Hammer", "Something else", "New address", 200.0,
-                false, new Date(122, 5, 12), new Date(122, 5, 16), 2, "verktøy");
+                false, LocalDate.of(2022, 5, 12), LocalDate.of(2022, 5, 16), 2, "verktøy");
         assertEquals("Created successfully!",productController.editProduct("3", product).getBody());
     }
 
@@ -108,7 +106,7 @@ public class ControllerTests {
     @Order(8)
     public void successfullyRetrievedProductById() {
         Product product = new Product(3, "Hammer", "Something else", "New address", 200.0,
-                false, new Date(122, 5, 12), new Date(122, 5, 16), 2, "verktøy");
+                false, LocalDate.of(2022, 5, 12), LocalDate.of(2022, 5, 16), 2, "verktøy");
         assertEquals(product.toString(), productController.getById("3").getBody().toString());
     }
 
@@ -116,7 +114,7 @@ public class ControllerTests {
     @Order(9)
     public void successfullyRetrievedProductsByCategory() {
         Product product = new Product(3, "Hammer", "Something else", "New address", 200.0,
-                false, new Date(122, 5, 12), new Date(122, 5, 16), 2, "verktøy");
+                false, LocalDate.of(2022, 5, 12), LocalDate.of(2022, 5, 16), 2, "verktøy");
         List<Product> list = new ArrayList<>();
         list.add(product);
         assertEquals(list.toString(), productController.getByCategory("verktøy").getBody().toString());
@@ -125,14 +123,14 @@ public class ControllerTests {
     @Test
     @Order(10)
     public void successfullyRegisteredNewRental() {
-        Rental rental = new Rental(1, new Date(122, 5, 14), new Date(122, 5, 16), 3, 2);
+        Rental rental = new Rental(1, LocalDate.of(2022, 5, 14), LocalDate.of(2022, 5, 16), 3, 2);
         assertEquals("Registered successfully!", rentalController.registerNewRental(rental).getBody());
     }
 
     @Test
     @Order(11)
     public void successfullyRetrievedRentalsByProductId() {
-        Rental rental = new Rental(1, new Date(122, 5, 14), new Date(122, 5, 16), 3, 2);
+        Rental rental = new Rental(1, LocalDate.of(2022, 5, 14), LocalDate.of(2022, 5, 16), 3, 2);
         List<Rental> list = new ArrayList<>();
         list.add(rental);
         assertEquals(list.toString(), rentalController.getRentals("3").getBody().toString());
@@ -144,17 +142,16 @@ public class ControllerTests {
         assertNull(rentalController.getRentals("2").getBody());
     }
 
-    /*
-    @Test
+    /* @Test
     @Order(13)
     public void successfullyRetrieveAvailabilityWindow() {
-        Rental rental = new Rental(1, new Date(122, 5, 12), new Date(122, 5, 12), 1, 1);
+        Rental rental = new Rental(1, Date.valueOf(LocalDate.of(2022, 5, 12)), Date.valueOf(LocalDate.of(2022, 5, 12)), 1, 1);
         rentalController.registerNewRental(rental);
-        AvailabilityWindow availability = new AvailabilityWindow(new Date(122, 5, 12), new Date(122, 5, 13));
+        AvailabilityWindow availability = new AvailabilityWindow(Date.valueOf(LocalDate.of(2022, 5, 12)), Date.valueOf(LocalDate.of(2022, 5, 13)));
         List<AvailabilityWindow> list = new ArrayList<>();
         list.add(availability);
         assertEquals(list.toString(), productController.getAvailability("1").getBody().toString());
-    }*/
+    } */
 
     @Test
     @Order(14)
@@ -175,7 +172,7 @@ public class ControllerTests {
     @Order(16)
     public void successfullyRetrievedProductsByUser() {
         Product product = new Product(3, "Hammer", "Something else", "New address", 200.0,
-                false, new Date(122, 5, 12), new Date(122, 5, 16), 2, "verktøy");
+                false, LocalDate.of(2022, 5, 12), LocalDate.of(2022, 5, 16), 2, "verktøy");
         List<Product> list = new ArrayList<>();
         list.add(product);
         assertEquals(list.toString(), userController.getUsersProducts("2").getBody().toString());

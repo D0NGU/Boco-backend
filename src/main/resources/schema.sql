@@ -87,3 +87,8 @@ ALTER TABLE rentals
     ADD CONSTRAINT FK_product
         FOREIGN KEY (product_id) 
         REFERENCES products(product_id) ON DELETE CASCADE;
+
+-- Create index table for fulltext search. The table is updated in realtime.
+CREATE ALIAS IF NOT EXISTS FT_INIT FOR "org.h2.fulltext.FullText.init";
+CALL FT_INIT();
+CALL FT_CREATE_INDEX('PUBLIC', 'PRODUCTS', 'TITLE,DESCRIPTION');

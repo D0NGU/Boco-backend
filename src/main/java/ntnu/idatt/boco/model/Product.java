@@ -1,6 +1,6 @@
 package ntnu.idatt.boco.model;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 public class Product {
     private int productId;
@@ -9,15 +9,14 @@ public class Product {
     private String address;
     private Double price;
     private boolean unlisted;
-    private Date availableFrom;
-    private Date availableTo;
+    private LocalDate availableFrom;
+    private LocalDate availableTo;
     private int userId;
     private String category;
 
-    public Product () {
-    }
+    public Product () {}
 
-    public Product(int productId, String title, String description, String address, Double price, boolean unlisted, Date availableFrom, Date availableTo, int userId, String category) {
+    public Product(int productId, String title, String description, String address, Double price, boolean unlisted, LocalDate availableFrom, LocalDate availableTo, int userId, String category) {
         this.productId = productId;
         this.title = title;
         this.description = description;
@@ -30,7 +29,7 @@ public class Product {
         this.category = category;
     }
 
-    public Product(String description, String address, Double price, boolean unlisted, Date availableFrom, Date availableTo, String category) {
+    public Product(String description, String address, Double price, boolean unlisted, LocalDate availableFrom, LocalDate availableTo, String category) {
         this.description = description;
         this.address = address;
         this.price = price;
@@ -43,80 +42,62 @@ public class Product {
     public int getProductId() {
         return productId;
     }
-
     public String getTitle() {
         return title;
     }
-
     public String getDescription() {
         return description;
     }
-
     public String getAddress() {
         return address;
     }
-
     public Double getPrice() {
         return price;
     }
-
     public boolean isUnlisted() {
         return unlisted;
     }
-
     public int getUserId() {
         return userId;
     }
-
     public String getCategory() {
         return category;
     }
-
-    public Date getAvailableFrom() {
+    public LocalDate getAvailableFrom() {
         return availableFrom;
     }
-
-    public Date getAvailableTo() {
+    public LocalDate getAvailableTo() {
         return availableTo;
     }
 
     public void setDescription(String description) {
         this.description = description;
     }
-
     public void setAddress(String address) {
         this.address = address;
     }
-
     public void setPrice(Double price) {
         this.price = price;
     }
-
     public void setUnlisted(boolean unlisted) {
         this.unlisted = unlisted;
     }
-
     public void setCategory(String category) {
         this.category = category;
     }
-
     public void setProductId(int productId) {
         this.productId = productId;
     }
-
     public void setTitle(String title) {
         this.title = title;
     }
-
     public void setUserId(int userId) {
         this.userId = userId;
     }
-
-    public void setAvailableFrom(Date availableFrom) {
+    public void setAvailableFrom(LocalDate availableFrom) {
         this.availableFrom = availableFrom;
     }
-
-    public void setAvailableTo(Date availableTo) {
+    public void setAvailableTo(LocalDate availableTo) {
         this.availableTo = availableTo;
     }
 
