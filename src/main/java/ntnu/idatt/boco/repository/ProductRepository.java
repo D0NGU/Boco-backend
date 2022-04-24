@@ -25,7 +25,7 @@ public class ProductRepository {
                 new Object[] {product.getTitle(), product.getDescription(), product.getAddress(), product.getPrice(), product.isUnlisted(), product.getAvailableFrom(), product.getAvailableTo(), product.getUserId(), product.getCategory()});
     }
 
-    public void editProduct(Product product, String productId) {
+    public void editProduct(Product product, int productId) {
         jdbcTemplate.update("UPDATE products SET description=?, address=?, price=?, unlisted=?, category=? WHERE product_id=?",
                 new Object[] {product.getDescription(), product.getAddress(), product.getPrice(), product.isUnlisted(), product.getCategory(), productId});
     }
@@ -44,11 +44,11 @@ public class ProductRepository {
         return jdbcTemplate.query(String.format("SELECT * FROM products WHERE category IN (%s)", inSql), BeanPropertyRowMapper.newInstance(Product.class), catNames.toArray());
     }
 
-    public Product getProduct(String productId) {
+    public Product getProduct(int productId) {
         return jdbcTemplate.queryForObject("SELECT * FROM products WHERE product_id = ?", BeanPropertyRowMapper.newInstance(Product.class), productId);
     }
 
-    public List<Product> getFromUserId(String productId) {
+    public List<Product> getFromUserId(int productId) {
         return jdbcTemplate.query("SELECT * FROM products WHERE user_id = ?", BeanPropertyRowMapper.newInstance(Product.class), productId);
     }
 

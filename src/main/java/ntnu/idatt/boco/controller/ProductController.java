@@ -27,41 +27,37 @@ public class ProductController {
     @PostMapping("/product/create")
     public ResponseEntity<String> newProduct(@RequestBody Product product) {
         logger.info("Creating new product: " + product.getTitle());
-        //productRepository.newProduct(product);
         try {
             productRepository.newProduct(product);
             logger.info("Product created");
             return new ResponseEntity<>("Created successfully!", HttpStatus.CREATED);
         } catch (Exception e) {
             logger.info("Error creating new product");
-            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @PostMapping("/product/{productId}/edit")
-    public ResponseEntity<String> editProduct(@PathVariable String productId,@RequestBody Product product) {
+    @PutMapping("/product/{productId}/edit")
+    public ResponseEntity<String> editProduct(@PathVariable int productId,@RequestBody Product product) {
         logger.info("Editing product: " + productId);
         try {
             productRepository.editProduct(product, productId);
             logger.info("Editing product: " + productId);
-            return new ResponseEntity<>("Created successfully!", HttpStatus.CREATED);
+            return new ResponseEntity<>("Created successfully!", HttpStatus.OK);
         } catch (Exception e) {
             logger.info("Error editing product");
-            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/{productId}")
     @ResponseBody
-    public ResponseEntity<Product> getById(@PathVariable String productId) {
+    public ResponseEntity<Product> getById(@PathVariable int productId) {
         logger.info("Getting product " + productId);
         try {
             return new ResponseEntity<>(productRepository.getProduct(productId), HttpStatus.OK);
         } catch (Exception e) {
             logger.info("Error getting product");
-            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -75,7 +71,6 @@ public class ProductController {
             return new ResponseEntity<>(productRepository.getAll(), HttpStatus.OK);
         } catch (Exception e) {
             logger.info("Error getting list of products");
-            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -88,14 +83,13 @@ public class ProductController {
             return new ResponseEntity<>(productRepository.getFromCategory(category), HttpStatus.OK);
         } catch (Exception e) {
             logger.info("Error getting list of products by category");
-            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/product/{productId}/availability")
     @ResponseBody
-    public ResponseEntity<List<AvailabilityWindow>> getAvailability(@PathVariable String productId) {
+    public ResponseEntity<List<AvailabilityWindow>> getAvailability(@PathVariable int productId) {
         logger.info("Request for availability window for product " + productId);
         try {
             Product product = productRepository.getProduct(productId);
@@ -103,7 +97,6 @@ public class ProductController {
             return new ResponseEntity<>(service.getAvailability(product, rentals), HttpStatus.OK);
         } catch (Exception e) {
             logger.info("Could not get availability for product " + productId);
-            logger.error("Error: " + e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 

@@ -43,7 +43,6 @@ public class UserController {
 
         }catch (Exception e){
             logger.info("Delete failed");
-            logger.error("Error: " + e);
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -65,21 +64,19 @@ public class UserController {
             }
         }catch (Exception e ){
             logger.info("Edit user failed");
-            e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PostMapping("/products/{userId}")
     @ResponseBody
-    public ResponseEntity<List<Product>> getUsersProducts(@PathVariable String userId) {
+    public ResponseEntity<List<Product>> getUsersProducts(@PathVariable int userId) {
         logger.info("Request for products by user " + userId);
         try {
             logger.info("Retrieved user products successfully");
             return new ResponseEntity<>(productRepository.getFromUserId(userId), HttpStatus.OK);
         } catch (Exception e) {
             logger.info("Error retrieving user products");
-            logger.error("Error: " + e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
