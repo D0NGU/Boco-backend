@@ -48,6 +48,14 @@ CREATE TABLE rentals(
     PRIMARY KEY (rental_id)
 );
 
+CREATE TABLE images(
+    img_id INTEGER NOT NULL AUTO_INCREMENT,
+    img_name VARCHAR(75),
+    img_data BLOB,
+    product_id INTEGER,
+    PRIMARY KEY (img_id)
+);
+
 -- Configure dependencies (FK/PK)
 ALTER TABLE reviews
     ADD CONSTRAINT FK_author
@@ -71,7 +79,7 @@ ALTER TABLE categories
 ALTER TABLE products
     ADD CONSTRAINT FK_owner
         FOREIGN KEY (user_id) 
-        REFERENCES users(user_id);
+        REFERENCES users(user_id) ON DELETE CASCADE;
 
 ALTER TABLE products
     ADD CONSTRAINT FK_category
@@ -81,9 +89,14 @@ ALTER TABLE products
 ALTER TABLE rentals
     ADD CONSTRAINT FK_renter
         FOREIGN KEY (user_id) 
-        REFERENCES users(user_id);
+        REFERENCES users(user_id) ON DELETE CASCADE;
 
 ALTER TABLE rentals
     ADD CONSTRAINT FK_product
         FOREIGN KEY (product_id) 
-        REFERENCES products(product_id);
+        REFERENCES products(product_id) ON DELETE CASCADE ;
+
+ALTER TABLE images
+    ADD CONSTRAINT FK_product
+        FOREIGN KEY (product_id)
+        REFERENCES products(product_id) ON DELETE CASCADE;
