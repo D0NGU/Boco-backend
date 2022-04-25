@@ -3,14 +3,30 @@ image: maven
 stages:
   - build
   - test
+  - deploy
 
 compile:
   stage: build
   script:
+    - echo "BUILD"
     - mvn compile
 
 test:
   stage: test
   script:
+    - echo "TEST"
     - mvn verify
     - cat target/site/jacoco/index.html | grep -o '<tfoot>.*</tfoot>'
+
+pages:
+  stage: deploy
+  only:
+    - web
+  script:
+    - mvn javadoc:javadoc
+    - mkdir .public
+    - cp -r /builds/idatt2106_2022_08/backend/target/site/apidocs/* .public
+    - mv .public public
+  artifacts:
+    paths:
+      - public
