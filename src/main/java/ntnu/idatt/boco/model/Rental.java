@@ -6,15 +6,17 @@ public class Rental {
     private int rentalId;
     private LocalDate dateFrom;
     private LocalDate dateTo;
+    private boolean accepted;
     private int productId;
     private int userId;
 
     public Rental() {}
     
-    public Rental(int rentalId, LocalDate dateFrom, LocalDate dateTo, int productId, int userId) {
+    public Rental(int rentalId, LocalDate dateFrom, LocalDate dateTo, boolean accepted, int productId, int userId) {
         this.rentalId = rentalId;
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
+        this.accepted = accepted;
         this.productId = productId;
         this.userId = userId;
     }
@@ -28,12 +30,9 @@ public class Rental {
     public LocalDate getDateTo() { 
         return dateTo; 
     }
-    public int getProductId() { 
-        return productId; 
-    }
-    public int getUserId() { 
-        return userId; 
-    }
+    public boolean isAccepted() { return accepted; }
+    public int getProductId() { return productId; }
+    public int getUserId() { return userId; }
 
     public void setRentalId(int rentalId) {
         this.rentalId = rentalId;
@@ -51,12 +50,17 @@ public class Rental {
         this.dateTo = dateTo;
     }
 
+    public void setAccepted(boolean accepted) {
+        this.accepted = accepted;
+    }
+
     @Override
     public String toString() {
         return "Rental{" +
                 "rentalId=" + rentalId +
                 ", dateFrom=" + dateFrom +
                 ", dateTo=" + dateTo +
+                ", accepted=" + accepted +
                 ", productId=" + productId +
                 ", userId=" + userId +
                 '}';
