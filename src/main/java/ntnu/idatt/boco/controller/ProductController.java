@@ -125,15 +125,16 @@ public class ProductController {
 
     /**
      * Method for handling GET-requests retrieving all products
+     * @param page the page the user is getting redirected to
      * @return an HTTP response containing a list of all products and a HTTP status code
      */
     @GetMapping("/")
     @ResponseBody
-    public ResponseEntity<List<Product>> getAll() {
-        // TODO Trenger kanskje ikke å hente alle produkt i hele databasen? 10 nyeste? Søkefunksjon i backend?
+    public ResponseEntity<List<Product>> getAll(@RequestParam int page) {
         logger.info("Getting list of products");
         try {
-            return new ResponseEntity<>(productRepository.getAll(), HttpStatus.OK);
+            int offset = (page-1)*10;
+            return new ResponseEntity<>(productRepository.getAll(offset), HttpStatus.OK);
         } catch (Exception e) {
             logger.info("Error getting list of products");
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -143,14 +144,16 @@ public class ProductController {
     /**
      * Method for handling GET-requests for retrieving all products of a certain category
      * @param category the category of the products
+     * @param page the page the user is getting redirected to
      * @return an HTTP response containing a list of all products of a certain category and a HTTP status code
      */
     @GetMapping("/{category}")
     @ResponseBody
-    public ResponseEntity<List<Product>> getByCategory(@PathVariable String category) {
+    public ResponseEntity<List<Product>> getByCategory(@PathVariable String category, @RequestParam int page) {
         logger.info("Getting all products in " + category);
         try {
-            return new ResponseEntity<>(productRepository.getFromCategory(category), HttpStatus.OK);
+            int offset = (page-1)*10;
+            return new ResponseEntity<>(productRepository.getFromCategory(category, offset), HttpStatus.OK);
         } catch (Exception e) {
             logger.info("Error getting list of products by category");
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -179,11 +182,21 @@ public class ProductController {
     /**
      * Method for handling GET-requests for searching for products
      * @param q the word to search for
+     * @param page the page the user is getting redirected to
      * @return a list of all the products matching the search-word
      */
     @GetMapping
     @ResponseBody
-    public List<Product> getProductFromSearch(@RequestParam String q) {
-        return productRepository.searchProductByWord(q);
+    public ResponseEntity<List<Product>> getProductFromSearch(@RequestParam String q, @RequestParam int page) {
+        logger.info("Request for a search " + q);
+        try{
+            int offset = (page-1)*2;
+            logger.info("Searching for " + q + " on page " + page);
+            return new ResponseEntity<>(productRepository.searchProductByWord(q,offset), HttpStatus.OK);
+        }catch (Exception e){
+            logger.info("Could not search for a product");
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 }
