@@ -1,6 +1,7 @@
 package ntnu.idatt.boco.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -24,6 +25,10 @@ public class UserRepository {
         byte[] hashedPassword = Encryption.hash(user.getPassword(), salt);
         return jdbcTemplate.update("INSERT INTO users (fname, lname, password, email, salt) VALUES (?,?,?,?,?);",
                             new Object[] { user.getFname(), user.getLname(), hashedPassword, user.getEmail(), salt });
+    }
+
+    public User getUserById(int userId) {
+        return jdbcTemplate.queryForObject("SELECT * FROM users WHERE userid = ?;", BeanPropertyRowMapper.newInstance(User.class), userId);
     }
 
     /**

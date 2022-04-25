@@ -1,6 +1,7 @@
 package ntnu.idatt.boco.repository;
 
 import ntnu.idatt.boco.model.Category;
+import ntnu.idatt.boco.model.Listing;
 import ntnu.idatt.boco.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;

@@ -67,7 +67,7 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/images/{productId}")
+    @GetMapping("/{productId}images")
     @ResponseBody
     public ResponseEntity<List<ProductImage>> getImagesByProudctId(@PathVariable int productId) {
         logger.info("Finding images by product id: " + productId);
