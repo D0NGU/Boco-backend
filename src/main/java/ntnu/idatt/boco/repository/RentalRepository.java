@@ -46,6 +46,15 @@ public class RentalRepository {
     }
 
     /**
+     * Method for accepting a rental.
+     * @param rentalId the id of the rental to accept
+     * @return the number of rows in the database that was affected
+     */
+    public int acceptRental(int rentalId) {
+        return jdbcTemplate.update("UPDATE rentals SET accepted = ? WHERE rental_id = ?;", "true", rentalId);
+    }
+
+    /**
      * Method for deleting a rental object to the database.
      * @param rentalId the rental object to be deleted from the database
      * @return the number of rows in the database that was affected

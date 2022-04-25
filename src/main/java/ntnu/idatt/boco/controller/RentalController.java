@@ -86,16 +86,7 @@ public class RentalController {
     public ResponseEntity<String> registerNewRental(@RequestBody Rental rental) {
         logger.info("New rental registration requested");
         try {
-            Product test = productRepository.getProduct(rental.getProductId());
-            List<Rental> rentals = rentalRepository.getAcceptedRentals(test.getProductId(), true);
-            List<AvailabilityWindow> availabilityWindows = service.getAvailability(test,rentals);
-            boolean availableSpot = false;
-            for (AvailabilityWindow availabilityWindow : availabilityWindows){
-                if(!rental.getDateFrom().isBefore(availabilityWindow.getFrom()) && !rental.getDateTo().isAfter(availabilityWindow.getTo())){
-                    availableSpot = true;
-                }
-            }
-            if(availableSpot) {
+            if(checkIfAvailable(rental)) {
                 rentalRepository.saveRentalToDatabase(rental);
                 logger.info("Success - rental registered");
                 return new ResponseEntity<>("Registered successfully!", HttpStatus.CREATED);
@@ -107,6 +98,29 @@ public class RentalController {
         } catch(Exception e) {
             logger.info("Rental registration error");
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Method for handling POST-requests for accepting rentals.
+     * @param rental the rental object to be accepted
+     * @return an HTTP response containing a string with the status of the change and a HTTP status code
+     */
+    @PostMapping("/accept")
+    public ResponseEntity<String> acceptRental(@RequestBody Rental rental) {
+        logger.info("Accept request for rental " + rental.getRentalId());
+        try {
+            if (checkIfAvailable(rental)) {
+                rentalRepository.acceptRental(rental.getRentalId());
+                logger.info("Rental " + rental.getRentalId() + " was successfully accepted");
+                return new ResponseEntity<>("Acceptance was successful", HttpStatus.OK);
+            } else {
+                logger.info("Rental " + rental.getRentalId() + " could not be accepted due to date conflict");
+                return new ResponseEntity<>("Acceptance was unsuccessful", HttpStatus.BAD_REQUEST);
+            }
+        } catch (Exception e){
+            logger.info("Acceptance failed", e);
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -130,5 +144,23 @@ public class RentalController {
             logger.info("Deletion failed", e);
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    /**
+     * Method for checking if a rental has a valid start and end date
+     * @param rental the rental to check
+     * @return true if start and end dates are valid, false otherwise
+     */
+    private boolean checkIfAvailable(Rental rental) {
+        boolean availableSpot = false;
+        Product test = productRepository.getProduct(rental.getProductId());
+        List<Rental> rentals = rentalRepository.getAcceptedRentals(test.getProductId(), true);
+        List<AvailabilityWindow> availabilityWindows = service.getAvailability(test,rentals);
+        for (AvailabilityWindow availabilityWindow : availabilityWindows){
+            if(!rental.getDateFrom().isBefore(availabilityWindow.getFrom()) && !rental.getDateTo().isAfter(availabilityWindow.getTo())){
+                availableSpot = true;
+            }
+        }
+        return availableSpot;
     }
 }
