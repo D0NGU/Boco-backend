@@ -3,12 +3,20 @@ package ntnu.idatt.boco.model;
 import java.time.LocalDate;
 import java.util.Objects;
 
+/**
+ * This class represents an availability window.
+ */
 public class AvailabilityWindow {
     private LocalDate from;
     private LocalDate to;
 
     public AvailabilityWindow() {}
 
+    /**
+     * Constructor for an availability window object.
+     * @param from the start date of the availability window
+     * @param to the end date of the availability window
+     */
     public AvailabilityWindow(LocalDate from, LocalDate to) {
         this.from = from;
         this.to = to;

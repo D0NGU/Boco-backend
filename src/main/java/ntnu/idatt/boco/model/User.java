@@ -1,7 +1,5 @@
 package ntnu.idatt.boco.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 public class User {
     private int userId;
     private String fname;
@@ -12,6 +10,15 @@ public class User {
 
     public User() {}
 
+    /**
+     * Constructor for a user object.
+     * @param userId the unique id of the user
+     * @param fname the first name of the user
+     * @param lname the last name of the user
+     * @param email the users email address
+     * @param salt a salt used for hashing the users password
+     * @param password the password for the user
+     */
     public User(int userId, String fname, String lname, String email, String salt, String password) {
         this.userId = userId;
         this.fname = fname;
@@ -33,7 +40,6 @@ public class User {
     public String getEmail() {
         return email;
     }
-    @JsonIgnore
     public String getSalt() {
         return salt;
     }
