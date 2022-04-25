@@ -1,5 +1,5 @@
 package ntnu.idatt.boco.controller;
-/*
+
 import ntnu.idatt.boco.model.*;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -49,4 +49,4 @@ public class AuthControllerTest {
     public void loginUser_unsuccessfulLogIn_false() {
         assertEquals(403, authController.loginUser(new LoginRequest("gon.fre@hunter.www", "M070999G")).getStatusCodeValue());
     }
-}*/
+}
