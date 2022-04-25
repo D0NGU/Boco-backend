@@ -3,7 +3,9 @@ package ntnu.idatt.boco.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.sql.Blob;
+import java.util.Arrays;
 import java.util.Base64;
+import java.util.Objects;
 
 public class ProductImage {
     private int imgId;
@@ -72,5 +74,31 @@ public class ProductImage {
 
     public void setProductId(int productId) {
         this.productId = productId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProductImage that = (ProductImage) o;
+        return imgId == that.imgId && productId == that.productId && Objects.equals(imgName, that.imgName) && img64.equals(that.img64) && Arrays.equals(imgBlob, that.imgBlob);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(imgId, imgName, img64, productId);
+        result = 31 * result + Arrays.hashCode(imgBlob);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ProductImage{" +
+                "imgId=" + imgId +
+                ", imgName='" + imgName + '\'' +
+                ", img64='" + img64 + '\'' +
+                ", imgBlob=" + Arrays.toString(imgBlob) +
+                ", productId=" + productId +
+                '}';
     }
 }
