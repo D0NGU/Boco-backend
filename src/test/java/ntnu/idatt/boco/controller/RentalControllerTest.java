@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 @SpringBootTest
 public class RentalControllerTest {
     @Autowired RentalController rentalController;
-    private final Rental TEST_RENTAL = new Rental(1, LocalDate.of(2022, 5, 14), LocalDate.of(2022, 5, 16), 1, 2);
+    private final Rental TEST_RENTAL = new Rental(1, LocalDate.of(2022, 5, 14), LocalDate.of(2022, 5, 16), true, 1, 2);
     
     @Test
     @Order(1)
