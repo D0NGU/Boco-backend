@@ -2,6 +2,12 @@
 
 
 
+
+
+
+[![pipeline status](https://gitlab.stud.idi.ntnu.no/idatt2106_2022_08/backend/badges/coverage_/pipeline.svg)](https://gitlab.stud.idi.ntnu.no/idatt2106_2022_08/backend/-/commits/coverage_)
+
+[![coverage report](https://gitlab.stud.idi.ntnu.no/idatt2106_2022_08/backend/badges/coverage_/coverage.svg)](https://gitlab.stud.idi.ntnu.no/idatt2106_2022_08/backend/-/commits/coverage_)
 ## Getting started
 
 To make it easy for you to get started with GitLab, here's a list of recommended next steps.

@@ -13,3 +13,4 @@ test:
   stage: test
   script:
     - mvn verify
+    - cat target/site/jacoco/index.html | grep -o '<tfoot>.*</tfoot>'
