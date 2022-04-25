@@ -1,5 +1,7 @@
 package ntnu.idatt.boco.repository;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -13,6 +15,7 @@ import ntnu.idatt.boco.security.Encryption;
  */
 @Repository
 public class UserRepository {
+    Logger logger = LoggerFactory.getLogger(ProductRepository.class);
     @Autowired private JdbcTemplate jdbcTemplate;
 
     /**
@@ -28,7 +31,8 @@ public class UserRepository {
     }
 
     public User getUserById(int userId) {
-        return jdbcTemplate.queryForObject("SELECT * FROM users WHERE userid = ?;", BeanPropertyRowMapper.newInstance(User.class), userId);
+        logger.info("Finding user " + userId);
+        return jdbcTemplate.queryForObject("SELECT * FROM users WHERE user_id = ?;", BeanPropertyRowMapper.newInstance(User.class), userId);
     }
 
     /**

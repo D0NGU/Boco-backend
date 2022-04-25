@@ -1,5 +1,7 @@
 package ntnu.idatt.boco.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class User {
     private int userId;
     private String fname;
@@ -31,6 +33,7 @@ public class User {
     public String getEmail() {
         return email;
     }
+    @JsonIgnore
     public String getSalt() {
         return salt;
     }
