@@ -26,6 +26,15 @@ public class RentalRepository {
     }
 
     /**
+     * Returns a list of all rentals with a certain product_id.
+     * @param productId the product_id of the rentals to be retrieved
+     * @return a list containing all rentals with the correct product_id
+     */
+    public List<Rental> getAcceptedRentals(int productId, boolean accepted) {
+        return jdbcTemplate.query("SELECT * FROM rentals WHERE product_id = ? AND accepted = ? ORDER BY date_from;", BeanPropertyRowMapper.newInstance(Rental.class), productId, accepted);
+    }
+
+    /**
      * Method for saving a new rental object to the database.
      * @param rental the rental object to be saved to the database
      * @return the number of rows in the database that was affected by the SQL insertion
