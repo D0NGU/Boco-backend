@@ -6,6 +6,9 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.Objects;
 
+/**
+ * This class represents a product image.
+ */
 public class ProductImage {
     private int imgId;
     private String imgName;
@@ -16,6 +19,13 @@ public class ProductImage {
     public ProductImage() {
     }
 
+    /**
+     * Constructor for a product image.
+     * @param imgId the unique id of the product image
+     * @param imgName the name of the image
+     * @param imgBlob the image blob
+     * @param productId the id of the product the images belong to
+     */
     public ProductImage(int imgId, String imgName, byte[] imgBlob, int productId) {
         this.imgId = imgId;
         this.imgName = imgName;
