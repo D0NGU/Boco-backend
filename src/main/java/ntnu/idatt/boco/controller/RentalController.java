@@ -48,7 +48,7 @@ public class RentalController {
     /**
      * Method for handling GET-requests for retrieving all accepted or non-accepted rentals with a certain product_id.
      * @param id the product_id of the rentals to be retrieved
-     * @param accepted true if product rental is accepted, false otherwise
+     * @param accepted true to retrieve all accepted rentals, false to retrieve all non-accepted rentals
      * @return an HTTP response containing a list of all accepted or non-accepted rentals with the correct product_id and a HTTP status code
      */
     @GetMapping("/product/{id}/{accepted}")

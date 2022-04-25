@@ -17,6 +17,9 @@ import ntnu.idatt.boco.model.User;
 import ntnu.idatt.boco.repository.UserRepository;
 import ntnu.idatt.boco.security.Encryption;
 
+/**
+ * This class contains methods responsible for handling HTTP requests regarding user registration and login/logout.
+ */
 @CrossOrigin
 @RestController
 @RequestMapping("/api/auth")
@@ -24,6 +27,11 @@ public class AuthController {
     Logger logger = LoggerFactory.getLogger(AuthController.class);
     @Autowired UserRepository databaseRepository;
 
+    /**
+     * Method for handling POST-requests for registering a new user
+     * @param user the user to be registered
+     * @return an HTTP response containing a result message as a String and a HTTP status code
+     */
     @PostMapping("/signup")
     public ResponseEntity<String> registerNewAccount(@RequestBody User user) {
         logger.info(user.getEmail() + ": Signup Requested");
@@ -40,6 +48,11 @@ public class AuthController {
         }
     }
 
+    /**
+     * Method for handling POST-requests for user login
+     * @param login a LoginRequest containing an email and password
+     * @return an HTTP response containing a result message as a String and a HTTP status code
+     */
     @PostMapping("/signin")
     public ResponseEntity<String> loginUser(@RequestBody LoginRequest login) {
         logger.info(login.getEmail() + ": Login requested");
@@ -65,6 +78,10 @@ public class AuthController {
         }
     }
 
+    /**
+     * Method for handling POST-requests for user signout
+     * @param user the user requesting the signout
+     */
     @PostMapping("/signout")
     public void signoutAccount(@RequestBody User user) {
         // TODO

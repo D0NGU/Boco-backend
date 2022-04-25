@@ -26,9 +26,10 @@ public class RentalRepository {
     }
 
     /**
-     * Returns a list of all rentals with a certain product_id.
+     * Returns a list of all accepted or non-accepted rentals with a certain product_id.
      * @param productId the product_id of the rentals to be retrieved
-     * @return a list containing all rentals with the correct product_id
+     * @param accepted true to retrieve all accepted rentals, false to retrieve all non-accepted rentals
+     * @return a list containing all accepted or non-accepted rentals with the correct product_id
      */
     public List<Rental> getAcceptedRentals(int productId, boolean accepted) {
         return jdbcTemplate.query("SELECT * FROM rentals WHERE product_id = ? AND accepted = ? ORDER BY date_from;", BeanPropertyRowMapper.newInstance(Rental.class), productId, accepted);
