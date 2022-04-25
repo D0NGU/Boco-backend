@@ -124,7 +124,7 @@ public class RentalController {
                 return new ResponseEntity<>("Deletion was successful", HttpStatus.OK);
             } else {
                 logger.info("Deletion of rental " + rentalId + " was unsuccessful. No rental with id = " + rentalId + " was found.");
-                return new ResponseEntity<>("Deletion was unsuccessful", HttpStatus.OK);
+                return new ResponseEntity<>("Deletion was unsuccessful", HttpStatus.BAD_REQUEST);
             }
         } catch (Exception e){
             logger.info("Deletion failed", e);
