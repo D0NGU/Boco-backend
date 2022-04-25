@@ -33,22 +33,32 @@ public class ProductService {
         List<AvailabilityWindow> requested = new ArrayList<>();
         List<AvailabilityWindow> available = new ArrayList<>();
 
-        for (Rental rental : rentals) {
-            requested.add(new AvailabilityWindow(rental.getDateFrom(), rental.getDateTo()));
-        }
+        System.out.println(product.getAvailableFrom());
+        System.out.println(product.getAvailableTo());
+        if(!rentals.isEmpty()){
 
-        requested.sort(Comparator.comparing(AvailabilityWindow::getFrom));
+            for (Rental rental : rentals) {
+            /*
+            */
+                requested.add(new AvailabilityWindow(rental.getDateFrom(), rental.getDateTo()));
+            }
 
-        if (!product.getAvailableFrom().equals(requested.get(0).getFrom())) {
-            available.add(new AvailabilityWindow(product.getAvailableFrom(), requested.get(0).getFrom().plusDays(-1)));
-        }
+            requested.sort(Comparator.comparing(AvailabilityWindow::getFrom));
 
-        for (int i = 0; i < (requested.size() - 1); i++) {
-            available.add(new AvailabilityWindow(requested.get(i).getTo().plusDays(1), requested.get(i+1).getFrom().plusDays(-1)));
-        }
+            if (!product.getAvailableFrom().equals(requested.get(0).getFrom())) {
+                available.add(new AvailabilityWindow(product.getAvailableFrom(), requested.get(0).getFrom().plusDays(-1)));
+            }
 
-        if (!requested.get(requested.size()-1).getTo().equals(product.getAvailableTo())) {
-            available.add(new AvailabilityWindow(requested.get(requested.size()-1).getTo().plusDays(+1), product.getAvailableTo()));
+            for (int i = 0; i < (requested.size() - 1); i++) {
+                available.add(new AvailabilityWindow(requested.get(i).getTo().plusDays(1), requested.get(i+1).getFrom().plusDays(-1)));
+            }
+
+            if (!requested.get(requested.size()-1).getTo().equals(product.getAvailableTo())) {
+                available.add(new AvailabilityWindow(requested.get(requested.size()-1).getTo().plusDays(+1), product.getAvailableTo()));
+            }
+
+        }else{
+            available.add(new AvailabilityWindow(product.getAvailableFrom(), product.getAvailableTo()));
         }
 
         return available;
