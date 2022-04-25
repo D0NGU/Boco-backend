@@ -2,7 +2,9 @@ package ntnu.idatt.boco.controller;
 
 import ntnu.idatt.boco.model.AvailabilityWindow;
 import ntnu.idatt.boco.model.Product;
+import ntnu.idatt.boco.model.ProductImage;
 import ntnu.idatt.boco.model.Rental;
+import ntnu.idatt.boco.repository.ImageRepository;
 import ntnu.idatt.boco.repository.ProductRepository;
 import ntnu.idatt.boco.repository.RentalRepository;
 import ntnu.idatt.boco.service.ProductService;
@@ -22,6 +24,8 @@ public class ProductController {
     Logger logger = LoggerFactory.getLogger(ProductController.class);
     @Autowired ProductRepository productRepository;
     @Autowired RentalRepository rentalRepository;
+    @Autowired
+    ImageRepository imageRepository;
     @Autowired ProductService service;
 
     @PostMapping("/product/create")
@@ -46,6 +50,33 @@ public class ProductController {
             return new ResponseEntity<>("Created successfully!", HttpStatus.OK);
         } catch (Exception e) {
             logger.info("Error editing product");
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/{productId}/image")
+    public ResponseEntity<String> newImage(@PathVariable int productId, @RequestBody ProductImage image) {
+        logger.info("Adding picture: " + image.getImgName() + " to product " + productId);
+        try {
+            imageRepository.newPicture(image);
+            logger.info("Image saved");
+            return new ResponseEntity<>("Created successfully!", HttpStatus.CREATED);
+        }catch (Exception e) {
+            logger.info("Error saving new product");
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/images/{productId}")
+    @ResponseBody
+    public ResponseEntity<List<ProductImage>> getImagesByProudctId(@PathVariable int productId) {
+        logger.info("Finding images by product id: " + productId);
+        try {
+            List<ProductImage> images = imageRepository.getImagesByProductId(productId);
+            logger.info(images.size() + " images found");
+            return new ResponseEntity<>(images, HttpStatus.OK);
+        } catch (Exception e) {
+            logger.info("Error getting images");
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -99,7 +130,6 @@ public class ProductController {
             logger.info("Could not get availability for product " + productId);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
     }
 
     @GetMapping

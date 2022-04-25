@@ -52,7 +52,7 @@ CREATE TABLE rentals(
 CREATE TABLE images(
     img_id INTEGER NOT NULL AUTO_INCREMENT,
     img_name VARCHAR(75),
-    img_data BLOB,
+    img_blob BLOB,
     product_id INTEGER,
     PRIMARY KEY (img_id)
 );
@@ -98,7 +98,7 @@ ALTER TABLE rentals
         REFERENCES products(product_id) ON DELETE CASCADE ;
 
 ALTER TABLE images
-    ADD CONSTRAINT FK_product
+    ADD CONSTRAINT FK_product_img
         FOREIGN KEY (product_id)
         REFERENCES products(product_id) ON DELETE CASCADE;
 
