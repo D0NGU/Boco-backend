@@ -1,9 +1,8 @@
 package ntnu.idatt.boco.controller;
 
-import ntnu.idatt.boco.model.AvailabilityWindow;
-import ntnu.idatt.boco.model.Listing;
-import ntnu.idatt.boco.model.Product;
-import ntnu.idatt.boco.model.User;
+import ntnu.idatt.boco.model.*;
+import ntnu.idatt.boco.repository.CategoryRepository;
+import ntnu.idatt.boco.repository.ImageRepository;
 import ntnu.idatt.boco.repository.ProductRepository;
 import ntnu.idatt.boco.repository.UserRepository;
 import org.slf4j.Logger;
@@ -24,20 +23,30 @@ public class ListingController {
     @Autowired ProductRepository productRepository;
     @Autowired UserRepository userRepository;
     @Autowired ProductController productController;
+    @Autowired CategoryRepository categoryRepository;
+    @Autowired ImageRepository imageRepository;
 
 
 
-    /*@GetMapping("/{productId}")
+    @GetMapping("/{productId}")
     @ResponseBody
     public ResponseEntity<Listing> getListingById(@PathVariable int productId) {
         logger.info("Getting listing for product " +  productId);
         try {
             Product product = productRepository.getProduct(productId);
+            logger.info("Found product");
             User user = userRepository.getUserById(product.getUserId());
+            logger.info("Found user");
             List<AvailabilityWindow> availability = productController.getAvailability(productId).getBody();
+            logger.info("Found availability");
+            List<Category> categories = categoryRepository.getMainCategories(product.getCategory());
+            logger.info("Found categories");
+            List<ProductImage> images = imageRepository.getImagesByProductId(productId);
+            logger.info("Found all attrbiutes");
+            return new ResponseEntity<>(new Listing(product, user, availability, categories, images), HttpStatus.OK);
         } catch (Exception e) {
             logger.info("Error getting product");
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }*/
+    }
 }
