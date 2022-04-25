@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
+/**
+ * This class contains methods responsible for handling HTTP requests regarding users.
+ */
 @CrossOrigin
 @RestController
 @RequestMapping("/api/user")
@@ -26,6 +28,11 @@ public class UserController {
     @Autowired
     ProductRepository productRepository;
 
+    /**
+     * Method for handling DELETE-requests for deleting a user
+     * @param user the user to be deleted
+     * @return an HTTP response containing a result message as a String and a HTTP status code
+     */
     @DeleteMapping("/delete")
     public ResponseEntity<String> deleteUser(@RequestBody User user){
         logger.info("Delete requested by " + user.getEmail());
@@ -47,6 +54,11 @@ public class UserController {
         }
     }
 
+    /**
+     * Method for handling POST-requests for editing a user
+     * @param user the user to be edited
+     * @return an HTTP response containing a result message as a String and a HTTP status code
+     */
     @PostMapping("/edit")
     public ResponseEntity<String> editPassword(@RequestBody EditUserRequest user){
         logger.info("Edit user requested by " + user.getEmail());
@@ -68,6 +80,11 @@ public class UserController {
         }
     }
 
+    /**
+     * Method for handling POST-requests for retrieving all of a users products
+     * @param userId the id of the user to retrieve all the products for
+     * @return an HTTP response containing a list of all the users products and a HTTP status code
+     */
     @PostMapping("/products/{userId}")
     @ResponseBody
     public ResponseEntity<List<Product>> getUsersProducts(@PathVariable int userId) {
