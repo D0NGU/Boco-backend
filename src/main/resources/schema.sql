@@ -27,8 +27,8 @@ CREATE TABLE categories (
 
 CREATE TABLE products (
     product_id INTEGER NOT NULL AUTO_INCREMENT,
-    name VARCHAR(75) NOT NULL,
-    description VARCHAR(255),
+    title VARCHAR(75) NOT NULL,
+    description VARCHAR(MAX),
     address VARCHAR(255),
     price DECIMAL,
     unlisted BOOLEAN,
@@ -43,9 +43,18 @@ CREATE TABLE rentals(
     rental_id INTEGER NOT NULL AUTO_INCREMENT,
     date_from DATE NOT NULL,
     date_to DATE NOT NULL,
+    accepted BOOLEAN NOT NULL,
     product_id INTEGER,
     user_id INTEGER,
     PRIMARY KEY (rental_id)
+);
+
+CREATE TABLE images(
+    img_id INTEGER NOT NULL AUTO_INCREMENT,
+    img_name VARCHAR(75),
+    img_blob BLOB,
+    product_id INTEGER,
+    PRIMARY KEY (img_id)
 );
 
 -- Configure dependencies (FK/PK)
@@ -57,7 +66,7 @@ ALTER TABLE reviews
 ALTER TABLE reviews
     ADD CONSTRAINT FK_subject
         FOREIGN KEY (subject) 
-        REFERENCES users(user_id);
+        REFERENCES users(user_id) ON DELETE CASCADE;
 
 ALTER TABLE reviews
     ADD CONSTRAINT valid_stars 
@@ -71,7 +80,7 @@ ALTER TABLE categories
 ALTER TABLE products
     ADD CONSTRAINT FK_owner
         FOREIGN KEY (user_id) 
-        REFERENCES users(user_id);
+        REFERENCES users(user_id) ON DELETE CASCADE;
 
 ALTER TABLE products
     ADD CONSTRAINT FK_category
@@ -81,9 +90,19 @@ ALTER TABLE products
 ALTER TABLE rentals
     ADD CONSTRAINT FK_renter
         FOREIGN KEY (user_id) 
-        REFERENCES users(user_id);
+        REFERENCES users(user_id) ON DELETE CASCADE;
 
 ALTER TABLE rentals
     ADD CONSTRAINT FK_product
         FOREIGN KEY (product_id) 
-        REFERENCES products(product_id);
+        REFERENCES products(product_id) ON DELETE CASCADE ;
+
+ALTER TABLE images
+    ADD CONSTRAINT FK_product_img
+        FOREIGN KEY (product_id)
+        REFERENCES products(product_id) ON DELETE CASCADE;
+
+-- Create index table for fulltext search. The table is updated in realtime.
+CREATE ALIAS IF NOT EXISTS FT_INIT FOR "org.h2.fulltext.FullText.init";
+CALL FT_INIT();
+CALL FT_CREATE_INDEX('PUBLIC', 'PRODUCTS', 'TITLE,DESCRIPTION');

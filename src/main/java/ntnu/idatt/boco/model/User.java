@@ -22,23 +22,18 @@ public class User {
     public int getUserId() {
         return userId;
     }
-
     public String getFname() {
         return fname;
     }
-
     public String getLname() {
         return lname;
     }
-
     public String getEmail() {
         return email;
     }
-
     public String getSalt() {
         return salt;
     }
-
     public String getPassword() {
         return password;
     }
@@ -46,23 +41,18 @@ public class User {
     public void setFname(String fname) {
         this.fname = fname;
     }
-
     public void setLname(String lname) {
         this.lname = lname;
     }
-
     public void setEmail(String email) {
         this.email = email;
     }
-
     public void setUserId(int userId) {
         this.userId = userId;
     }
-
     public void setSalt(String salt) {
         this.salt = salt;
     }
-
     public void setPassword(String password) {
         this.password = password;
     }
