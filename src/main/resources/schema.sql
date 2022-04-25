@@ -43,6 +43,7 @@ CREATE TABLE rentals(
     rental_id INTEGER NOT NULL AUTO_INCREMENT,
     date_from DATE NOT NULL,
     date_to DATE NOT NULL,
+    accepted BOOLEAN NOT NULL,
     product_id INTEGER,
     user_id INTEGER,
     PRIMARY KEY (rental_id)

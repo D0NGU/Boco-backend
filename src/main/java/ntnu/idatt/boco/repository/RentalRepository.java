@@ -31,7 +31,7 @@ public class RentalRepository {
      * @return the number of rows in the database that was affected by the SQL insertion
      */
     public int saveRentalToDatabase(Rental rental) {
-        return jdbcTemplate.update("INSERT INTO rentals (date_from, date_to, product_id, user_id) VALUES (?,?,?,?);",
-                new Object[] { rental.getDateFrom(), rental.getDateTo(), rental.getProductId(), rental.getUserId()});
+        return jdbcTemplate.update("INSERT INTO rentals (date_from, date_to, accepted, product_id, user_id) VALUES (?,?,?,?,?);",
+                new Object[] { rental.getDateFrom(), rental.getDateTo(), rental.isAccepted(), rental.getProductId(), rental.getUserId()});
     }
 }
