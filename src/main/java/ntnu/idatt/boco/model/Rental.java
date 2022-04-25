@@ -41,9 +41,15 @@ public class Rental {
     public LocalDate getDateTo() { 
         return dateTo; 
     }
-    public boolean isAccepted() { return accepted; }
-    public int getProductId() { return productId; }
-    public int getUserId() { return userId; }
+    public boolean isAccepted() { 
+        return accepted; 
+    }
+    public int getProductId() { 
+        return productId; 
+    }
+    public int getUserId() { 
+        return userId; 
+    }
 
     public void setRentalId(int rentalId) {
         this.rentalId = rentalId;
@@ -60,7 +66,6 @@ public class Rental {
     public void setDateTo(LocalDate dateTo) {
         this.dateTo = dateTo;
     }
-
     public void setAccepted(boolean accepted) {
         this.accepted = accepted;
     }
