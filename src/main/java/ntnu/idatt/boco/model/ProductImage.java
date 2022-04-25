@@ -2,7 +2,6 @@ package ntnu.idatt.boco.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import java.sql.Blob;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Objects;
