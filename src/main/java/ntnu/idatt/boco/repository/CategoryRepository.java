@@ -18,6 +18,9 @@ public class CategoryRepository {
     public List<Category> getAll() {
         return jdbcTemplate.query("SELECT * FROM categories", BeanPropertyRowMapper.newInstance(Category.class));
     }
+    public Category getCategory(String name) {
+        return jdbcTemplate.queryForObject("SELECT * FROM categories WHERE CATEGORY = ?", BeanPropertyRowMapper.newInstance(Category.class), name);
+    }
 
     /**
      * Method for finding all sub categories of a given category
@@ -42,5 +45,18 @@ public class CategoryRepository {
             }
         }
         return subs;
+    }
+
+    public List<Category> getMainCategories(String sub) {
+        Category category = getCategory(sub);
+        List <Category> all = getAll();
+        List<Category> mains = new ArrayList<>();
+
+        while (category.getMainCategory() != null) {
+            mains.add(category);
+            category = getCategory(category.getMainCategory());
+        }
+        mains.add(category);
+        return mains;
     }
 }

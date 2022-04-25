@@ -82,4 +82,12 @@ public class ProductControllerTest {
             assertEquals(expected.get(i), acutal.get(i));
         }
     }
+    @Test
+    @Order(6)
+    public void successfullyRetrieveAvailabilityWindow() {
+        AvailabilityWindow availability = new AvailabilityWindow(LocalDate.of(2022, 7, 12), LocalDate.of(2022, 11, 11));
+        AvailabilityWindow availability2 = new AvailabilityWindow(LocalDate.of(2022, 12,24), LocalDate.of(2022,12,24));
+        List<AvailabilityWindow> list = Arrays.asList(availability,availability2);
+        assertEquals(list.toString(), productController.getAvailability(1).getBody().toString());
+    }
 }

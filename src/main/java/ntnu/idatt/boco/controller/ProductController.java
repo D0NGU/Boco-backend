@@ -168,7 +168,7 @@ public class ProductController {
         logger.info("Request for availability window for product " + productId);
         try {
             Product product = productRepository.getProduct(productId);
-            List<Rental> rentals = rentalRepository.getRentals(productId);
+            List<Rental> rentals = rentalRepository.getAcceptedRentals(productId, true);
             return new ResponseEntity<>(service.getAvailability(product, rentals), HttpStatus.OK);
         } catch (Exception e) {
             logger.info("Could not get availability for product " + productId);
