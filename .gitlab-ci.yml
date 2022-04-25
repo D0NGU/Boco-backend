@@ -25,7 +25,7 @@ pages:
   script:
     - mvn javadoc:javadoc
     - mkdir .public
-    - cp -r /builds/idatt2106_2022_08/backend/target/site/apidocs/* .public
+    - cp -r target/site/apidocs/* .public
     - mv .public public
   artifacts:
     paths:

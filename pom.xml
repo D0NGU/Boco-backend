@@ -84,7 +84,6 @@
                     <doclint>all,-missing</doclint>
                 </configuration>
             </plugin>
-
 		</plugins>
 	</build>
 
