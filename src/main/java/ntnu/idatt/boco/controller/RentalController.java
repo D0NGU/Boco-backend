@@ -23,7 +23,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/rentals")
 public class RentalController {
-    Logger logger = LoggerFactory.getLogger(AuthController.class);
+    Logger logger = LoggerFactory.getLogger(RentalController.class);
     @Autowired
     RentalRepository rentalRepository;
     @Autowired

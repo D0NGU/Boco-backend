@@ -1,13 +1,5 @@
 -- Create tables
-CREATE TABLE users (
-    user_id INTEGER NOT NULL AUTO_INCREMENT,
-    fname VARCHAR(75)  NOT NULL,
-    lname VARCHAR(75) NOT NULL,
-    email VARCHAR(75) NOT NULL UNIQUE ,
-    salt VARBINARY(64) NOT NULL,
-    password VARBINARY(64) NOT NULL,
-    PRIMARY KEY (user_id)
-);
+
 
 CREATE TABLE reviews (
     review_id INTEGER NOT NULL AUTO_INCREMENT,
@@ -61,12 +53,12 @@ CREATE TABLE images(
 ALTER TABLE reviews
     ADD CONSTRAINT FK_author
         FOREIGN KEY (author) 
-        REFERENCES users(user_id);
+        REFERENCES user(id);
 
 ALTER TABLE reviews
     ADD CONSTRAINT FK_subject
         FOREIGN KEY (subject) 
-        REFERENCES users(user_id) ON DELETE CASCADE;
+        REFERENCES user(id) ON DELETE CASCADE;
 
 ALTER TABLE reviews
     ADD CONSTRAINT valid_stars 
@@ -80,7 +72,7 @@ ALTER TABLE categories
 ALTER TABLE products
     ADD CONSTRAINT FK_owner
         FOREIGN KEY (user_id) 
-        REFERENCES users(user_id) ON DELETE CASCADE;
+        REFERENCES user(id) ON DELETE CASCADE;
 
 ALTER TABLE products
     ADD CONSTRAINT FK_category
@@ -90,7 +82,7 @@ ALTER TABLE products
 ALTER TABLE rentals
     ADD CONSTRAINT FK_renter
         FOREIGN KEY (user_id) 
-        REFERENCES users(user_id) ON DELETE CASCADE;
+        REFERENCES user(id) ON DELETE CASCADE;
 
 ALTER TABLE rentals
     ADD CONSTRAINT FK_product

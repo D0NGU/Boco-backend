@@ -1,20 +1,10 @@
 package ntnu.idatt.boco.controller;
-
-import ntnu.idatt.boco.model.AvailabilityWindow;
-import ntnu.idatt.boco.model.Listing;
-import ntnu.idatt.boco.model.Product;
-import ntnu.idatt.boco.model.User;
+/**
 import ntnu.idatt.boco.repository.ProductRepository;
-import ntnu.idatt.boco.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -22,7 +12,7 @@ import java.util.List;
 public class ListingController {
     Logger logger = LoggerFactory.getLogger(ProductController.class);
     @Autowired ProductRepository productRepository;
-    @Autowired UserRepository userRepository;
+    //@Autowired UserRepository userRepository;
     @Autowired ProductController productController;
 
 
@@ -39,5 +29,4 @@ public class ListingController {
             logger.info("Error getting product");
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }*/
-}
+    }**/
