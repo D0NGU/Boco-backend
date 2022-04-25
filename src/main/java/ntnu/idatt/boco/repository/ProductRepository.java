@@ -1,8 +1,6 @@
 package ntnu.idatt.boco.repository;
 
-import ntnu.idatt.boco.controller.ProductController;
 import ntnu.idatt.boco.model.Category;
-import ntnu.idatt.boco.model.Listing;
 import ntnu.idatt.boco.model.Product;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,8 +49,8 @@ public class ProductRepository {
      * Method for retrieving all the products in the database
      * @return a list of all the products in the database
      */
-    public List<Product> getAll() {
-        return jdbcTemplate.query("SELECT * FROM products", BeanPropertyRowMapper.newInstance(Product.class));
+    public List<Product> getAll(int offset) {
+        return jdbcTemplate.query("SELECT * FROM products limit 2 offset ?", BeanPropertyRowMapper.newInstance(Product.class), offset);
     }
 
     /**
@@ -60,7 +58,7 @@ public class ProductRepository {
      * @param category the category of the products
      * @return a list of all the products of a certain category
      */
-    public List<Product> getFromCategory(String category) {
+    public List<Product> getFromCategory(String category, int offset) {
         List<Category> categories = categoryRepository.getSubCategories(category, categoryRepository.getAll());
         List<Object> catNames = new ArrayList<>();
         for (Category cat : categories) {
@@ -94,8 +92,8 @@ public class ProductRepository {
      * @param word the word to search for
      * @return a list of all the products matching the search-word
      */
-    public List<Product> searchProductByWord(String word) {
-        String sql = "SELECT product_id,title,description,address,price,unlisted,available_from,available_to,user_id,category FROM products LEFT JOIN (FT_SEARCH_DATA('"+word+"', 0, 0)) ON products.product_id=keys[1] WHERE keys IS NOT NULL;";
-        return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Product.class));
+    public List<Product> searchProductByWord(String word, int offset) {
+        String sql = "SELECT product_id,title,description,address,price,unlisted,available_from,available_to,user_id,category FROM products LEFT JOIN (FT_SEARCH_DATA('"+word+"', 2, ?)) ON products.product_id=keys[1] WHERE keys IS NOT NULL;";
+        return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Product.class), offset);
     }
 }
