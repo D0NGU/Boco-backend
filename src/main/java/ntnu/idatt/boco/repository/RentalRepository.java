@@ -21,7 +21,7 @@ public class RentalRepository {
      * @param productId the product_id of the rentals to be retrieved
      * @return a list containing all rentals with the correct product_id
      */
-    public List<Rental> getRentals(String productId) {
+    public List<Rental> getRentals(int productId) {
         return jdbcTemplate.query("SELECT * FROM rentals WHERE product_id = ? ORDER BY date_from;", BeanPropertyRowMapper.newInstance(Rental.class), productId);
     }
 

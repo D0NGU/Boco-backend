@@ -8,9 +8,7 @@ import ntnu.idatt.boco.repository.RentalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -36,23 +34,23 @@ public class ProductService {
         List<AvailabilityWindow> available = new ArrayList<>();
 
         for (Rental rental : rentals) {
-            requested.add(new AvailabilityWindow(sqlDatePlusDays(rental.getDateFrom(),-1), sqlDatePlusDays(rental.getDateTo(),+1)));
+            requested.add(new AvailabilityWindow(rental.getDateFrom(), rental.getDateTo()));
         }
 
         requested.sort(Comparator.comparing(AvailabilityWindow::getFrom));
 
-        available.add(new AvailabilityWindow(product.getAvailableFrom(), requested.get(0).getFrom()));
-
-        for (int i = 0; i < (requested.size() - 1); i++) {
-            available.add(new AvailabilityWindow(requested.get(i).getTo(), requested.get(i+1).getFrom()));
+        if (!product.getAvailableFrom().equals(requested.get(0).getFrom())) {
+            available.add(new AvailabilityWindow(product.getAvailableFrom(), requested.get(0).getFrom().plusDays(-1)));
         }
 
-        available.add(new AvailabilityWindow(requested.get(requested.size()-1).getTo(), product.getAvailableTo()));
+        for (int i = 0; i < (requested.size() - 1); i++) {
+            available.add(new AvailabilityWindow(requested.get(i).getTo().plusDays(1), requested.get(i+1).getFrom().plusDays(-1)));
+        }
+
+        if (!requested.get(requested.size()-1).getTo().equals(product.getAvailableTo())) {
+            available.add(new AvailabilityWindow(requested.get(requested.size()-1).getTo().plusDays(+1), product.getAvailableTo()));
+        }
 
         return available;
-    }
-
-    private Date sqlDatePlusDays(Date date, int days) {
-        return Date.valueOf(date.toLocalDate().plusDays(days));
     }
 }

@@ -31,9 +31,9 @@ public class UserRepository {
         return jdbcTemplate.queryForObject(query, Boolean.class);
     }
 
-    public int changePasswordInDatabase(User user, String newPassword){
-        byte[] hashedPassword = Encryption.hash(newPassword, getSaltByEmail(user.getEmail()));
-        return jdbcTemplate.update("UPDATE users SET password = ? WHERE email = ?;", hashedPassword, user.getEmail());
+    public int changePasswordInDatabase(String email, String newPassword){
+        byte[] hashedPassword = Encryption.hash(newPassword, getSaltByEmail(email));
+        return jdbcTemplate.update("UPDATE users SET password = ? WHERE email = ?;", hashedPassword, email);
     }
 
     public int deleteUser(User user){

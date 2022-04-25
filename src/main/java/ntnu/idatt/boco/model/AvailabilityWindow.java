@@ -1,33 +1,30 @@
 package ntnu.idatt.boco.model;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class AvailabilityWindow {
-    private Date from;
-    private Date to;
+    private LocalDate from;
+    private LocalDate to;
 
-    public AvailabilityWindow() {
-    }
+    public AvailabilityWindow() {}
 
-    public AvailabilityWindow(Date from, Date to) {
+    public AvailabilityWindow(LocalDate from, LocalDate to) {
         this.from = from;
         this.to = to;
     }
 
-    public Date getFrom() {
+    public LocalDate getFrom() {
         return from;
     }
-
-    public void setFrom(Date from) {
-        this.from = from;
-    }
-
-    public Date getTo() {
+    public LocalDate getTo() {
         return to;
     }
 
-    public void setTo(Date to) {
+    public void setFrom(LocalDate from) {
+        this.from = from;
+    }
+    public void setTo(LocalDate to) {
         this.to = to;
     }
 

@@ -29,7 +29,7 @@ public class RentalController {
      * @return an HTTP response containing a list of all rentals with the correct product_id and a HTTP status code
      */
     @GetMapping("/product/{id}")
-    public ResponseEntity<List<Rental>> getRentals(@PathVariable String id) {
+    public ResponseEntity<List<Rental>> getRentals(@PathVariable int id) {
         logger.info("New GET-request for rentals with product_id " + id);
         try {
             List<Rental> resultList = rentalRepository.getRentals(id);
@@ -40,7 +40,7 @@ public class RentalController {
             logger.info("Success - rentals retrieved");
             return new ResponseEntity<>(resultList, HttpStatus.OK);
         } catch(Exception e) {
-            logger.error("Rental retrieval error", e);
+            logger.info("Rental retrieval error");
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -58,7 +58,7 @@ public class RentalController {
             logger.info("Success - rental registered");
             return new ResponseEntity<>("Registered successfully!", HttpStatus.CREATED);
         } catch(Exception e) {
-            logger.error("Rental registration error", e);
+            logger.info("Rental registration error");
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

@@ -1,5 +1,6 @@
 package ntnu.idatt.boco.controller;
 
+import ntnu.idatt.boco.model.EditUserRequest;
 import ntnu.idatt.boco.model.Product;
 import ntnu.idatt.boco.model.User;
 import ntnu.idatt.boco.repository.ProductRepository;
@@ -47,14 +48,14 @@ public class UserController {
     }
 
     @PostMapping("/edit")
-    public ResponseEntity<String> editPassword(@RequestBody User user, @RequestParam String newPassword){
+    public ResponseEntity<String> editPassword(@RequestBody EditUserRequest user){
         logger.info("Edit user requested by " + user.getEmail());
         try{
             byte[] salt = userRepository.getSaltByEmail(user.getEmail());
             byte[] hashedPass = userRepository.getHashedPasswordByEmail(user.getEmail());
-            boolean correctPass = Encryption.isExpectedPassword(user.getPassword(), salt, hashedPass);
+            boolean correctPass = Encryption.isExpectedPassword(user.getOldPassword(), salt, hashedPass);
             if(correctPass){
-                userRepository.changePasswordInDatabase(user, newPassword);
+                userRepository.changePasswordInDatabase(user.getEmail(), user.getNewPassword());
                 logger.info(user.getEmail() + ": Successfully edited password");
                 return new ResponseEntity<>("Successful", HttpStatus.OK);
             }else{
@@ -63,15 +64,21 @@ public class UserController {
             }
         }catch (Exception e ){
             logger.info("Edit user failed");
-            e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PostMapping("/products/{userId}")
     @ResponseBody
-    public List<Product> getUsersProducts(@PathVariable String userId) {
-        return productRepository.getFromUserId(userId);
+    public ResponseEntity<List<Product>> getUsersProducts(@PathVariable int userId) {
+        logger.info("Request for products by user " + userId);
+        try {
+            logger.info("Retrieved user products successfully");
+            return new ResponseEntity<>(productRepository.getFromUserId(userId), HttpStatus.OK);
+        } catch (Exception e) {
+            logger.info("Error retrieving user products");
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
 

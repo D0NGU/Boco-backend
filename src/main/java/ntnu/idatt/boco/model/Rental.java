@@ -1,16 +1,17 @@
 package ntnu.idatt.boco.model;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 public class Rental {
     private int rentalId;
-    private Date dateFrom;
-    private Date dateTo;
+    private LocalDate dateFrom;
+    private LocalDate dateTo;
     private int productId;
     private int userId;
 
     public Rental() {}
-    public Rental(int rentalId, Date dateFrom, Date dateTo, int productId, int userId) {
+    
+    public Rental(int rentalId, LocalDate dateFrom, LocalDate dateTo, int productId, int userId) {
         this.rentalId = rentalId;
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
@@ -18,33 +19,35 @@ public class Rental {
         this.userId = userId;
     }
 
+    public int getRentalId() { 
+        return rentalId; 
+    }
+    public LocalDate getDateFrom() { 
+        return dateFrom; 
+    }
+    public LocalDate getDateTo() { 
+        return dateTo; 
+    }
+    public int getProductId() { 
+        return productId; 
+    }
+    public int getUserId() { 
+        return userId; 
+    }
+
     public void setRentalId(int rentalId) {
         this.rentalId = rentalId;
     }
-
     public void setProductId(int productId) {
         this.productId = productId;
     }
-
     public void setUserId(int userId) {
         this.userId = userId;
     }
-
-    public int getRentalId() { return rentalId; }
-
-    public Date getDateFrom() { return dateFrom; }
-
-    public Date getDateTo() { return dateTo; }
-
-    public int getProductId() { return productId; }
-
-    public int getUserId() { return userId; }
-
-    public void setDateFrom(Date dateFrom) {
+    public void setDateFrom(LocalDate dateFrom) {
         this.dateFrom = dateFrom;
     }
-
-    public void setDateTo(Date dateTo) {
+    public void setDateTo(LocalDate dateTo) {
         this.dateTo = dateTo;
     }
 

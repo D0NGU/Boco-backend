@@ -32,12 +32,10 @@ public class AuthController {
             logger.info(user.getEmail() + ": User registered");
             return new ResponseEntity<>("Registered successfully!", HttpStatus.CREATED);
         } catch (DuplicateKeyException e) {
-            logger.info(user.getEmail() + "Error - Email in use");
-            e.printStackTrace();
+            logger.info(user.getEmail() + ": Error - Email in use");
             return new ResponseEntity<>("Duplicate email", HttpStatus.CONFLICT);
         } catch (Exception e) {
-            logger.info(user.getEmail() + "Error registering user");
-            e.printStackTrace();
+            logger.info(user.getEmail() + ": Error registering user");
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -63,7 +61,6 @@ public class AuthController {
             }  
         } catch (Exception e) {
             logger.info("Login error");
-            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

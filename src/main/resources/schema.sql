@@ -65,7 +65,7 @@ ALTER TABLE reviews
 ALTER TABLE reviews
     ADD CONSTRAINT FK_subject
         FOREIGN KEY (subject) 
-        REFERENCES users(user_id);
+        REFERENCES users(user_id) ON DELETE CASCADE;
 
 ALTER TABLE reviews
     ADD CONSTRAINT valid_stars 
@@ -100,3 +100,8 @@ ALTER TABLE images
     ADD CONSTRAINT FK_product
         FOREIGN KEY (product_id)
         REFERENCES products(product_id) ON DELETE CASCADE;
+
+-- Create index table for fulltext search. The table is updated in realtime.
+CREATE ALIAS IF NOT EXISTS FT_INIT FOR "org.h2.fulltext.FullText.init";
+CALL FT_INIT();
+CALL FT_CREATE_INDEX('PUBLIC', 'PRODUCTS', 'TITLE,DESCRIPTION');
