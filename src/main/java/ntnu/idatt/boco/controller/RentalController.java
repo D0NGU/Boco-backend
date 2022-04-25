@@ -1,8 +1,12 @@
 package ntnu.idatt.boco.controller;
 
+import ntnu.idatt.boco.model.AvailabilityWindow;
+import ntnu.idatt.boco.model.Product;
 import ntnu.idatt.boco.model.Rental;
+import ntnu.idatt.boco.repository.ProductRepository;
 import ntnu.idatt.boco.repository.RentalRepository;
 
+import ntnu.idatt.boco.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.slf4j.Logger;
@@ -22,6 +26,10 @@ public class RentalController {
     Logger logger = LoggerFactory.getLogger(AuthController.class);
     @Autowired
     RentalRepository rentalRepository;
+    @Autowired
+    ProductRepository productRepository;
+    @Autowired
+    ProductService service;
 
     /**
      * Method for handling GET-requests for retrieving all rentals with a certain product_id.
@@ -78,9 +86,24 @@ public class RentalController {
     public ResponseEntity<String> registerNewRental(@RequestBody Rental rental) {
         logger.info("New rental registration requested");
         try {
-            rentalRepository.saveRentalToDatabase(rental);
-            logger.info("Success - rental registered");
-            return new ResponseEntity<>("Registered successfully!", HttpStatus.CREATED);
+            Product test = productRepository.getProduct(rental.getProductId());
+            List<Rental> rentals = rentalRepository.getAcceptedRentals(test.getProductId(), true);
+            List<AvailabilityWindow> availabilityWindows = service.getAvailability(test,rentals);
+            boolean availableSpot = false;
+            for (AvailabilityWindow availabilityWindow : availabilityWindows){
+                if(!rental.getDateFrom().isBefore(availabilityWindow.getFrom()) && !rental.getDateTo().isAfter(availabilityWindow.getTo())){
+                    availableSpot = true;
+                }
+            }
+            if(availableSpot) {
+                rentalRepository.saveRentalToDatabase(rental);
+                logger.info("Success - rental registered");
+                return new ResponseEntity<>("Registered successfully!", HttpStatus.CREATED);
+            }else{
+                logger.info("Rental not available");
+                return new ResponseEntity<>("Rental unavailable", HttpStatus.CONFLICT);
+            }
+
         } catch(Exception e) {
             logger.info("Rental registration error");
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

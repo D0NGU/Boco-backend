@@ -23,7 +23,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 @SpringBootTest
 public class RentalControllerTest {
     @Autowired RentalController rentalController;
-    private final Rental TEST_RENTAL = new Rental(1, LocalDate.of(2022, 5, 14), LocalDate.of(2022, 5, 16), true, 1, 2);
+    private final Rental TEST_RENTAL = new Rental(2, LocalDate.of(2022, 7, 14), LocalDate.of(2022, 7, 16), true, 1, 2);
+    private final Rental TEST_RENTAL2 = new Rental(1, LocalDate.of(2022, 11, 12), LocalDate.of(2022, 12, 23), true, 1, 2);
     
     @Test
     @Order(1)
@@ -34,7 +35,7 @@ public class RentalControllerTest {
     @Test
     @Order(2)
     public void successfullyRetrievedRentalsByProductId() {
-        List<Rental> list = Arrays.asList(TEST_RENTAL);
+        List<Rental> list = Arrays.asList(TEST_RENTAL,TEST_RENTAL2);
         assertEquals(list.toString(), rentalController.getRentals(1).getBody().toString());
     }
 
@@ -47,7 +48,7 @@ public class RentalControllerTest {
     @Test
     @Order(4)
     public void successfullyRetrievedAcceptedRentalsByProductId() {
-        List<Rental> list = Arrays.asList(TEST_RENTAL);
+        List<Rental> list = Arrays.asList(TEST_RENTAL,TEST_RENTAL2);
         assertEquals(list.toString(), rentalController.getAcceptedRentals(1, true).getBody().toString());
     }
 
@@ -63,14 +64,4 @@ public class RentalControllerTest {
         assertNull(rentalController.getAcceptedRentals(1, false).getBody());
     }
 
-    /* @Test
-    @Order(7)
-    public void successfullyRetrieveAvailabilityWindow() {
-        Rental rental = new Rental(1, LocalDate.of(2022, 5, 12), LocalDate.of(2022, 5, 12), 1, 1);
-        rentalController.registerNewRental(rental);
-        AvailabilityWindow availability = new AvailabilityWindow(LocalDate.of(2022, 5, 12), LocalDate.of(2022, 5, 13));
-        List<AvailabilityWindow> list = new ArrayList<>();
-        list.add(availability);
-        assertEquals(list.toString(), productController.getAvailability(1).getBody().toString());
-    } */
 }

@@ -11,3 +11,6 @@ INSERT INTO users (fname, lname, password, email, salt) VALUES
 
 INSERT INTO products(title, description, address, price, unlisted, available_from, available_to, user_id, category)
     VALUES ('Dragon hunter crossbow', 'A dragonbane weapon requiring 65 Ranged to wield.', 'Gilenor', 600, false, '2022-07-12', '2022-12-24', 1, 'hvitevarer');
+
+
+INSERT INTO rentals (date_from, date_to, accepted, product_id, user_id) VALUES ('2022-11-12','2022-12-23',true,1,2);
