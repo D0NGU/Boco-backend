@@ -9,10 +9,14 @@
 <p align="center">A standalone server application for BoCo utilizing Java Spring Boot (with embedded database).</p>
 
 <hr>
-<p align="center"><a href="https://gitlab.stud.idi.ntnu.no/idatt2106_2022_08/backend/-/wikis/home">Wiki</a> 
-&bull; <a href="#installation">Installation</a> 
-&bull; <a href="#api-example-references">API Examples</a> 
-&bull; <a href="#authors">Authors</a> 
+<p align="center">
+  <a href="http://idatt2106_2022_08.pages.stud.idi.ntnu.no/backend/allpackages-index.html">JavaDoc</a>
+  &bull; <a href="https://gitlab.stud.idi.ntnu.no/idatt2106_2022_08/backend/-/wikis/home">Wiki</a> 
+  &bull; <a href="https://gitlab.stud.idi.ntnu.no/idatt2106_2022_08/backend/-/boards">Issue board</a>
+  &bull; <a href="#installation">Installation</a> 
+  &bull; <a href="#api-example-references">API Examples</a> 
+  &bull; <a href="#authors">Authors</a> 
+</p>
 <hr>
 
 ## Installation
