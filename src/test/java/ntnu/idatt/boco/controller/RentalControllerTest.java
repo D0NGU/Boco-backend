@@ -44,8 +44,27 @@ public class RentalControllerTest {
         assertNull(rentalController.getRentals(6).getBody());
     }
 
-    /* @Test
+    @Test
     @Order(4)
+    public void successfullyRetrievedAcceptedRentalsByProductId() {
+        List<Rental> list = Arrays.asList(TEST_RENTAL);
+        assertEquals(list.toString(), rentalController.getAcceptedRentals(1, true).getBody().toString());
+    }
+
+    @Test
+    @Order(5)
+    public void successfullyRetrievedAcceptedRentalsByProductIdWhenEmpty() {
+        assertNull(rentalController.getAcceptedRentals(6, true).getBody());
+    }
+
+    @Test
+    @Order(6)
+    public void successfullyRetrievedNonAcceptedRentalsByProductIdWhenEmpty() {
+        assertNull(rentalController.getAcceptedRentals(1, false).getBody());
+    }
+
+    /* @Test
+    @Order(7)
     public void successfullyRetrieveAvailabilityWindow() {
         Rental rental = new Rental(1, LocalDate.of(2022, 5, 12), LocalDate.of(2022, 5, 12), 1, 1);
         rentalController.registerNewRental(rental);
