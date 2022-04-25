@@ -23,7 +23,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/rentals")
 public class RentalController {
-    Logger logger = LoggerFactory.getLogger(AuthController.class);
+    Logger logger = LoggerFactory.getLogger(RentalController.class);
     @Autowired
     RentalRepository rentalRepository;
     @Autowired
@@ -107,6 +107,28 @@ public class RentalController {
         } catch(Exception e) {
             logger.info("Rental registration error");
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Method for handling DELETE-requests for deleting rentals from the database.
+     * @param rentalId the id of the rental to delete
+     * @return an HTTP response containing a string with the status of the deletion and a HTTP status code
+     */
+    @DeleteMapping("/delete/{rentalId}")
+    public ResponseEntity<String> deleteRental(@PathVariable int rentalId) {
+        logger.info("Delete request for rental " + rentalId);
+        try {
+            if (rentalRepository.deleteRental(rentalId) == 1) {
+                logger.info("Deletion of rental " + rentalId + " was successful");
+                return new ResponseEntity<>("Deletion was successful", HttpStatus.OK);
+            } else {
+                logger.info("Deletion of rental " + rentalId + " was unsuccessful. No rental with id = " + rentalId + " was found.");
+                return new ResponseEntity<>("Deletion was unsuccessful", HttpStatus.BAD_REQUEST);
+            }
+        } catch (Exception e){
+            logger.info("Deletion failed", e);
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

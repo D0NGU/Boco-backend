@@ -1,7 +1,11 @@
 package ntnu.idatt.boco.repository;
 
+import ntnu.idatt.boco.controller.ProductController;
 import ntnu.idatt.boco.model.Category;
+import ntnu.idatt.boco.model.Listing;
 import ntnu.idatt.boco.model.Product;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -16,6 +20,7 @@ import java.util.List;
  */
 @Repository
 public class ProductRepository {
+    Logger logger = LoggerFactory.getLogger(ProductRepository.class);
 
     @Autowired
     JdbcTemplate jdbcTemplate;
@@ -71,6 +76,7 @@ public class ProductRepository {
      * @return the product with the id
      */
     public Product getProduct(int productId) {
+        logger.info("Finding product " +productId);
         return jdbcTemplate.queryForObject("SELECT * FROM products WHERE product_id = ?", BeanPropertyRowMapper.newInstance(Product.class), productId);
     }
 

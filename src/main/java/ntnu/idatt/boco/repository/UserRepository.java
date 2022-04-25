@@ -1,6 +1,9 @@
 package ntnu.idatt.boco.repository;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -12,6 +15,7 @@ import ntnu.idatt.boco.security.Encryption;
  */
 @Repository
 public class UserRepository {
+    Logger logger = LoggerFactory.getLogger(ProductRepository.class);
     @Autowired private JdbcTemplate jdbcTemplate;
 
     /**
@@ -24,6 +28,11 @@ public class UserRepository {
         byte[] hashedPassword = Encryption.hash(user.getPassword(), salt);
         return jdbcTemplate.update("INSERT INTO users (fname, lname, password, email, salt) VALUES (?,?,?,?,?);",
                             new Object[] { user.getFname(), user.getLname(), hashedPassword, user.getEmail(), salt });
+    }
+
+    public User getUserById(int userId) {
+        logger.info("Finding user " + userId);
+        return jdbcTemplate.queryForObject("SELECT * FROM users WHERE user_id = ?;", BeanPropertyRowMapper.newInstance(User.class), userId);
     }
 
     /**

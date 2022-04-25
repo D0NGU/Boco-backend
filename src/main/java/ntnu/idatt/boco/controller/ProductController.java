@@ -147,7 +147,7 @@ public class ProductController {
      * @param page the page the user is getting redirected to
      * @return an HTTP response containing a list of all products of a certain category and a HTTP status code
      */
-    @GetMapping("/{category}")
+    @GetMapping("/category/{category}")
     @ResponseBody
     public ResponseEntity<List<Product>> getByCategory(@PathVariable String category, @RequestParam int page) {
         logger.info("Getting all products in " + category);
