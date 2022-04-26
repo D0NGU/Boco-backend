@@ -27,28 +27,8 @@ public class ProductController {
     Logger logger = LoggerFactory.getLogger(ProductController.class);
     @Autowired ProductRepository productRepository;
     @Autowired RentalRepository rentalRepository;
-    @Autowired
-    ImageRepository imageRepository;
+    @Autowired ImageRepository imageRepository;
     @Autowired ProductService service;
-
-    /**
-     * Method for handling GET-requests retrieving all products
-     * @param page the page the user is getting redirected to
-     * @return an HTTP response containing a list of all products and a HTTP status code
-     */
-    @GetMapping
-    @ResponseBody
-    public ResponseEntity<List<Product>> getAll(@RequestParam int page) {
-        logger.info("Getting list of products");
-        try {
-            int offset = (page-1)*10;
-            return new ResponseEntity<>(productRepository.getAll(offset), HttpStatus.OK);
-        } catch (Exception e) {
-            logger.error("Error getting list of products");
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
 
     /**
      * Method for handling POST-requests for registering a new product
@@ -72,8 +52,8 @@ public class ProductController {
     /**
      * Method for handling PUT-requests for editing a product
      * @param productId the id of the product
-     * @param product the edited product
-     * @return an HTTP response containing a result message as a String and a HTTP status code
+     * @param product   the edited product
+     * @return an HTTP response containing a result message as a String and an HTTP status code
      */
     @PutMapping("/{productId}")
     public ResponseEntity<String> editProduct(@PathVariable int productId,@RequestBody Product product) {
@@ -130,8 +110,8 @@ public class ProductController {
     /**
      * Method for handling POST-request for adding new images
      * @param productId the id of the product to add the image to
-     * @param image the image to be added
-     * @return an HTTP response containing a result message as a String and a HTTP status code
+     * @param image     the image to be added
+     * @return an HTTP response containing a result message as a String and an HTTP status code
      */
     @PostMapping("/{productId}/image")
     public ResponseEntity<String> newImage(@PathVariable int productId, @RequestBody ProductImage image) {
@@ -167,25 +147,6 @@ public class ProductController {
         }
     }
 
-    /**
-     * Method for handling GET-requests for retrieving all products of a certain category
-     * @param category the category of the products
-     * @param page the page the user is getting redirected to
-     * @return an HTTP response containing a list of all products of a certain category and a HTTP status code
-     */
-    @GetMapping("/c/{category}")
-    @ResponseBody
-    public ResponseEntity<List<Product>> getByCategory(@PathVariable String category, @RequestParam int page) {
-        logger.info("Getting all products in " + category);
-        try {
-            int offset = (page-1)*10;
-            return new ResponseEntity<>(productRepository.getFromCategory(category, offset), HttpStatus.OK);
-        } catch (Exception e) {
-            logger.error("Error getting list of products by category");
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
 
     /**
      * Method for handling GET-requests for searching for products
@@ -195,12 +156,29 @@ public class ProductController {
      */
     @GetMapping("/search")
     @ResponseBody
-    public ResponseEntity<List<Product>> getProductFromSearch(@RequestParam String q, @RequestParam int page) {
+    public ResponseEntity<List<Product>> getProductFromSearch(@RequestParam(required = false) String q, @RequestParam(required = false) String category, @RequestParam int page, @RequestParam String sortBy,
+                                                              @RequestParam boolean ascending) {
         logger.info("Request for a search " + q);
         try {
-            int offset = (page-1)*2;
-            logger.info("Searching for " + q + " on page " + page);
-            return new ResponseEntity<>(productRepository.searchProductByWord(q,offset), HttpStatus.OK);
+            int offset = (page - 1) * 10;
+
+            if (category == null || category.isBlank()) {
+                if (q == null || q.isBlank()) {
+                    logger.info("Searching on page " + page + " sorted by" + sortBy + " " + ascending);
+                    return new ResponseEntity<>(productRepository.getAll(offset, sortBy, ascending), HttpStatus.OK);
+                } else {
+                    logger.info("Searching for " + q + " on page " + page + " sorted by" + sortBy + " " + ascending);
+                    return new ResponseEntity<>(productRepository.searchProductByWord(q, offset, sortBy, ascending), HttpStatus.OK);
+                }
+            } else {
+                if (q == null || q.isBlank()) {
+                    logger.info("Searching for " + category + " on page " + page + " sorted by" + sortBy + " " + ascending);
+                    return new ResponseEntity<>(productRepository.searchProductByCategory(category, offset, sortBy, ascending), HttpStatus.OK);
+                } else {
+                    logger.info("Searching for " + q + " and " + category + " on page " + page + " sorted by" + sortBy + " " + ascending);
+                    return new ResponseEntity<>(productRepository.searchProductByWordAndCategory(q, category, offset, sortBy, ascending), HttpStatus.OK);
+                }
+            }
         } catch (Exception e) {
             logger.error("Could not search for a product");
             e.printStackTrace();

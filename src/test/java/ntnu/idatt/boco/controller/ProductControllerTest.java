@@ -47,9 +47,9 @@ public class ProductControllerTest {
     @Test
     @Order(3)
     public void successfullyRetrievedAllProducts() {        
-        List<Product> list = Arrays.asList(EXISTING_TEST_PRODUCT, TEST_PRODUCT);
+        List<Product> list = Arrays.asList(TEST_PRODUCT, EXISTING_TEST_PRODUCT);
 
-        assertEquals(list.toString(), productController.getAll(1).getBody().toString());
+        assertEquals(list.toString(), productController.getProductFromSearch(null, null, 1,"price", true).getBody().toString());
     }
 
     @Test
@@ -69,7 +69,7 @@ public class ProductControllerTest {
     @Order(6)
     public void successfullyRetrievedProductsByCategory() {
         List<Product> list = Arrays.asList(EXISTING_TEST_PRODUCT);
-        assertEquals(list.toString(), productController.getByCategory("hvitevarer", 1).getBody().toString());
+        assertEquals(list.toString(), productController.getProductFromSearch(null,"hvitevarer", 1, "price",true).getBody().toString());
     }
 
     @Test
