@@ -13,9 +13,13 @@ import java.util.Collection;
 @Entity @Data @NoArgsConstructor @AllArgsConstructor
 @Table(name = "user")
 public class User {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) //@GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //@GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private Integer id;
+    @Column(name = "fname")
     private String fname;
+    @Column(name = "lname")
     private String lname;
 
     @Column(
@@ -24,11 +28,13 @@ public class User {
 
     )
     private String username;
+    @Column(name = "password")
     private String password;
     @ElementCollection
     private Collection<Role> roles = new ArrayList<>();
+}
 
-
+/**
     public Integer getUserId() {
         return id;
     }
@@ -61,5 +67,8 @@ public class User {
         this.password = password;
     }
 
+
+
 }
+ **/
 

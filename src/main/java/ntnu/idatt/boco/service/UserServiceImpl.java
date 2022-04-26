@@ -48,6 +48,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         log.info("saving user: {}", user.getUsername());
         try {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setFname(user.getFname());
+            user.setUsername(user.getUsername());
+            user.setLname(user.getLname());
             return userRepo.save(user);
         }catch (Exception e) {
             log.info(e.getMessage());

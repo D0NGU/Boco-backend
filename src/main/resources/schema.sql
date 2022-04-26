@@ -1,14 +1,14 @@
 -- Create tables
 
 create table role (
-                      id BIGINT,
+                      id INTEGER NOT NULL AUTO_INCREMENT,
                       name varchar(255),
                       primary key (id)
 );
 
 
 create table user (
-                      id INTEGER,
+                      id INTEGER NOT NULL AUTO_INCREMENT,
                       fname varchar(255),
                       lname varchar(255),
                       password varchar(255),
