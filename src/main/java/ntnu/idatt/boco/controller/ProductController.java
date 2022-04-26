@@ -72,7 +72,7 @@ public class ProductController {
     /**
      * Method for handling GET-requests for retrieving a product by id
      * @param productId the id of the product
-     * @return an HTTP response containing the retrieved product and a HTTP status code
+     * @return an HTTP response containing the retrieved product and an HTTP status code
      */
     @GetMapping("/{productId}")
     @ResponseBody
@@ -90,7 +90,7 @@ public class ProductController {
     /**
      * Method for handling GET-requests for retrieving a products availability window
      * @param productId the id of the product
-     * @return an HTTP response containing a list of the availability windows of the product and a HTTP status code
+     * @return an HTTP response containing a list of the availability windows of the product and an HTTP status code
      */
     @GetMapping("/{productId}/availability")
     @ResponseBody
@@ -130,7 +130,7 @@ public class ProductController {
     /**
      * Method for handling GET-requests for retrieving a products images
      * @param productId the id of the product
-     * @return an HTTP response containing a list of product images and a HTTP status code
+     * @return an HTTP response containing a list of product images and an HTTP status code
      */
     @GetMapping("/{productId}/image")
     @ResponseBody
@@ -189,7 +189,7 @@ public class ProductController {
     /**
      * Method for handling POST-requests for retrieving all of a users products
      * @param userId the id of the user to retrieve all the products for
-     * @return an HTTP response containing a list of all the users products and a HTTP status code
+     * @return an HTTP response containing a list of all the users products and an HTTP status code
      */
     @GetMapping("/user/{userId}")
     @ResponseBody
