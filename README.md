@@ -27,6 +27,11 @@ Clone repository locally, browse to project folder and execute:
   mvn install
   mvn spring-boot:run
 ```
+For running on the mysql database
+```
+  mvn spring-boot:run -Dspring-boot.run.profiles=mysql
+```
+
 
 ## API Example References
 
