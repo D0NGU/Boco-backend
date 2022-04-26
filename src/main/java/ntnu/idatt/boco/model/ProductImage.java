@@ -28,8 +28,8 @@ public class ProductImage {
     public ProductImage(int imgId, String imgName, byte[] imgBlob, int productId) {
         this.imgId = imgId;
         this.imgName = imgName;
-        this.img64 = Base64.getEncoder().encodeToString(imgBlob);
         this.imgBlob = imgBlob;
+        this.img64 = Base64.getEncoder().encodeToString(imgBlob);
         this.productId = productId;
     }
 
@@ -82,23 +82,5 @@ public class ProductImage {
         if (o == null || getClass() != o.getClass()) return false;
         ProductImage that = (ProductImage) o;
         return imgId == that.imgId && productId == that.productId && Objects.equals(imgName, that.imgName) && img64.equals(that.img64) && Arrays.equals(imgBlob, that.imgBlob);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = Objects.hash(imgId, imgName, img64, productId);
-        result = 31 * result + Arrays.hashCode(imgBlob);
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "ProductImage{" +
-                "imgId=" + imgId +
-                ", imgName='" + imgName + '\'' +
-                ", img64='" + img64 + '\'' +
-                ", imgBlob=" + Arrays.toString(imgBlob) +
-                ", productId=" + productId +
-                '}';
     }
 }
