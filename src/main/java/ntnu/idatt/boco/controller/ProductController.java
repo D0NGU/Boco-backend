@@ -45,6 +45,7 @@ public class ProductController {
             return new ResponseEntity<>("Created successfully!", HttpStatus.CREATED);
         } catch (Exception e) {
             logger.info("Error creating new product");
+            logger.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -185,7 +186,7 @@ public class ProductController {
      * @param page the page the user is getting redirected to
      * @return a list of all the products matching the search-word
      */
-    @GetMapping
+    @GetMapping("/search/")
     @ResponseBody
     public ResponseEntity<List<Product>> getProductFromSearch(@RequestParam String q, @RequestParam int page) {
         logger.info("Request for a search " + q);
@@ -194,6 +195,7 @@ public class ProductController {
             logger.info("Searching for " + q + " on page " + page);
             return new ResponseEntity<>(productRepository.searchProductByWord(q,offset), HttpStatus.OK);
         }catch (Exception e){
+            logger.error(e.getMessage());
             logger.info("Could not search for a product");
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

@@ -28,7 +28,7 @@ CREATE TABLE categories (
 CREATE TABLE products (
     product_id INTEGER NOT NULL AUTO_INCREMENT,
     title VARCHAR(75) NOT NULL,
-    description VARCHAR(MAX),
+    description VARCHAR(6000),
     address VARCHAR(255),
     price DECIMAL,
     unlisted BOOLEAN,
@@ -36,7 +36,8 @@ CREATE TABLE products (
     available_to DATE,
     user_id INTEGER NOT NULL,
     category VARCHAR(20),
-    PRIMARY KEY (product_id)
+    PRIMARY KEY (product_id),
+    FULLTEXT(title, description)
 );
 
 CREATE TABLE rentals(
