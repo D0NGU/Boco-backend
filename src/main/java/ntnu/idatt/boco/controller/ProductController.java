@@ -29,8 +29,7 @@ public class ProductController {
     @Autowired RentalRepository rentalRepository;
     @Autowired ImageRepository imageRepository;
     @Autowired ProductService service;
-
-    UserService userService;
+    @Autowired UserService userService;
 
     /**
      * Method for handling POST-requests for registering a new product

@@ -1,6 +1,7 @@
 package ntnu.idatt.boco.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ import java.util.Collection;
 
 @Entity @Data @NoArgsConstructor @AllArgsConstructor
 @Table(name = "user")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) //@GeneratedValue(strategy = GenerationType.AUTO)
@@ -32,9 +34,9 @@ public class User {
     private String password;
     @ElementCollection
     private Collection<Role> roles = new ArrayList<>();
-}
 
-/**
+
+
     public Integer getUserId() {
         return id;
     }
@@ -47,7 +49,7 @@ public class User {
     public String getEmail() {
         return username;
     }
-    @JsonIgnore
+    //@JsonIgnore
 
     public String getPassword() {
         return password;
@@ -70,5 +72,5 @@ public class User {
 
 
 }
- **/
+
 

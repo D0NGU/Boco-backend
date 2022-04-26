@@ -6,6 +6,7 @@ import ntnu.idatt.boco.repository.CategoryRepository;
 import ntnu.idatt.boco.repository.ImageRepository;
 import ntnu.idatt.boco.repository.ProductRepository;
 import ntnu.idatt.boco.service.UserService;
+import ntnu.idatt.boco.service.UserServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +30,7 @@ public class ListingController {
     @Autowired ProductController productController;
     @Autowired CategoryRepository categoryRepository;
     @Autowired ImageRepository imageRepository;
-
-    UserService userService;
+    @Autowired UserService userService;
 
     /**
      * The get method to get a listing based on a productId
