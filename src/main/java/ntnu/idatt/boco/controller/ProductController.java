@@ -1,11 +1,12 @@
 package ntnu.idatt.boco.controller;
 
+import lombok.NoArgsConstructor;
 import ntnu.idatt.boco.model.*;
 import ntnu.idatt.boco.repository.ImageRepository;
 import ntnu.idatt.boco.repository.ProductRepository;
 import ntnu.idatt.boco.repository.RentalRepository;
-import ntnu.idatt.boco.repository.UserRepository;
 import ntnu.idatt.boco.service.ProductService;
+import ntnu.idatt.boco.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +22,14 @@ import java.util.List;
 @CrossOrigin
 @RestController
 @RequestMapping("api/products")
+@NoArgsConstructor
 public class ProductController {
     Logger logger = LoggerFactory.getLogger(ProductController.class);
     @Autowired ProductRepository productRepository;
     @Autowired RentalRepository rentalRepository;
     @Autowired ImageRepository imageRepository;
     @Autowired ProductService service;
-    @Autowired UserRepository userRepository;
+    @Autowired UserService userService;
 
     /**
      * Method for handling POST-requests for registering a new product
@@ -194,7 +196,7 @@ public class ProductController {
     public ResponseEntity<UsersProducts> getUsersProducts(@PathVariable int userId) {
         logger.info("Getting users " + userId + "products");
         try {
-            User user = userRepository.getUserById(userId);
+            User user = userService.getUserById(userId);
             List<Product> products = productRepository.getFromUserId(userId);
             List<ProductImage> images = imageRepository.getImagesForUsersProducts(userId);
             return new ResponseEntity<>(new UsersProducts(user, products, images), HttpStatus.OK);
