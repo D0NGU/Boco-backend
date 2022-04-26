@@ -2,6 +2,7 @@ package ntnu.idatt.boco.security;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import javax.xml.bind.DatatypeConverter;
@@ -30,7 +31,13 @@ public class EncryptionTest {
     }
 
     @Test
-    @DisplayName("Correct password matches expected hashed value")
+    @DisplayName("Different salt gives different hash")
+    void hash_differentSalt_false() throws Exception {
+        assertNotEquals(new String(Encryption.getNextSalt()), new String(Encryption.hash(PASSWORD, SALT)));
+    }
+
+    @Test
+    @DisplayName("Correct password matches expected hashed value 💡")
     void isExpectedPassword_correctPassword_true() throws Exception {
         assertTrue(Encryption.isExpectedPassword(PASSWORD, SALT, EXPECTED_HASH));
     }

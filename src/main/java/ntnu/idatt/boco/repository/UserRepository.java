@@ -1,6 +1,5 @@
 package ntnu.idatt.boco.repository;
 
-import ntnu.idatt.boco.model.UsersProducts;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
