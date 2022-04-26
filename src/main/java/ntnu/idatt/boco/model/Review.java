@@ -1,5 +1,8 @@
 package ntnu.idatt.boco.model;
 
+/**
+ * This class represents a user review.
+ */
 public class Review {
     private int reviewId;
     private String text;
@@ -10,6 +13,15 @@ public class Review {
 
     public Review () {}
 
+    /**
+     * Constructor for a review object.
+     * @param reviewId the unique id of the review
+     * @param text the review itself
+     * @param stars a number of stars used as a rating
+     * @param owner true if the subject of the review is the user renting out a product
+     * @param author the user that wrote the review
+     * @param subject the user the review is targeted at
+     */
     public Review(int reviewId, String text, int stars, boolean owner, int author, int subject) {
         this.reviewId = reviewId;
         this.text = text;

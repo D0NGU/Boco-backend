@@ -49,7 +49,6 @@ public class CategoryRepository {
 
     public List<Category> getMainCategories(String sub) {
         Category category = getCategory(sub);
-        List <Category> all = getAll();
         List<Category> mains = new ArrayList<>();
 
         while (category.getMainCategory() != null) {

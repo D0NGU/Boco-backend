@@ -3,17 +3,29 @@ package ntnu.idatt.boco.model;
 
 import java.util.Objects;
 
+/**
+ * This class represents a category
+ */
 public class Category {
     private String category;
     private String mainCategory;
 
     public Category() {}
 
+    /**
+     * Constructor for a category object
+     * @param category the sub-category
+     * @param mainCategory the main category
+     */
     public Category(String category, String mainCategory) {
         this.category = category;
         this.mainCategory = mainCategory;
     }
-    
+
+    /**
+     * Constructor for a category object without needing a main category
+     * @param category the sub-category
+     */
     public Category(String category) {
         this.category = category;
     }

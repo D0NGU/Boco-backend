@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * This class contains methods relating to registering and retrieving rentals to/from the database.
+ * This class contains methods relating to managing rentals in the database.
  */
 @Repository
 public class RentalRepository {
@@ -43,5 +43,32 @@ public class RentalRepository {
     public int saveRentalToDatabase(Rental rental) {
         return jdbcTemplate.update("INSERT INTO rentals (date_from, date_to, accepted, product_id, user_id) VALUES (?,?,?,?,?);",
                 new Object[] { rental.getDateFrom(), rental.getDateTo(), rental.isAccepted(), rental.getProductId(), rental.getUserId()});
+    }
+
+    /**
+     * Method for accepting a rental.
+     * @param rentalId the id of the rental to accept
+     * @return the number of rows in the database that was affected
+     */
+    public int acceptRental(int rentalId) {
+        return jdbcTemplate.update("UPDATE rentals SET accepted = ? WHERE rental_id = ?;", "true", rentalId);
+    }
+
+    /**
+     * Method for retrieving a rental object by rentalId.
+     * @param rentalId the id of the rental
+     * @return a list containing the retrieved rental
+     */
+    public List<Rental> getRentalById(int rentalId) {
+        return jdbcTemplate.query("SELECT * FROM rentals WHERE rental_id = ?;", BeanPropertyRowMapper.newInstance(Rental.class), rentalId);
+    }
+
+    /**
+     * Method for deleting a rental object to the database.
+     * @param rentalId the rental object to be deleted from the database
+     * @return the number of rows in the database that was affected
+     */
+    public int deleteRental(int rentalId) {
+        return jdbcTemplate.update("DELETE FROM rentals WHERE rental_id = ?;", rentalId);
     }
 }
