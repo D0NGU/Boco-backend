@@ -36,8 +36,8 @@ CREATE TABLE products (
     available_to DATE,
     user_id INTEGER NOT NULL,
     category VARCHAR(20),
-    PRIMARY KEY (product_id),
-    FULLTEXT(title, description)
+    PRIMARY KEY (product_id)
+    -- FULLTEXT(title, description) only in use on the mysql database
 );
 
 CREATE TABLE rentals(
