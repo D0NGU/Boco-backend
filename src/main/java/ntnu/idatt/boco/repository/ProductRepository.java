@@ -5,6 +5,8 @@ import ntnu.idatt.boco.model.Product;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.Profiles;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -25,6 +27,9 @@ public class ProductRepository {
 
     @Autowired
     CategoryRepository categoryRepository;
+
+    @Autowired
+    Environment env;
 
     /**
      * Method for adding a new product to the database
@@ -93,7 +98,13 @@ public class ProductRepository {
      * @return a list of all the products matching the search-word
      */
     public List<Product> searchProductByWord(String word, int offset) {
-        String sql = "SELECT product_id,title,description,address,price,unlisted,available_from,available_to,user_id,category FROM products LEFT JOIN (FT_SEARCH_DATA('"+word+"', 10, ?)) ON products.product_id=keys[1] WHERE keys IS NOT NULL;";
-        return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Product.class), offset);
+        if (env.acceptsProfiles(Profiles.of("mysql"))) {
+            // Todo limit
+            return jdbcTemplate.query("SELECT * FROM products WHERE MATCH (title, description) AGAINST (? IN NATURAL LANGUAGE MODE)", BeanPropertyRowMapper.newInstance(Product.class), new Object[]{word});
+        }
+        else {
+            String sql = "SELECT product_id,title,description,address,price,unlisted,available_from,available_to,user_id,category FROM products LEFT JOIN (FT_SEARCH_DATA('"+word+"', 2, ?)) ON products.product_id=keys[1] WHERE keys IS NOT NULL;";
+            return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Product.class), offset);
+        }
     }
 }

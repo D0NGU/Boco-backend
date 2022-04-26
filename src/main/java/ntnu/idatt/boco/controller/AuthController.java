@@ -61,7 +61,7 @@ public class AuthController {
             if (!databaseRepository.existsByEmail(login.getEmail())) {
                 logger.info(login.getEmail() + ": User does not exist");
                 return new ResponseEntity<>("User does not exist", HttpStatus.NOT_FOUND);
-            };
+            }
             // Check if password is correct
             byte[] expectedHash = databaseRepository.getHashedPasswordByEmail(login.getEmail());
             byte[] salt = databaseRepository.getSaltByEmail(login.getEmail());

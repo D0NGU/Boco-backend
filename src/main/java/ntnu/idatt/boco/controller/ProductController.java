@@ -63,6 +63,7 @@ public class ProductController {
             return new ResponseEntity<>("Created successfully!", HttpStatus.CREATED);
         } catch (Exception e) {
             logger.info("Error creating new product");
+            logger.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
