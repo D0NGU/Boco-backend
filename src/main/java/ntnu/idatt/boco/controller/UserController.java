@@ -1,7 +1,7 @@
 package ntnu.idatt.boco.controller;
 
-import ntnu.idatt.boco.model.EditUserRequest;
-import ntnu.idatt.boco.model.User;
+import ntnu.idatt.boco.model.*;
+import ntnu.idatt.boco.repository.ImageRepository;
 import ntnu.idatt.boco.repository.ProductRepository;
 import ntnu.idatt.boco.repository.UserRepository;
 import ntnu.idatt.boco.security.Encryption;
@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * This class contains methods responsible for handling HTTP requests regarding users.
@@ -22,6 +24,7 @@ public class UserController {
     Logger logger = LoggerFactory.getLogger(UserController.class);
     @Autowired UserRepository userRepository;
     @Autowired ProductRepository productRepository;
+    @Autowired ImageRepository imageRepository;
 
     /**
      * Method for handling DELETE-requests for deleting a user
@@ -72,6 +75,21 @@ public class UserController {
             }
         }catch (Exception e ){
             logger.error("Edit user failed");
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/{userId}/products")
+    public ResponseEntity<UsersProducts> getUsersProducts(@PathVariable int userId) {
+        logger.info("Getting users " + userId + "products");
+        try {
+            User user = userRepository.getUserById(userId);
+            List<Product> products = productRepository.getFromUserId(userId);
+            List<ProductImage> images = imageRepository.getImagesForUsersProducts(userId);
+            return new ResponseEntity<>(new UsersProducts(user, products, images), HttpStatus.OK);
+        }catch (Exception e ){
+            logger.error("Getting users products failed");
             e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }

@@ -34,4 +34,9 @@ public class ImageRepository {
         return jdbcTemplate.query("SELECT * FROM images WHERE product_id = ?",
                 BeanPropertyRowMapper.newInstance(ProductImage.class), productId);
     }
+
+    public List<ProductImage> getImagesForUsersProducts(int userId) {
+        return jdbcTemplate.query("SELECT * FROM images INNER JOIN products WHERE products.user_id = ?",
+                BeanPropertyRowMapper.newInstance(ProductImage.class), userId);
+    }
 }
