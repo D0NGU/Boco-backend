@@ -33,12 +33,19 @@ public class ProductControllerTest {
 
     @Test
     @Order(1)
+    public void successfullyRetrievedProductsByUser() {
+        List<Product> list = Arrays.asList(new Product(1, "Dragon hunter crossbow", "A dragonbane weapon requiring 65 Ranged to wield.", "Gilenor", 600.0, false,  LocalDate.of(2022, 4, 11), LocalDate.of(2022, 6, 20),1, "hvitevarer"));
+        assertEquals(list.toString(), productController.getUsersProducts(1).getBody().toString());
+    }
+
+    @Test
+    @Order(2)
     public void successfullyRegisteredNewProduct() {
         assertEquals(201, productController.newProduct(TEST_PRODUCT).getStatusCodeValue());
     }
 
     @Test
-    @Order(2)
+    @Order(3)
     public void successfullyRetrievedAllProducts() {        
         List<Product> list = Arrays.asList(EXISTING_TEST_PRODUCT, TEST_PRODUCT);
 
@@ -46,27 +53,27 @@ public class ProductControllerTest {
     }
 
     @Test
-    @Order(3)
+    @Order(4)
     public void successfullyEditedProduct() {
         Product editedTestProduct = new Product("The dragon hunter crossbow possesses a passive effect that increases ranged accuracy by 30% and damage by 25% when fighting draconic creatures.", "Gilenor", 350.0, false, LocalDate.of(2022, 2, 1), LocalDate.of(2022, 9, 25), "utstyr");
         assertEquals(200, productController.editProduct(2, editedTestProduct).getStatusCodeValue());
     }
 
     @Test
-    @Order(4)
+    @Order(5)
     public void successfullyRetrievedProductById() {
         assertEquals(EXISTING_TEST_PRODUCT.toString(), productController.getById(1).getBody().toString());
     }
 
     @Test
-    @Order(5)
+    @Order(6)
     public void successfullyRetrievedProductsByCategory() {
         List<Product> list = Arrays.asList(EXISTING_TEST_PRODUCT);
         assertEquals(list.toString(), productController.getByCategory("hvitevarer", 1).getBody().toString());
     }
 
     @Test
-    @Order(6)
+    @Order(7)
     public void successfullyStoreAndRetrieveImageByProduct() {
         List<ProductImage> expected = new ArrayList<>();
         imageRepository.newPicture(IMAGE_1);
@@ -83,7 +90,7 @@ public class ProductControllerTest {
         }
     }
     @Test
-    @Order(6)
+    @Order(8)
     public void successfullyRetrieveAvailabilityWindow() {
         AvailabilityWindow availability = new AvailabilityWindow(LocalDate.of(2022, 7, 12), LocalDate.of(2022, 11, 11));
         AvailabilityWindow availability2 = new AvailabilityWindow(LocalDate.of(2022, 12,24), LocalDate.of(2022,12,24));

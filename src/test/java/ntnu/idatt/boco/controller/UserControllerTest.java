@@ -10,10 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
@@ -36,13 +32,6 @@ public class UserControllerTest {
     public void unSuccessfullyEditedUserPassword() {
         EditUserRequest request = new EditUserRequest("t.est@tset.edu", "tset321", "123test");
         assertEquals(403, userController.editPassword(request).getStatusCodeValue());
-    }
-
-    @Test
-    @Order(3)
-    public void successfullyRetrievedProductsByUser() {
-        List<Product> list = Arrays.asList(new Product(1, "Dragon hunter crossbow", "A dragonbane weapon requiring 65 Ranged to wield.", "Gilenor", 600.0, false,  LocalDate.of(2022, 4, 11), LocalDate.of(2022, 6, 20),1, "hvitevarer"));
-        assertEquals(list.toString(), userController.getUsersProducts(1).getBody().toString());
     }
 
     @Test

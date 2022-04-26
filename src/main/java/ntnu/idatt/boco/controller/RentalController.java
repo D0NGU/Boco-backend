@@ -24,12 +24,33 @@ import java.util.List;
 @RequestMapping("/api/rentals")
 public class RentalController {
     Logger logger = LoggerFactory.getLogger(RentalController.class);
-    @Autowired
-    RentalRepository rentalRepository;
-    @Autowired
-    ProductRepository productRepository;
-    @Autowired
-    ProductService service;
+    @Autowired RentalRepository rentalRepository;
+    @Autowired ProductRepository productRepository;
+    @Autowired ProductService service;
+
+    /**
+     * Method for handling POST-requests for registering new rentals to the database.
+     * @param rental the rental object to be saved to the database
+     * @return an HTTP response containing a string with the status of the registration and a HTTP status code
+     */
+    @PostMapping
+    public ResponseEntity<String> registerNewRental(@RequestBody Rental rental) {
+        logger.info("New rental registration requested");
+        try {
+            if(checkIfAvailable(rental)) {
+                rentalRepository.saveRentalToDatabase(rental);
+                logger.info("Success - rental registered");
+                return new ResponseEntity<>("Registered successfully!", HttpStatus.CREATED);
+            }else{
+                logger.info("Rental not available");
+                return new ResponseEntity<>("Rental unavailable", HttpStatus.CONFLICT);
+            }
+
+        } catch(Exception e) {
+            logger.info("Rental registration error");
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     /**
      * Method for handling GET-requests for retrieving all rentals with a certain product_id.
@@ -78,35 +99,11 @@ public class RentalController {
     }
 
     /**
-     * Method for handling POST-requests for registering new rentals to the database.
-     * @param rental the rental object to be saved to the database
-     * @return an HTTP response containing a string with the status of the registration and a HTTP status code
-     */
-    @PostMapping("/")
-    public ResponseEntity<String> registerNewRental(@RequestBody Rental rental) {
-        logger.info("New rental registration requested");
-        try {
-            if(checkIfAvailable(rental)) {
-                rentalRepository.saveRentalToDatabase(rental);
-                logger.info("Success - rental registered");
-                return new ResponseEntity<>("Registered successfully!", HttpStatus.CREATED);
-            }else{
-                logger.info("Rental not available");
-                return new ResponseEntity<>("Rental unavailable", HttpStatus.CONFLICT);
-            }
-
-        } catch(Exception e) {
-            logger.info("Rental registration error");
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    /**
      * Method for handling POST-requests for accepting rentals.
      * @param rental the rental object to be accepted
      * @return an HTTP response containing a string with the status of the change and a HTTP status code
      */
-    @PostMapping("/accept")
+    @PutMapping("/accept")
     public ResponseEntity<String> acceptRental(@RequestBody Rental rental) {
         logger.info("Accept request for rental " + rental.getRentalId());
         try {
@@ -129,7 +126,7 @@ public class RentalController {
      * @param rentalId the id of the rental to delete
      * @return an HTTP response containing a string with the status of the deletion and a HTTP status code
      */
-    @DeleteMapping("/delete/{rentalId}")
+    @DeleteMapping("/{rentalId}")
     public ResponseEntity<String> deleteRental(@PathVariable int rentalId) {
         logger.info("Delete request for rental " + rentalId);
         try {
@@ -140,7 +137,7 @@ public class RentalController {
                 logger.info("Deletion of rental " + rentalId + " was unsuccessful. No rental with id = " + rentalId + " was found.");
                 return new ResponseEntity<>("Deletion was unsuccessful", HttpStatus.BAD_REQUEST);
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             logger.info("Deletion failed", e);
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
