@@ -17,8 +17,8 @@ INSERT INTO categories(CATEGORY, MAIN_CATEGORY) VALUES
     ('båt', 'kjøretøy');
 
 
-INSERT INTO user (id, name, username, password)
-values (1, 'oskar', 'oskareid@stud.ntnu.no', '$2a$10$OsIqAo6pFMHKjUzDRiOq9Os1L2tXfocby4mcspG2g2QrWqR6j7aBm');
+INSERT INTO user (id, fname, lname, username, password)
+values (1, 'oskar', 'eidem', 'oskareid@stud.ntnu.no', '$2a$10$OsIqAo6pFMHKjUzDRiOq9Os1L2tXfocby4mcspG2g2QrWqR6j7aBm');
 
 INSERT INTO role (id, name)
 values (1, 'ROLE_USER');
