@@ -100,4 +100,18 @@ public class ProductControllerTest {
         List<AvailabilityWindow> list = Arrays.asList(availability,availability2);
         assertEquals(list.toString(), productController.getAvailability(1).getBody().toString());
     }
+
+    @Test
+    @Order(9)
+    public void successfulSearchWithWord(){
+        List<Product> list = Arrays.asList(EXISTING_TEST_PRODUCT);
+        assertEquals(list.toString(),productController.getProductFromSearch("dragonbane", null, 1,"price", true).getBody().toString());
+    }
+
+    @Test
+    @Order(10)
+    public void successfulSearchWithWordAndCategory(){
+        List<Product> list = Arrays.asList(EXISTING_TEST_PRODUCT);
+        assertEquals(list.toString(),productController.getProductFromSearch("dragonbane", "hvitevarer", 1,"price", true).getBody().toString());
+    }
 }
