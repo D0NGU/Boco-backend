@@ -54,7 +54,7 @@ public class AuthController {
         } 
         
         catch (Exception e) {
-            logger.info(email + ": Error registering user");
+            logger.error(email + ": Error registering user");
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -95,7 +95,7 @@ public class AuthController {
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }  
         } catch (Exception e) {
-            logger.info(email + ": Login error");
+            logger.error(email + ": Login error");
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

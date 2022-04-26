@@ -44,7 +44,8 @@ public class ProductController {
             int offset = (page-1)*10;
             return new ResponseEntity<>(productRepository.getAll(offset), HttpStatus.OK);
         } catch (Exception e) {
-            logger.info("Error getting list of products");
+            logger.error("Error getting list of products");
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -62,8 +63,8 @@ public class ProductController {
             logger.info("Product created");
             return new ResponseEntity<>("Created successfully!", HttpStatus.CREATED);
         } catch (Exception e) {
-            logger.info("Error creating new product");
-            logger.error(e.getMessage());
+            logger.error("Error creating new product");
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -82,7 +83,8 @@ public class ProductController {
             logger.info("Editing product: " + productId);
             return new ResponseEntity<>("Created successfully!", HttpStatus.OK);
         } catch (Exception e) {
-            logger.info("Error editing product");
+            logger.error("Error editing product");
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -99,7 +101,8 @@ public class ProductController {
         try {
             return new ResponseEntity<>(productRepository.getProduct(productId), HttpStatus.OK);
         } catch (Exception e) {
-            logger.info("Error getting product");
+            logger.error("Error getting product");
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -118,7 +121,8 @@ public class ProductController {
             List<Rental> rentals = rentalRepository.getAcceptedRentals(productId, true);
             return new ResponseEntity<>(service.getAvailability(product, rentals), HttpStatus.OK);
         } catch (Exception e) {
-            logger.info("Could not get availability for product " + productId);
+            logger.error("Could not get availability for product " + productId);
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -137,7 +141,8 @@ public class ProductController {
             logger.info("Image saved");
             return new ResponseEntity<>("Created successfully!", HttpStatus.CREATED);
         }catch (Exception e) {
-            logger.info("Error saving new product");
+            logger.error("Error saving new product");
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -156,7 +161,8 @@ public class ProductController {
             logger.info(images.size() + " images found");
             return new ResponseEntity<>(images, HttpStatus.OK);
         } catch (Exception e) {
-            logger.info("Error getting images");
+            logger.error("Error getting images");
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -175,7 +181,8 @@ public class ProductController {
             int offset = (page-1)*10;
             return new ResponseEntity<>(productRepository.getFromCategory(category, offset), HttpStatus.OK);
         } catch (Exception e) {
-            logger.info("Error getting list of products by category");
+            logger.error("Error getting list of products by category");
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -195,7 +202,8 @@ public class ProductController {
             logger.info("Searching for " + q + " on page " + page);
             return new ResponseEntity<>(productRepository.searchProductByWord(q,offset), HttpStatus.OK);
         } catch (Exception e) {
-            logger.info("Could not search for a product");
+            logger.error("Could not search for a product");
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -213,7 +221,8 @@ public class ProductController {
             logger.info("Retrieved user products successfully");
             return new ResponseEntity<>(productRepository.getFromUserId(userId), HttpStatus.OK);
         } catch (Exception e) {
-            logger.info("Error retrieving user products");
+            logger.error("Error retrieving user products");
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

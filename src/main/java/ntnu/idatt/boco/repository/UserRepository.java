@@ -32,7 +32,7 @@ public class UserRepository {
 
     public int getIdByEmail(String email) {
         logger.info("Finding userId for " + email);
-        return jdbcTemplate.queryForObject("SELECT user_id FROM users WHERE email = ?;", BeanPropertyRowMapper.newInstance(Integer.class), email);
+        return jdbcTemplate.queryForObject("SELECT user_id FROM users WHERE email = ?;", int.class, email);
     }
 
     public User getUserById(int userId) {
