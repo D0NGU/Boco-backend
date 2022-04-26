@@ -99,7 +99,6 @@ public class AuthController {
             if (Encryption.isExpectedPassword(login.getPassword(), salt, expectedHash)) {
                 // Return OK if correct password
                 logger.info(email + ": Successfull login");
-                authenticate(login.getEmail(), login.getPassword());
 
                 final UserDetails userDetails = userDetailsService.loadUserByUsername(email);
 
