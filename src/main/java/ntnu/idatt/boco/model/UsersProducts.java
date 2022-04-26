@@ -18,11 +18,9 @@ public class UsersProducts {
     public User getUser() {
         return user;
     }
-
     public List<Product> getProducts() {
         return products;
     }
-
     public List<ProductImage> getImages() {
         return images;
     }
@@ -30,11 +28,9 @@ public class UsersProducts {
     public void setUser(User user) {
         this.user = user;
     }
-
     public void setProducts(List<Product> products) {
         this.products = products;
     }
-
     public void setImages(List<ProductImage> images) {
         this.images = images;
     }

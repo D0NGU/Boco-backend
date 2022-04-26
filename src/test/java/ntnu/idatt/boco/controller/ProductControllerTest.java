@@ -37,7 +37,8 @@ public class ProductControllerTest {
     @Order(1)
     public void successfullyRetrievedProductsByUser() {
         List<Product> list = Arrays.asList(new Product(1, "Dragon hunter crossbow", "A dragonbane weapon requiring 65 Ranged to wield.", "Gilenor", 600.0, false,  LocalDate.of(2022, 4, 11), LocalDate.of(2022, 6, 20),1, "hvitevarer"));
-        assertEquals(list.toString(), productController.getUsersProducts(1).getBody().toString());
+
+        assertEquals(list.toString(), productController.getUsersProducts(1).getBody().getProducts().toString());
     }
 
     @Test
