@@ -2,6 +2,9 @@ package ntnu.idatt.boco.model;
 
 import java.util.List;
 
+/**
+ * This class represents a listing, which contains all the information necessary for creating a view of the product.
+ */
 public class Listing {
     Product product;
     User owner;
@@ -11,6 +14,14 @@ public class Listing {
 
     public Listing() {}
 
+    /**
+     * Constructor for a listing object.
+     * @param product the product that is available for renting
+     * @param owner the user that owns the product
+     * @param availabilityWindows a list of all the available time slots to rent the product
+     * @param categories a list of all the products categories
+     * @param images a list of all the product images
+     */
     public Listing(Product product, User owner, List<AvailabilityWindow> availabilityWindows, List<Category> categories, List<ProductImage> images) {
         this.product = product;
         this.owner = owner;

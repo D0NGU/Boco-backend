@@ -55,7 +55,7 @@ public class ProductRepository {
      * @return a list of all the products in the database
      */
     public List<Product> getAll(int offset) {
-        return jdbcTemplate.query("SELECT * FROM products limit 2 offset ?", BeanPropertyRowMapper.newInstance(Product.class), offset);
+        return jdbcTemplate.query("SELECT * FROM products limit 10 offset ?", BeanPropertyRowMapper.newInstance(Product.class), offset);
     }
 
     /**
@@ -70,7 +70,7 @@ public class ProductRepository {
             catNames.add(cat.getCategory());
         }
         String inSql = String.join(",", Collections.nCopies(categories.size(), "?"));
-        return jdbcTemplate.query(String.format("SELECT * FROM products WHERE category IN (%s)", inSql), BeanPropertyRowMapper.newInstance(Product.class), catNames.toArray());
+        return jdbcTemplate.query(String.format("SELECT * FROM products WHERE category IN (%s) limit 10 offset %s", inSql, offset), BeanPropertyRowMapper.newInstance(Product.class),catNames.toArray());
     }
 
     /**
