@@ -204,4 +204,28 @@ public class ProductController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    /**
+     * Method for handling POST-requests for retrieving a users rental history
+     * @param userId the id of the user to retrieve the history for
+     * @return an HTTP response containing a list of the users history and an HTTP status code
+     */
+    @GetMapping("/user/{userId}/history")
+    public ResponseEntity<List<Product>> getUserRentalHistory(@PathVariable int userId) {
+        logger.info("Getting a users rental history" + userId + "products");
+        try {
+            List<Product> history = productRepository.getUserRentalHistory(userId);
+            if (history.isEmpty()) {
+                logger.info("Rental history for user " + userId + " is empty.");
+                return new ResponseEntity<>(HttpStatus.OK);
+            } else {
+                logger.info("Rental history for user " + userId + " retrieved successfully.");
+                return new ResponseEntity<>(history, HttpStatus.OK);
+            }
+        }catch (Exception e ){
+            logger.error("Rental history retrieval failed");
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
