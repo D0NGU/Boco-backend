@@ -36,7 +36,7 @@ public class ImageRepository {
     }
 
     public List<ProductImage> getImagesForUsersProducts(int userId) {
-        return jdbcTemplate.query("SELECT * FROM images INNER JOIN products WHERE products.user_id = ?",
+        return jdbcTemplate.query("SELECT * FROM images INNER JOIN products WHERE products.user_id = ? GROUP BY images.product_id",
                 BeanPropertyRowMapper.newInstance(ProductImage.class), userId);
     }
 }
