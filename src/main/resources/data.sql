@@ -23,8 +23,14 @@ values (1, 'oskar', 'oskareid@stud.ntnu.no', '$2a$10$OsIqAo6pFMHKjUzDRiOq9Os1L2t
 INSERT INTO role (id, name)
 values (1, 'ROLE_USER');
 
+INSERT INTO role (id, name)
+values (2, 'ROLE_ADMIN');
+
 INSERT INTO user_roles (user_id, roles_id)
 values (1, 1);
+
+INSERT INTO user_roles (user_id, roles_id)
+values (1, 2);
 
 
 INSERT INTO products(title, description, address, price, unlisted, available_from, available_to, user_id, category)

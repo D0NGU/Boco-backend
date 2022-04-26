@@ -7,6 +7,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import ntnu.idatt.boco.model.Role;
 import ntnu.idatt.boco.model.User;
 import ntnu.idatt.boco.service.UserService;
@@ -24,7 +25,7 @@ import java.util.stream.Collectors;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-
+@Slf4j
 @RestController @RequestMapping("/api")
 @RequiredArgsConstructor
 public class UserResource {
@@ -41,6 +42,7 @@ public class UserResource {
         //implement logic before saving user
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/save").toUriString());
         System.out.println(user.toString());
+
         return ResponseEntity.created(uri).body(userService.saveUser(user));
     }
 
@@ -55,6 +57,8 @@ public class UserResource {
     public ResponseEntity<?>addRoleToUser(@RequestBody RoleToUserForm form) {
         //implement logic before saving role
         userService.addRoleToUser(form.getUsername(), form.getRoleName());
+        System.out.println(form.getUsername() + " " + form.getRoleName());
+        log.info("added role: {}, to user: {}", form.getRoleName(), form.getUsername());
         return ResponseEntity.ok().build();
     }
 

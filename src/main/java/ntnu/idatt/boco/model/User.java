@@ -3,6 +3,7 @@ package ntnu.idatt.boco.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -13,9 +14,13 @@ public class User {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) //@GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
+    @Column(
+            unique = true
+    )
     private String username;
     private String password;
     @ElementCollection
     private Collection<Role> roles = new ArrayList<>();
+
 }
 

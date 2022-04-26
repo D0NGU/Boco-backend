@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         });
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
     }
-
+/**
     @Override
     public User saveUser(User user) {
         boolean usernameNotTaken = true;
@@ -57,8 +57,21 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             return userRepo.save(user);
         }
+
         System.out.println("Username taken"); // TODO: send error in response
        return null;
+    }
+**/
+    @Override
+    public User saveUser(User user) {
+        log.info("saving user: {}", user.getUsername());
+        try {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            return userRepo.save(user);
+        }catch (Exception e) {
+            log.info(e.getMessage());
+        }
+        return null;
     }
 
     @Override
