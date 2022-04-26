@@ -44,7 +44,8 @@ public class UserController {
             }
 
         } catch (Exception e) {
-            logger.info("Delete failed");
+            logger.error("Delete failed");
+            e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -70,7 +71,8 @@ public class UserController {
                 return new ResponseEntity<>("Wrong old password", HttpStatus.FORBIDDEN);
             }
         }catch (Exception e ){
-            logger.info("Edit user failed");
+            logger.error("Edit user failed");
+            e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

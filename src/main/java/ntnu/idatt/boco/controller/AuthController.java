@@ -30,20 +30,32 @@ public class AuthController {
     /**
      * Method for handling POST-requests for registering a new user
      * @param user the user to be registered
-     * @return an HTTP response containing a result message as a String and a HTTP status code
+     * @return status code and the userID:
+     *          {@code 201} if user registered, 
+     *          {@code 409} if duplicate email,
+     *          {@code 500} if error
      */
     @PostMapping("/signup")
-    public ResponseEntity<String> registerNewAccount(@RequestBody User user) {
-        logger.info(user.getEmail() + ": Signup Requested");
+    public ResponseEntity<Integer> registerNewAccount(@RequestBody User user) {
+        String email = user.getEmail();
+        logger.info(email + ": Signup Requested");
+        
         try {
             databaseRepository.saveUserToDatabase(user);
-            logger.info(user.getEmail() + ": User registered");
-            return new ResponseEntity<>("Registered successfully!", HttpStatus.CREATED);
-        } catch (DuplicateKeyException e) {
-            logger.info(user.getEmail() + ": Error - Email in use");
-            return new ResponseEntity<>("Duplicate email", HttpStatus.CONFLICT);
-        } catch (Exception e) {
-            logger.info(user.getEmail() + ": Error registering user");
+            logger.info(email + ": User registered");
+            // Return userId to client with status 201 (Created)
+            int id = databaseRepository.getIdByEmail(email);
+            return new ResponseEntity<>(id, HttpStatus.CREATED);
+        } 
+        
+        catch (DuplicateKeyException dke) {
+            logger.info(email + ": Error - Email in use");
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        } 
+        
+        catch (Exception e) {
+            logger.error(email + ": Error registering user");
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -51,29 +63,40 @@ public class AuthController {
     /**
      * Method for handling POST-requests for user login
      * @param login a LoginRequest containing an email and password
-     * @return an HTTP response containing a result message as a String and a HTTP status code
+     * @return status code and the userID:
+     *          {@code 200} if success,
+     *          {@code 403} if wrong password, 
+     *          {@code 404} if duplicate email,
+     *          {@code 500} if error
      */
+    // POST-request because the parameters in GET get stored all over the place for caching reasons.
     @PostMapping("/signin")
-    public ResponseEntity<String> loginUser(@RequestBody LoginRequest login) {
-        logger.info(login.getEmail() + ": Login requested");
+    public ResponseEntity<Integer> loginUser(@RequestBody LoginRequest login) {
+        String email = login.getEmail();
+        logger.info(email + ": Login requested");
         try {
             // Check if user exists
-            if (!databaseRepository.existsByEmail(login.getEmail())) {
-                logger.info(login.getEmail() + ": User does not exist");
-                return new ResponseEntity<>("User does not exist", HttpStatus.NOT_FOUND);
+            if (!databaseRepository.existsByEmail(email)) {
+                logger.info(email + ": User does not exist");
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
+
+            int id = databaseRepository.getIdByEmail(email);
             // Check if password is correct
-            byte[] expectedHash = databaseRepository.getHashedPasswordByEmail(login.getEmail());
-            byte[] salt = databaseRepository.getSaltByEmail(login.getEmail());
+            byte[] expectedHash = databaseRepository.getHashedPasswordByEmail(email);
+            byte[] salt = databaseRepository.getSaltByEmail(email);
             if (Encryption.isExpectedPassword(login.getPassword(), salt, expectedHash)) {
-                logger.info(login.getEmail() + ": Successfull login");
-                return new ResponseEntity<>("Successfull login", HttpStatus.OK);
+                // Return OK if correct password
+                logger.info(email + ": Successfull login");
+                return new ResponseEntity<>(id, HttpStatus.OK);
             } else {
-                logger.info(login.getEmail() + ": Wrong password");
-                return new ResponseEntity<>("Wrong password", HttpStatus.FORBIDDEN);
+                // Return 403 if wrong password
+                logger.info(email + ": Wrong password");
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }  
         } catch (Exception e) {
-            logger.info("Login error");
+            logger.error(email + ": Login error");
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

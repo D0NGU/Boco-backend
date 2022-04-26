@@ -30,6 +30,11 @@ public class UserRepository {
                             new Object[] { user.getFname(), user.getLname(), hashedPassword, user.getEmail(), salt });
     }
 
+    public int getIdByEmail(String email) {
+        logger.info("Finding userId for " + email);
+        return jdbcTemplate.queryForObject("SELECT user_id FROM users WHERE email = ?;", int.class, email);
+    }
+
     public User getUserById(int userId) {
         logger.info("Finding user " + userId);
         return jdbcTemplate.queryForObject("SELECT * FROM users WHERE user_id = ?;", BeanPropertyRowMapper.newInstance(User.class), userId);

@@ -47,7 +47,8 @@ public class RentalController {
             }
 
         } catch(Exception e) {
-            logger.info("Rental registration error");
+            logger.error("Rental registration error");
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -69,7 +70,8 @@ public class RentalController {
             logger.info("Success - rentals retrieved");
             return new ResponseEntity<>(resultList, HttpStatus.OK);
         } catch(Exception e) {
-            logger.info("Rental retrieval error");
+            logger.error("Rental retrieval error");
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -93,7 +95,8 @@ public class RentalController {
             logger.info("Success - rentals retrieved");
             return new ResponseEntity<>(resultList, HttpStatus.OK);
         } catch(Exception e) {
-            logger.info("Rentals retrieval error");
+            logger.error("Rentals retrieval error");
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -116,7 +119,8 @@ public class RentalController {
                 return new ResponseEntity<>("Acceptance was unsuccessful", HttpStatus.BAD_REQUEST);
             }
         } catch (Exception e){
-            logger.info("Acceptance failed", e);
+            logger.error("Acceptance failed");
+            e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -138,7 +142,8 @@ public class RentalController {
                 return new ResponseEntity<>("Deletion was unsuccessful", HttpStatus.BAD_REQUEST);
             }
         } catch (Exception e) {
-            logger.info("Deletion failed", e);
+            logger.error("Deletion failed");
+            e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
