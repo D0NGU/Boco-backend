@@ -180,6 +180,16 @@ public class ProductRepository {
         return jdbcTemplate.query("SELECT products.product_id, products.title, products.description, products.address, products.price, products.unlisted, products.available_from, products.available_to, products.user_id, products.category FROM products RIGHT OUTER JOIN rentals ON products.product_id = rentals.product_id WHERE rentals.user_id = ? AND accepted = true",
                 BeanPropertyRowMapper.newInstance(Product.class), userId);
     }
+
+    /**
+     * Method to delete product based on product id and user id
+     * @param userId the d of a user
+     * @param productId the id of a product that is going to be deleted
+     * @return amount of rows altered (expected to be one 1 if the deletion was successful)
+     */
+    public int deleteProductWithUserIdAndProductId(int userId, int productId){
+        return jdbcTemplate.update("DELETE FROM products WHERE product_id = ? AND user_id = ?;", productId, userId);
+    }
 }
 
 
