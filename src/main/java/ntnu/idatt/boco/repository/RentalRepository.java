@@ -55,6 +55,15 @@ public class RentalRepository {
     }
 
     /**
+     * Method for retrieving a rental object by rentalId.
+     * @param rentalId the id of the rental
+     * @return a list containing the retrieved rental
+     */
+    public List<Rental> getRentalById(int rentalId) {
+        return jdbcTemplate.query("SELECT * FROM rentals WHERE rental_id = ?;", BeanPropertyRowMapper.newInstance(Rental.class), rentalId);
+    }
+
+    /**
      * Method for deleting a rental object to the database.
      * @param rentalId the rental object to be deleted from the database
      * @return the number of rows in the database that was affected

@@ -62,13 +62,13 @@ public class RentalControllerTest {
     @Test
     @Order(6)
     public void successfullyAcceptedRental() {
-        assertEquals(200, rentalController.acceptRental(TEST_RENTAL).getStatusCodeValue());
+        assertEquals(200, rentalController.acceptRental(TEST_RENTAL.getRentalId()).getStatusCodeValue());
     }
 
     @Test
     @Order(7)
     public void unSuccessfullyAcceptedRental() {
-        assertEquals(400, rentalController.acceptRental(TEST_RENTAL).getStatusCodeValue());
+        assertEquals(400, rentalController.acceptRental(TEST_RENTAL.getRentalId()).getStatusCodeValue());
     }
 
     @Test

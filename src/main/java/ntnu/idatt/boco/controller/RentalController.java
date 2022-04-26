@@ -103,19 +103,20 @@ public class RentalController {
 
     /**
      * Method for handling POST-requests for accepting rentals.
-     * @param rental the rental object to be accepted
+     * @param rentalId the id of the rental object to be accepted
      * @return an HTTP response containing a string with the status of the change and a HTTP status code
      */
-    @PutMapping("/accept")
-    public ResponseEntity<String> acceptRental(@RequestBody Rental rental) {
-        logger.info("Accept request for rental " + rental.getRentalId());
+    @PutMapping("/accept/{rentalId}")
+    public ResponseEntity<String> acceptRental(@PathVariable int rentalId) {
+        logger.info("Accept request for rental " + rentalId);
         try {
+            Rental rental = rentalRepository.getRentalById(rentalId).get(0);
             if (checkIfAvailable(rental)) {
-                rentalRepository.acceptRental(rental.getRentalId());
-                logger.info("Rental " + rental.getRentalId() + " was successfully accepted");
+                rentalRepository.acceptRental(rentalId);
+                logger.info("Rental " + rentalId + " was successfully accepted");
                 return new ResponseEntity<>("Acceptance was successful", HttpStatus.OK);
             } else {
-                logger.info("Rental " + rental.getRentalId() + " could not be accepted due to date conflict");
+                logger.info("Rental " + rentalId + " could not be accepted due to date conflict");
                 return new ResponseEntity<>("Acceptance was unsuccessful", HttpStatus.BAD_REQUEST);
             }
         } catch (Exception e){
