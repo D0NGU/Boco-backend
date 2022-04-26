@@ -21,8 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import java.util.List;
 
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.*;
 
 /**
  * Security configuration. Define allowed paths for the different user roles.
@@ -47,6 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests().antMatchers("/api/login/**", "/api/token/refresh/**", "/api/user/save").permitAll();
         http.authorizeRequests().antMatchers(GET, "/api/users/**").hasAnyAuthority("ROLE_ADMIN");
+        http.authorizeRequests().antMatchers(DELETE, "/api/user/delete/**");
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(customAuthenticationFilter);
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);

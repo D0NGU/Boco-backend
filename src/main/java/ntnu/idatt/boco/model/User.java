@@ -29,13 +29,13 @@ public class User {
             name = "email"
 
     )
-    private String username;
+    private String email;
     @Column(name = "password")
     private String password;
     @ElementCollection
     private Collection<Role> roles = new ArrayList<>();
 
-
+/**
 
     public Integer getUserId() {
         return id;
@@ -70,7 +70,7 @@ public class User {
     }
 
 
-
+ **/
 }
 
 

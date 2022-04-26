@@ -1,4 +1,4 @@
-package ntnu.idatt.boco.usrAPI;
+package ntnu.idatt.boco.controller;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
@@ -11,7 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 import ntnu.idatt.boco.model.Role;
 import ntnu.idatt.boco.model.User;
 import ntnu.idatt.boco.service.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -42,7 +44,6 @@ public class UserResource {
         //implement logic before saving user
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/save").toUriString());
         System.out.println(user.toString());
-
         return ResponseEntity.created(uri).body(userService.saveUser(user));
     }
 
@@ -62,6 +63,13 @@ public class UserResource {
         return ResponseEntity.ok().build();
     }
 
+    @DeleteMapping("/user/delete")
+    public ResponseEntity<String> deleteUser(@RequestBody User user) {
+        log.info("Deleting user: {}", user.getEmail());
+        userService.deleteUser(user);
+        return new ResponseEntity<>("Deletion was successful", HttpStatus.OK);
+    }
+
 
 
     @GetMapping("/token/refresh")
@@ -76,7 +84,7 @@ public class UserResource {
                 String username = decodedJWT.getSubject();
                 User user = userService.getUser(username);
                 String access_token = JWT.create()
-                        .withSubject(user.getUsername())
+                        .withSubject(user.getEmail())
                         .withExpiresAt(new Date(System.currentTimeMillis() + (10 * 60 * 1000)))
                         .withIssuer(request.getRequestURI().toString())
                         .withClaim("roles", user.getRoles().stream().map(Role::getName).collect(Collectors.toList()))
