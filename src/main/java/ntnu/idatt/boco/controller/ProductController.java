@@ -1,12 +1,10 @@
 package ntnu.idatt.boco.controller;
 
-import ntnu.idatt.boco.model.AvailabilityWindow;
-import ntnu.idatt.boco.model.Product;
-import ntnu.idatt.boco.model.ProductImage;
-import ntnu.idatt.boco.model.Rental;
+import ntnu.idatt.boco.model.*;
 import ntnu.idatt.boco.repository.ImageRepository;
 import ntnu.idatt.boco.repository.ProductRepository;
 import ntnu.idatt.boco.repository.RentalRepository;
+import ntnu.idatt.boco.repository.UserRepository;
 import ntnu.idatt.boco.service.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +27,7 @@ public class ProductController {
     @Autowired RentalRepository rentalRepository;
     @Autowired ImageRepository imageRepository;
     @Autowired ProductService service;
+    @Autowired UserRepository userRepository;
 
     /**
      * Method for handling POST-requests for registering a new product
@@ -192,16 +191,17 @@ public class ProductController {
      * @return an HTTP response containing a list of all the users products and an HTTP status code
      */
     @GetMapping("/user/{userId}")
-    @ResponseBody
-    public ResponseEntity<List<Product>> getUsersProducts(@PathVariable int userId) {
-        logger.info("Request for products by user " + userId);
+    public ResponseEntity<UsersProducts> getUsersProducts(@PathVariable int userId) {
+        logger.info("Getting users " + userId + "products");
         try {
-            logger.info("Retrieved user products successfully");
-            return new ResponseEntity<>(productRepository.getFromUserId(userId), HttpStatus.OK);
-        } catch (Exception e) {
-            logger.error("Error retrieving user products");
+            User user = userRepository.getUserById(userId);
+            List<Product> products = productRepository.getFromUserId(userId);
+            List<ProductImage> images = imageRepository.getImagesForUsersProducts(userId);
+            return new ResponseEntity<>(new UsersProducts(user, products, images), HttpStatus.OK);
+        }catch (Exception e ){
+            logger.error("Getting users products failed");
             e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
