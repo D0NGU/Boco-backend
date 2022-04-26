@@ -150,7 +150,7 @@ public class ProductController {
     @GetMapping("/category/{category}")
     @ResponseBody
     public ResponseEntity<List<Product>> getByCategory(@PathVariable String category, @RequestParam int page) {
-        logger.info("Getting all products in " + category);
+        logger.info("Getting all products in " + category + " on page " + page);
         try {
             int offset = (page-1)*10;
             return new ResponseEntity<>(productRepository.getFromCategory(category, offset), HttpStatus.OK);
@@ -190,7 +190,7 @@ public class ProductController {
     public ResponseEntity<List<Product>> getProductFromSearch(@RequestParam String q, @RequestParam int page) {
         logger.info("Request for a search " + q);
         try{
-            int offset = (page-1)*2;
+            int offset = (page-1)*10;
             logger.info("Searching for " + q + " on page " + page);
             return new ResponseEntity<>(productRepository.searchProductByWord(q,offset), HttpStatus.OK);
         }catch (Exception e){
