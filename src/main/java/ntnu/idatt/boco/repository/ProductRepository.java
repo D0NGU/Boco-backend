@@ -99,6 +99,7 @@ public class ProductRepository {
      */
     public List<Product> searchProductByWord(String word, int offset) {
         if (env.acceptsProfiles(Profiles.of("mysql"))) {
+            // Todo limit
             return jdbcTemplate.query("SELECT * FROM products WHERE MATCH (title, description) AGAINST (? IN NATURAL LANGUAGE MODE)", BeanPropertyRowMapper.newInstance(Product.class), new Object[]{word});
         }
         else {
