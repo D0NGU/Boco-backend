@@ -36,6 +36,16 @@ public class RentalRepository {
     }
 
     /**
+     * Returns a list of all accepted or non-accepted rentals with a certain user_id.
+     * @param userId the id of the user who rented
+     * @param accepted true to retrieve all accepted rentals, false to retrieve all non-accepted rentals
+     * @return a list containing all accepted or non-accepted rentals with the correct user_id
+     */
+    public List<Rental> getAcceptedRentalsByUser(int userId, boolean accepted) {
+        return jdbcTemplate.query("SELECT * FROM rentals WHERE user_id = ? AND accepted = ? ORDER BY date_from;", BeanPropertyRowMapper.newInstance(Rental.class), userId, accepted);
+    }
+
+    /**
      * Method for saving a new rental object to the database.
      * @param rental the rental object to be saved to the database
      * @return the number of rows in the database that was affected by the SQL insertion

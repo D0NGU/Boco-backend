@@ -102,6 +102,29 @@ public class RentalController {
     }
 
     /**
+     * Method for handling GET-requests for retrieving all accepted or non-accepted rentals with a certain user_id.
+     * @param id the if of the user who rented
+     * @return an HTTP response containing a list of all accepted or non-accepted rentals with the correct user_id and a HTTP status code
+     */
+    @GetMapping("/user/{id}")
+    public ResponseEntity<List<Rental>> getAcceptedRentalsByUser(@PathVariable("id") int id) {
+        logger.info("New GET-request for accepted rentals with user_id " + id);
+        try {
+            List<Rental> resultList = rentalRepository.getAcceptedRentalsByUser(id, true);
+            if (resultList.isEmpty()) {
+                logger.info("No rentals with user_id " + id + " found");
+                return new ResponseEntity<>(null, HttpStatus.OK);
+            }
+            logger.info("Success - rentals retrieved");
+            return new ResponseEntity<>(resultList, HttpStatus.OK);
+        } catch(Exception e) {
+            logger.error("Rentals retrieval error");
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
      * Method for handling POST-requests for accepting rentals.
      * @param rentalId the id of the rental object to be accepted
      * @return an HTTP response containing a string with the status of the change and a HTTP status code
