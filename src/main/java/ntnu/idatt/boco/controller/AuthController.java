@@ -35,17 +35,16 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<String> registerNewAccount(@RequestBody User user) {
         logger.info(user.getEmail() + ": Signup Requested");
-        try {
             databaseRepository.saveUserToDatabase(user);
             logger.info(user.getEmail() + ": User registered");
             return new ResponseEntity<>("Registered successfully!", HttpStatus.CREATED);
-        } catch (DuplicateKeyException e) {
+        /*} catch (DuplicateKeyException e) {
             logger.info(user.getEmail() + ": Error - Email in use");
             return new ResponseEntity<>("Duplicate email", HttpStatus.CONFLICT);
         } catch (Exception e) {
             logger.info(user.getEmail() + ": Error registering user");
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        }*/
     }
 
     /**
@@ -61,7 +60,7 @@ public class AuthController {
             if (!databaseRepository.existsByEmail(login.getEmail())) {
                 logger.info(login.getEmail() + ": User does not exist");
                 return new ResponseEntity<>("User does not exist", HttpStatus.NOT_FOUND);
-            };
+            }
             // Check if password is correct
             byte[] expectedHash = databaseRepository.getHashedPasswordByEmail(login.getEmail());
             byte[] salt = databaseRepository.getSaltByEmail(login.getEmail());

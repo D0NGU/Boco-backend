@@ -46,7 +46,6 @@ public class User {
     public String getSalt() {
         return salt;
     }
-    @JsonIgnore
     public String getPassword() {
         return password;
     }
