@@ -80,19 +80,6 @@ public class UserController {
         }
     }
 
-    @GetMapping("/{userId}/products")
-    public ResponseEntity<UsersProducts> getUsersProducts(@PathVariable int userId) {
-        logger.info("Getting users " + userId + "products");
-        try {
-            User user = userRepository.getUserById(userId);
-            List<Product> products = productRepository.getFromUserId(userId);
-            List<ProductImage> images = imageRepository.getImagesForUsersProducts(userId);
-            return new ResponseEntity<>(new UsersProducts(user, products, images), HttpStatus.OK);
-        }catch (Exception e ){
-            logger.error("Getting users products failed");
-            e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+
 }
 
