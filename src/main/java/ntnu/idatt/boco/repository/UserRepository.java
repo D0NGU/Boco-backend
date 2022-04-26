@@ -40,6 +40,11 @@ public class UserRepository {
         return jdbcTemplate.queryForObject("SELECT * FROM users WHERE user_id = ?;", BeanPropertyRowMapper.newInstance(User.class), userId);
     }
 
+    public User getUserByEmail(String email) {
+        logger.info("Finding user " + email);
+        return jdbcTemplate.queryForObject("SELECT * FROM users WHERE email = ?;", BeanPropertyRowMapper.newInstance(User.class), email);
+    }
+
     /**
      * Method for retrieving a users hashed password by email
      * @param email the email address of the user to retrieve the hashed password from

@@ -1,11 +1,19 @@
 package ntnu.idatt.boco.controller;
 
+import ntnu.idatt.boco.config.JwtTokenUtil;
+import ntnu.idatt.boco.model.JwtResponse;
+import ntnu.idatt.boco.service.JwtUserDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,6 +34,9 @@ import ntnu.idatt.boco.security.Encryption;
 public class AuthController {
     Logger logger = LoggerFactory.getLogger(AuthController.class);
     @Autowired UserRepository databaseRepository;
+    @Autowired private AuthenticationManager authenticationManager;
+    @Autowired JwtUserDetailsService userDetailsService;
+    @Autowired JwtTokenUtil jwtTokenUtil;
 
     /**
      * Method for handling POST-requests for registering a new user
@@ -71,7 +82,7 @@ public class AuthController {
      */
     // POST-request because the parameters in GET get stored all over the place for caching reasons.
     @PostMapping("/signin")
-    public ResponseEntity<Integer> loginUser(@RequestBody LoginRequest login) {
+    public ResponseEntity<?> loginUser(@RequestBody LoginRequest login) {
         String email = login.getEmail();
         logger.info(email + ": Login requested");
         try {
@@ -88,7 +99,13 @@ public class AuthController {
             if (Encryption.isExpectedPassword(login.getPassword(), salt, expectedHash)) {
                 // Return OK if correct password
                 logger.info(email + ": Successfull login");
-                return new ResponseEntity<>(id, HttpStatus.OK);
+                authenticate(login.getEmail(), login.getPassword());
+
+                final UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+
+                final String token = jwtTokenUtil.generateToken(userDetails);
+
+                return new ResponseEntity<>(new JwtResponse(token), HttpStatus.OK);
             } else {
                 // Return 403 if wrong password
                 logger.info(email + ": Wrong password");
@@ -108,5 +125,15 @@ public class AuthController {
     @PostMapping("/signout")
     public void signoutAccount(@RequestBody User user) {
         // TODO
+    }
+
+    private void authenticate(String username, String password) throws Exception {
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+        } catch (DisabledException e) {
+            throw new Exception("USER_DISABLED", e);
+        } catch (BadCredentialsException e) {
+            throw new Exception("INVALID_CREDENTIALS", e);
+        }
     }
 }
