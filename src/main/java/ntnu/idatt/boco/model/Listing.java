@@ -3,7 +3,8 @@ package ntnu.idatt.boco.model;
 import java.util.List;
 
 /**
- * This class represents a listing, which contains all the information necessary for creating a view of the product.
+ * This class contains all surrounding information about any {@link Product}.
+ * This information contains properties of the product, any images, owner info, categories/sub-categories and availability.
  */
 public class Listing {
     Product product;

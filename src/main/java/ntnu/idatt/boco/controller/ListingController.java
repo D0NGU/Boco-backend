@@ -16,8 +16,7 @@ import java.util.List;
 
 /**
  * Listing controller provides an endpoint for generating listings for a product.
- * A listing is a model supposed to contain all information necessary for creating a view of the product.
- * This information contains title of the product, images, owner info, category path and availability.
+ * @see ntnu.idatt.boco.model.Listing Listing
  */
 @CrossOrigin
 @RestController
@@ -30,30 +29,27 @@ public class ListingController {
     @Autowired CategoryRepository categoryRepository;
     @Autowired ImageRepository imageRepository;
 
-
     /**
-     * The get method to get a listing based on a product id
-     * @param productId the id the listing is created for
-     * @return A listing model and an Http status
+     * The get method to get a listing based on a productId
+     * @param productId the ID the listing is created for
+     * @return status code and a listing object:
+     *          {@code 200} if success,
+     *          {@code 500} if error
      */
     @GetMapping("/{productId}")
     @ResponseBody
     public ResponseEntity<Listing> getListingById(@PathVariable int productId) {
-        logger.info("Getting listing for product " +  productId);
+        logger.info(productId + ": Creating listing");
         try {
             Product product = productRepository.getProduct(productId);
-            logger.info("Found product");
             User user = userRepository.getUserById(product.getUserId());
-            logger.info("Found user");
             List<AvailabilityWindow> availability = productController.getAvailability(productId).getBody();
-            logger.info("Found availability");
             List<Category> categories = categoryRepository.getMainCategories(product.getCategory());
-            logger.info("Found categories");
             List<ProductImage> images = imageRepository.getImagesByProductId(productId);
-            logger.info("Found all attributes");
             return new ResponseEntity<>(new Listing(product, user, availability, categories, images), HttpStatus.OK);
         } catch (Exception e) {
-            logger.info("Error getting product");
+            logger.error("Could not create listing for " + productId);
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
