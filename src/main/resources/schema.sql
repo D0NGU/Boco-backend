@@ -1,5 +1,44 @@
 -- Create tables
 
+create table role (
+                      id BIGINT,
+                      name varchar(255),
+                      primary key (id)
+);
+
+
+create table user (
+                      id INTEGER,
+                      fname varchar(255),
+                      lname varchar(255),
+                      password varchar(255),
+                      email varchar(255),
+                      primary key (id)
+);
+
+create table user_roles (
+                            user_id INTEGER not null,
+                            roles_id BIGINT not null
+);
+
+
+alter table user
+    add constraint UK_ob8kqyqqgmefl0aco34akdtpe unique (email);
+
+
+alter table user_roles
+    add constraint UK_amwlmdeik2qdnksxgd566knop unique (roles_id);
+
+
+alter table user_roles
+    add constraint FKj9553ass9uctjrmh0gkqsmv0d
+        foreign key (roles_id)
+            references role(id);
+
+alter table user_roles
+    add constraint FK55itppkw3i07do3h7qoclqd4k
+        foreign key (user_id)
+            references user(id);
 
 CREATE TABLE reviews (
     review_id INTEGER NOT NULL AUTO_INCREMENT,

@@ -11,14 +11,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity @Data @NoArgsConstructor @AllArgsConstructor
+@Table(name = "user")
 public class User {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) //@GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Integer id;
     private String fname;
     private String lname;
 
     @Column(
-            unique = true
+            unique = true,
+            name = "email"
+
     )
     private String username;
     private String password;
@@ -26,7 +29,7 @@ public class User {
     private Collection<Role> roles = new ArrayList<>();
 
 
-    public Long getUserId() {
+    public Integer getUserId() {
         return id;
     }
     public String getFname() {

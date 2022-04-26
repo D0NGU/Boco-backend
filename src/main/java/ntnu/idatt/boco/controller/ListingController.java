@@ -45,7 +45,7 @@ public class ListingController {
         logger.info(productId + ": Creating listing");
         try {
             Product product = productRepository.getProduct(productId);
-            User user = userService.getUserById((long) product.getUserId());
+            User user = userService.getUserById(product.getUserId());
 
             List<AvailabilityWindow> availability = productController.getAvailability(productId).getBody();
             List<Category> categories = categoryRepository.getMainCategories(product.getCategory());

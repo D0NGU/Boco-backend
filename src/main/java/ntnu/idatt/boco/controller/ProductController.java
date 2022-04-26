@@ -197,7 +197,7 @@ public class ProductController {
     public ResponseEntity<UsersProducts> getUsersProducts(@PathVariable int userId) {
         logger.info("Getting users " + userId + "products");
         try {
-            User user = userService.getUserById((long) userId);
+            User user = userService.getUserById(userId);
             List<Product> products = productRepository.getFromUserId(userId);
             List<ProductImage> images = imageRepository.getImagesForUsersProducts(userId);
             return new ResponseEntity<>(new UsersProducts(user, products, images), HttpStatus.OK);
