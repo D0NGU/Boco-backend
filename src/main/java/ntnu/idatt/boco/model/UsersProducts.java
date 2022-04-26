@@ -2,6 +2,10 @@ package ntnu.idatt.boco.model;
 
 import java.util.List;
 
+/**
+ * This class represents all the products owned by a user.
+ * It contains information about the {@link User}, its {@link Product} and the {@link ProductImage}
+ */
 public class UsersProducts {
     User user;
     List<Product> products;
@@ -9,6 +13,12 @@ public class UsersProducts {
 
     public UsersProducts() {}
 
+    /**
+     * Constructor for a UsersProducts object
+     * @param user a user that owns products
+     * @param products a list of all the products the user owns
+     * @param images a list of all the images of the products
+     */
     public UsersProducts(User user, List<Product> products, List<ProductImage> images) {
         this.user = user;
         this.products = products;
