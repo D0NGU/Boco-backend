@@ -30,11 +30,21 @@ public class UserRepository {
                             new Object[] { user.getFname(), user.getLname(), hashedPassword, user.getEmail(), salt });
     }
 
+    /**
+     * Method for retrieving userId by email address
+     * @param email the users email address
+     * @return the id of the user with the email address
+     */
     public int getIdByEmail(String email) {
         logger.info("Finding userId for " + email);
         return jdbcTemplate.queryForObject("SELECT user_id FROM users WHERE email = ?;", int.class, email);
     }
 
+    /**
+     * Method for retrieving a user object by userId
+     * @param userId the id of the user to find
+     * @return a user with the given userId
+     */
     public User getUserById(int userId) {
         logger.info("Finding user " + userId);
         return jdbcTemplate.queryForObject("SELECT * FROM users WHERE user_id = ?;", BeanPropertyRowMapper.newInstance(User.class), userId);
