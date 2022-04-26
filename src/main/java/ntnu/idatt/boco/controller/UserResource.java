@@ -13,7 +13,6 @@ import ntnu.idatt.boco.model.User;
 import ntnu.idatt.boco.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -41,7 +40,7 @@ public class UserResource {
 
     @PostMapping("/user/save")
     public ResponseEntity<User>saveUser(@RequestBody User user) {
-        //implement logic before saving user
+
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/save").toUriString());
         System.out.println(user.toString());
         return ResponseEntity.created(uri).body(userService.saveUser(user));
@@ -49,14 +48,14 @@ public class UserResource {
 
     @PostMapping("/role/save")
     public ResponseEntity<Role>saveRole(@RequestBody Role role) {
-        //implement logic before saving role
+
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/role/save").toUriString());
         return ResponseEntity.created(uri).body(userService.saveRole(role));
     }
 
     @PostMapping("/role/addtouser")
     public ResponseEntity<?>addRoleToUser(@RequestBody RoleToUserForm form) {
-        //implement logic before saving role
+
         userService.addRoleToUser(form.getUsername(), form.getRoleName());
         System.out.println(form.getUsername() + " " + form.getRoleName());
         log.info("added role: {}, to user: {}", form.getRoleName(), form.getUsername());

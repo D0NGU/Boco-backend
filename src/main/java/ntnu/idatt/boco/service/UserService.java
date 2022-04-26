@@ -4,7 +4,6 @@ import ntnu.idatt.boco.model.Role;
 import ntnu.idatt.boco.model.User;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * interface to represent UserService functionality
