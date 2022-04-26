@@ -54,45 +54,57 @@ public class RentalControllerTest {
 
     @Test
     @Order(5)
+    public void successfullyRetrievedAcceptedRentalsByUser() {
+        List<Rental> list = Arrays.asList(TEST_RENTAL2);
+        assertEquals(list.toString(), rentalController.getAcceptedRentalsByUser(2).getBody().toString());
+    }
+
+    @Test
+    @Order(6)
+    public void successfullyRetrievedAcceptedRentalsByUserWhenEmpty() {
+        assertEquals(200, rentalController.getAcceptedRentalsByUser(1).getStatusCodeValue());
+    }
+
+    @Test
+    @Order(7)
     public void successfullyRetrievedAcceptedRentalsByProductId() {
         List<Rental> list = Arrays.asList(TEST_RENTAL2);
         assertEquals(list.toString(), rentalController.getAcceptedRentals(1, true).getBody().toString());
     }
 
     @Test
-    @Order(6)
+    @Order(8)
     public void successfullyAcceptedRental() {
         assertEquals(200, rentalController.acceptRental(TEST_RENTAL.getRentalId()).getStatusCodeValue());
     }
 
     @Test
-    @Order(7)
+    @Order(9)
     public void unSuccessfullyAcceptedRental() {
         assertEquals(400, rentalController.acceptRental(TEST_RENTAL.getRentalId()).getStatusCodeValue());
     }
 
     @Test
-    @Order(8)
+    @Order(10)
     public void successfullyRetrievedAcceptedRentalsByProductIdWhenEmpty() {
         assertNull(rentalController.getAcceptedRentals(6, true).getBody());
     }
 
     @Test
-    @Order(9)
+    @Order(11)
     public void successfullyRetrievedNonAcceptedRentalsByProductIdWhenEmpty() {
         assertNull(rentalController.getAcceptedRentals(1, false).getBody());
     }
 
     @Test
-    @Order(10)
+    @Order(12)
     public void successfullyDeleteRental() {
         assertEquals(200, rentalController.deleteRental(2).getStatusCodeValue());
     }
 
     @Test
-    @Order(11)
+    @Order(13)
     public void unSuccessfullyDeleteRental() {
         assertEquals(400, rentalController.deleteRental(2).getStatusCodeValue());
     }
-
 }
