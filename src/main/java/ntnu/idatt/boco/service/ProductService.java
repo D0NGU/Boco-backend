@@ -14,12 +14,8 @@ import java.util.List;
 
 @Service
 public class ProductService {
-
-    @Autowired
-    ProductRepository productRepository;
-
-    @Autowired
-    RentalRepository rentalRepository;
+    @Autowired ProductRepository productRepository;
+    @Autowired RentalRepository rentalRepository;
 
     /**
      * Method to get a list of time windows where a product is available for rental.
@@ -38,8 +34,6 @@ public class ProductService {
         if(!rentals.isEmpty()){
 
             for (Rental rental : rentals) {
-            /*
-            */
                 requested.add(new AvailabilityWindow(rental.getDateFrom(), rental.getDateTo()));
             }
 
@@ -57,10 +51,9 @@ public class ProductService {
                 available.add(new AvailabilityWindow(requested.get(requested.size()-1).getTo().plusDays(+1), product.getAvailableTo()));
             }
 
-        }else{
+        } else {
             available.add(new AvailabilityWindow(product.getAvailableFrom(), product.getAvailableTo()));
         }
-
         return available;
     }
 }

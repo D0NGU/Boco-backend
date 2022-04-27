@@ -42,10 +42,9 @@ public class JWT_TokenUtil implements Serializable {
 
     /**
      * Method to get a single claim from token
-     * @param <T>
      * @param token
      * @param claimsResolver 
-     * @return 
+     * @return all claims connected to the token
      * @see Claims
      * @see #getAllClaimsFromToken(String)
      */
@@ -78,7 +77,7 @@ public class JWT_TokenUtil implements Serializable {
 
     /**
      * Generate new token for user
-     * @param userDetails 
+     * @param userDetails user information to be encapsulated into token
      * @return token as URL-safe String
      */
     public String generateToken(UserDetails userDetails) {
@@ -88,8 +87,8 @@ public class JWT_TokenUtil implements Serializable {
 
     /**
      * Generates new token
-     * @param claims
-     * @param subject
+     * @param claims pieces of user information
+     * @param subject the users email (username)
      * @return token as URL-safe String
      * @see #generateToken(UserDetails)
      */
@@ -106,7 +105,7 @@ public class JWT_TokenUtil implements Serializable {
     /**
      * Method to validate token
      * @param token
-     * @param userDetails
+     * @param userDetails user information to be encapsulated into token
      * @return {@code true} if token is valid, {@code false} if not 
      */
     public Boolean validateToken(String token, UserDetails userDetails) {

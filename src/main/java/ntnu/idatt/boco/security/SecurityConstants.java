@@ -1,5 +1,8 @@
 package ntnu.idatt.boco.security;
 
+/**
+ * Contains constant values used by other classes in .security
+ */
 public final class SecurityConstants {
     
     private SecurityConstants() {
