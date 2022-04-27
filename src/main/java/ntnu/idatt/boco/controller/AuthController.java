@@ -42,16 +42,20 @@ public class AuthController {
      *          {@code 500} if error
      */
     @PostMapping("/signup")
-    public ResponseEntity<Integer> registerNewAccount(@RequestBody User user) {
+    public ResponseEntity<?> registerNewAccount(@RequestBody User user) {
         String email = user.getEmail();
         logger.info(email + ": Signup Requested");
         
         try {
             databaseRepository.saveUserToDatabase(user);
             logger.info(email + ": User registered");
-            // Return userId to client with status 201 (Created)
+            // Return token to client with status 201 (Created)
             int id = databaseRepository.getIdByEmail(email);
-            return new ResponseEntity<>(id, HttpStatus.CREATED);
+            final UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+
+            final String token = jwtTokenUtil.generateToken(userDetails);
+
+            return new ResponseEntity<>(new JWT_Response(token), HttpStatus.OK);
         } 
         
         catch (DuplicateKeyException dke) {
