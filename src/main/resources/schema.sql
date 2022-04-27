@@ -1,13 +1,44 @@
 -- Create tables
-CREATE TABLE users (
-    user_id INTEGER NOT NULL AUTO_INCREMENT,
-    fname VARCHAR(75)  NOT NULL,
-    lname VARCHAR(75) NOT NULL,
-    email VARCHAR(75) NOT NULL UNIQUE ,
-    salt VARBINARY(64) NOT NULL,
-    password VARBINARY(64) NOT NULL,
-    PRIMARY KEY (user_id)
+
+create table role (
+                      id INTEGER NOT NULL AUTO_INCREMENT,
+                      name varchar(255),
+                      primary key (id)
 );
+
+
+create table user (
+                      id INTEGER NOT NULL AUTO_INCREMENT,
+                      fname varchar(255),
+                      lname varchar(255),
+                      password varchar(255),
+                      email varchar(255),
+                      primary key (id)
+);
+
+create table user_roles (
+                            user_id INTEGER not null,
+                            roles_id BIGINT not null
+);
+
+
+alter table user
+    add constraint UK_ob8kqyqqgmefl0aco34akdtpe unique (email);
+
+
+alter table user_roles
+    add constraint UK_amwlmdeik2qdnksxgd566knop unique (roles_id);
+
+
+alter table user_roles
+    add constraint FKj9553ass9uctjrmh0gkqsmv0d
+        foreign key (roles_id)
+            references role(id);
+
+alter table user_roles
+    add constraint FK55itppkw3i07do3h7qoclqd4k
+        foreign key (user_id)
+            references user(id);
 
 CREATE TABLE reviews (
     review_id INTEGER NOT NULL AUTO_INCREMENT,
@@ -62,12 +93,12 @@ CREATE TABLE images(
 ALTER TABLE reviews
     ADD CONSTRAINT FK_author
         FOREIGN KEY (author) 
-        REFERENCES users(user_id);
+        REFERENCES user(id);
 
 ALTER TABLE reviews
     ADD CONSTRAINT FK_subject
         FOREIGN KEY (subject) 
-        REFERENCES users(user_id) ON DELETE CASCADE;
+        REFERENCES user(id) ON DELETE CASCADE;
 
 ALTER TABLE reviews
     ADD CONSTRAINT valid_stars 
@@ -81,7 +112,7 @@ ALTER TABLE categories
 ALTER TABLE products
     ADD CONSTRAINT FK_owner
         FOREIGN KEY (user_id) 
-        REFERENCES users(user_id) ON DELETE CASCADE;
+        REFERENCES user(id) ON DELETE CASCADE;
 
 ALTER TABLE products
     ADD CONSTRAINT FK_category
@@ -91,7 +122,7 @@ ALTER TABLE products
 ALTER TABLE rentals
     ADD CONSTRAINT FK_renter
         FOREIGN KEY (user_id) 
-        REFERENCES users(user_id) ON DELETE CASCADE;
+        REFERENCES user(id) ON DELETE CASCADE;
 
 ALTER TABLE rentals
     ADD CONSTRAINT FK_product

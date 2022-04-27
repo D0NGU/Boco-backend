@@ -1,5 +1,5 @@
 package ntnu.idatt.boco.controller;
-
+/**
 import ntnu.idatt.boco.model.*;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -46,3 +46,4 @@ public class UserControllerTest {
         assertEquals(200, userController.deleteUser(user).getStatusCodeValue());
     }
 }
+**/

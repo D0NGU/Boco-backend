@@ -37,6 +37,7 @@ public class ProductRepository {
      * @param product the product to be added
      */
     public void newProduct(Product product) {
+        System.out.println(product.getUserId());
         jdbcTemplate.update("INSERT INTO products(title, description, address, price, unlisted, available_from, available_to, user_id, category) VALUES (?,?,?,?,?,?,?,?,?)",
                 new Object[]{product.getTitle(), product.getDescription(), product.getAddress(), product.getPrice(), product.isUnlisted(), product.getAvailableFrom(), product.getAvailableTo(), product.getUserId(), product.getCategory()});
     }
@@ -189,7 +190,6 @@ public class ProductRepository {
     public int deleteProductWithUserIdAndProductId(int userId, int productId){
         return jdbcTemplate.update("DELETE FROM products WHERE product_id = ? AND user_id = ?;", productId, userId);
     }
-
 }
 
 
