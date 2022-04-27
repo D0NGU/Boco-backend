@@ -27,35 +27,39 @@ Clone repository locally, browse to project folder and execute:
   mvn install
   mvn spring-boot:run
 ```
-For running on the mysql database
-```
+For running server with NTNUs cloud-hosted MySQL DBMS
+
+```cmd
   mvn spring-boot:run -Dspring-boot.run.profiles=mysql
 ```
 
 
 ## API Example References
 
-#### Get all products in category
+The server uses JSON Web Tokens for authentication. This means that all URLs (except *api/auth/signup* and *api/auth/signin*) are unauthorized without passing a token in the HTTP Header.
+
+A token is returned in the response body when the client registers a new user or logs in.
+
+### Get product
 
 ```
-  GET /api/products/${category}
+  GET /api/products/${productId}
 ```
 
 | Field | Type     | Description                |
 | :-------- | :------- | :------------------------- |
-| `category` | `string` | **Required**. The category |
+| `productId` | `int` | **Required**. ID of the product |
 
-#### Edit product
+### Edit product
 
 ```
-  PUT /api/products/${productId}/edit
+  PUT /api/products/${productId}
 ```
 
 |   Field   |  Type    | Description                       |
 | :-------- | :------- | :-------------------------------- |
-|`productId`| `string` | **Required**. Id of item to edit |
-| `product` | `array`  | **Required**. Array of new data.
-| `api_key` | `string` | **Required**. Your API key |
+|`productId`| `int` | **Required**. ID of item to edit |
+| `product` | `array`  | **Required**. Array of new product data. |
 
 
 ## Authors
