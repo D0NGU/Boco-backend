@@ -1,4 +1,4 @@
-package ntnu.idatt.boco.config;
+package ntnu.idatt.boco.security.config;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -15,7 +15,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
-public class JwtTokenUtil implements Serializable {
+public class JWT_TokenUtil implements Serializable {
 
     private static final long serialVersionUID = -2550185165626007488L;
 

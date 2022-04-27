@@ -1,8 +1,7 @@
 package ntnu.idatt.boco.controller;
 
-import ntnu.idatt.boco.config.JwtTokenUtil;
-import ntnu.idatt.boco.model.JwtResponse;
-import ntnu.idatt.boco.service.JwtUserDetailsService;
+import ntnu.idatt.boco.model.JWT_Response;
+import ntnu.idatt.boco.service.JWT_UserDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +19,7 @@ import ntnu.idatt.boco.model.LoginRequest;
 import ntnu.idatt.boco.model.User;
 import ntnu.idatt.boco.repository.UserRepository;
 import ntnu.idatt.boco.security.Encryption;
+import ntnu.idatt.boco.security.config.JWT_TokenUtil;
 
 /**
  * This class contains methods responsible for handling HTTP requests regarding user registration and login/logout.
@@ -30,8 +30,8 @@ import ntnu.idatt.boco.security.Encryption;
 public class AuthController {
     Logger logger = LoggerFactory.getLogger(AuthController.class);
     @Autowired UserRepository databaseRepository;
-    @Autowired JwtUserDetailsService userDetailsService;
-    @Autowired JwtTokenUtil jwtTokenUtil;
+    @Autowired JWT_UserDetailsService userDetailsService;
+    @Autowired JWT_TokenUtil jwtTokenUtil;
 
     /**
      * Method for handling POST-requests for registering a new user
@@ -98,7 +98,7 @@ public class AuthController {
 
                 final String token = jwtTokenUtil.generateToken(userDetails);
 
-                return new ResponseEntity<>(new JwtResponse(token), HttpStatus.OK);
+                return new ResponseEntity<>(new JWT_Response(token), HttpStatus.OK);
             } else {
                 // Return 403 if wrong password
                 logger.info(email + ": Wrong password");
