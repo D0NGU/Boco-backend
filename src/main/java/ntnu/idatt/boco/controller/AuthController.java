@@ -55,7 +55,7 @@ public class AuthController {
             final UserDetails userDetails = userDetailsService.loadUserByUsername(email);
             final String token = jwtTokenUtil.generateToken(userDetails);
 
-            return new ResponseEntity<>(new JWT_Response(id, token), HttpStatus.OK);
+            return new ResponseEntity<>(new JWT_Response(id, token), HttpStatus.CREATED);
         } 
         
         catch (DuplicateKeyException dke) {
