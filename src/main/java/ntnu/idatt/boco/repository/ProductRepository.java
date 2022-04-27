@@ -168,6 +168,17 @@ public class ProductRepository {
         String inSql = String.join(",", Collections.nCopies(categories.size(), "?"));
         return jdbcTemplate.query(String.format("SELECT * FROM products WHERE category IN (%s) ORDER BY %s %s LIMIT 10 OFFSET %s", inSql, sortBy, order, offset), BeanPropertyRowMapper.newInstance(Product.class), catNames.toArray());
     }
+
+    /**
+     * Method for retrieving a user rental history
+     *
+     * @param userId  the id of the user
+     * @return a list of all the products a user has rented
+     */
+    public List<Product> getUserRentalHistory(int userId) {
+        return jdbcTemplate.query("SELECT products.product_id, products.title, products.description, products.address, products.price, products.unlisted, products.available_from, products.available_to, products.user_id, products.category FROM products RIGHT OUTER JOIN rentals ON products.product_id = rentals.product_id WHERE rentals.user_id = ? AND accepted = true",
+                BeanPropertyRowMapper.newInstance(Product.class), userId);
+    }
 }
 
 
