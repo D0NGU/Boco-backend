@@ -42,7 +42,7 @@ public class AuthController {
      *          {@code 500} if error
      */
     @PostMapping("/signup")
-    public ResponseEntity<?> registerNewAccount(@RequestBody User user) {
+    public ResponseEntity<JWT_Response> registerNewAccount(@RequestBody User user) {
         String email = user.getEmail();
         logger.info(email + ": Signup Requested");
         
@@ -81,7 +81,7 @@ public class AuthController {
      */
     // POST-request because the parameters in GET get stored all over the place for caching reasons.
     @PostMapping("/signin")
-    public ResponseEntity<?> loginUser(@RequestBody LoginRequest login) {
+    public ResponseEntity<JWT_Response> loginUser(@RequestBody LoginRequest login) {
         String email = login.getEmail();
         logger.info(email + ": Login requested");
         try {
@@ -114,14 +114,5 @@ public class AuthController {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
-
-    /**
-     * Method for handling POST-requests for user signout
-     * @param user the user requesting the signout
-     */
-    @PostMapping("/signout")
-    public void signoutAccount(@RequestBody User user) {
-        // TODO
     }
 }
