@@ -1,43 +1,37 @@
 package ntnu.idatt.boco.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
-
-@Entity @Data @NoArgsConstructor @AllArgsConstructor
-@Table(name = "user")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //@GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Integer id;
-    @Column(name = "fname")
+    private int userId;
     private String fname;
-    @Column(name = "lname")
     private String lname;
-
-    @Column(
-            unique = true,
-            name = "email"
-
-    )
     private String email;
-    @Column(name = "password")
+    private String salt;
     private String password;
-    @ElementCollection
-    private Collection<Role> roles = new ArrayList<>();
 
-/**
+    public User() {}
 
-    public Integer getUserId() {
-        return id;
+    /**
+     * Constructor for a user object.
+     * @param userId the unique id of the user
+     * @param fname the first name of the user
+     * @param lname the last name of the user
+     * @param email the users email address
+     * @param salt a salt used for hashing the users password
+     * @param password the password for the user
+     */
+    public User(int userId, String fname, String lname, String email, String salt, String password) {
+        this.userId = userId;
+        this.fname = fname;
+        this.lname = lname;
+        this.email = email;
+        this.salt = salt;
+        this.password = password;
+    }
+
+    public int getUserId() {
+        return userId;
     }
     public String getFname() {
         return fname;
@@ -46,10 +40,12 @@ public class User {
         return lname;
     }
     public String getEmail() {
-        return username;
+        return email;
     }
-    //@JsonIgnore
-
+    @JsonIgnore
+    public String getSalt() {
+        return salt;
+    }
     public String getPassword() {
         return password;
     }
@@ -61,15 +57,15 @@ public class User {
         this.lname = lname;
     }
     public void setEmail(String email) {
-        this.username = email;
+        this.email = email;
     }
-
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
     public void setPassword(String password) {
         this.password = password;
     }
-
-
- **/
 }
-
-

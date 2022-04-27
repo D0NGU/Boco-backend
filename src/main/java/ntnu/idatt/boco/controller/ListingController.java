@@ -1,12 +1,10 @@
 package ntnu.idatt.boco.controller;
 
-import lombok.NoArgsConstructor;
 import ntnu.idatt.boco.model.*;
 import ntnu.idatt.boco.repository.CategoryRepository;
 import ntnu.idatt.boco.repository.ImageRepository;
 import ntnu.idatt.boco.repository.ProductRepository;
-import ntnu.idatt.boco.service.UserService;
-import ntnu.idatt.boco.service.UserServiceImpl;
+import ntnu.idatt.boco.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +21,13 @@ import java.util.List;
 @CrossOrigin
 @RestController
 @RequestMapping("api/listing")
-@NoArgsConstructor
 public class ListingController {
     Logger logger = LoggerFactory.getLogger(ProductController.class);
     @Autowired ProductRepository productRepository;
+    @Autowired UserRepository userRepository;
     @Autowired ProductController productController;
     @Autowired CategoryRepository categoryRepository;
     @Autowired ImageRepository imageRepository;
-    @Autowired UserService userService;
 
     /**
      * The get method to get a listing based on a productId
@@ -45,8 +42,7 @@ public class ListingController {
         logger.info(productId + ": Creating listing");
         try {
             Product product = productRepository.getProduct(productId);
-            User user = userService.getUserById(product.getUserId());
-
+            User user = userRepository.getUserById(product.getUserId());
             List<AvailabilityWindow> availability = productController.getAvailability(productId).getBody();
             List<Category> categories = categoryRepository.getMainCategories(product.getCategory());
             List<ProductImage> images = imageRepository.getImagesByProductId(productId);
