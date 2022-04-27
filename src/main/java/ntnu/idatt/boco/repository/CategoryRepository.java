@@ -10,14 +10,27 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * This class contains methods relating to managing categories in the database.
+ */
 @Repository
 public class CategoryRepository {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
+    /**
+     * Method for retrieving all categories stored in the database
+     * @return a list of all categories
+     */
     public List<Category> getAll() {
         return jdbcTemplate.query("SELECT * FROM categories", BeanPropertyRowMapper.newInstance(Category.class));
     }
+
+    /**
+     * Method for retrieving a category by name
+     * @param name the name of the category
+     * @return the category with the corresponding name
+     */
     public Category getCategory(String name) {
         return jdbcTemplate.queryForObject("SELECT * FROM categories WHERE CATEGORY = ?", BeanPropertyRowMapper.newInstance(Category.class), name);
     }
@@ -47,9 +60,13 @@ public class CategoryRepository {
         return subs;
     }
 
+    /**
+     * Method for retrieving a all main-categories of a given sub-category
+     * @param sub the name of the sub-category
+     * @return a list of the main categories
+     */
     public List<Category> getMainCategories(String sub) {
         Category category = getCategory(sub);
-        List <Category> all = getAll();
         List<Category> mains = new ArrayList<>();
 
         while (category.getMainCategory() != null) {

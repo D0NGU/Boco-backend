@@ -2,19 +2,18 @@ package ntnu.idatt.boco.security;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import javax.xml.bind.DatatypeConverter;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class EncryptionTest {
     // Test data consist of the password 'test123', a premade salt and the pre-hashed password
-    private final byte[] SALT = DatatypeConverter.parseHexBinary("9eb8eb1886c3184fa3f3d963c1578f40");
+    private final byte[] SALT = Encryption.hexStringToByteArray("9eb8eb1886c3184fa3f3d963c1578f40");
     private final String PASSWORD = "test123";
     private final String WRONG_PASSWORD = "3tset21";
-    private final byte[] EXPECTED_HASH = DatatypeConverter.parseHexBinary("08dab1fea88143614b4d449ba5ec067d");
+    private final byte[] EXPECTED_HASH = Encryption.hexStringToByteArray("08dab1fea88143614b4d449ba5ec067d");
 
     @Test
     @DisplayName("Salt is desired length")
@@ -30,7 +29,13 @@ public class EncryptionTest {
     }
 
     @Test
-    @DisplayName("Correct password matches expected hashed value")
+    @DisplayName("Different salt gives different hash")
+    void hash_differentSalt_false() throws Exception {
+        assertNotEquals(new String(Encryption.getNextSalt()), new String(Encryption.hash(PASSWORD, SALT)));
+    }
+
+    @Test
+    @DisplayName("Correct password matches expected hashed value 💡")
     void isExpectedPassword_correctPassword_true() throws Exception {
         assertTrue(Encryption.isExpectedPassword(PASSWORD, SALT, EXPECTED_HASH));
     }

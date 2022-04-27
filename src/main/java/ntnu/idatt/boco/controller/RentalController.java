@@ -23,13 +23,35 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/rentals")
 public class RentalController {
-    Logger logger = LoggerFactory.getLogger(AuthController.class);
-    @Autowired
-    RentalRepository rentalRepository;
-    @Autowired
-    ProductRepository productRepository;
-    @Autowired
-    ProductService service;
+    Logger logger = LoggerFactory.getLogger(RentalController.class);
+    @Autowired RentalRepository rentalRepository;
+    @Autowired ProductRepository productRepository;
+    @Autowired ProductService service;
+
+    /**
+     * Method for handling POST-requests for registering new rentals to the database.
+     * @param rental the rental object to be saved to the database
+     * @return an HTTP response containing a string with the status of the registration and a HTTP status code
+     */
+    @PostMapping
+    public ResponseEntity<String> registerNewRental(@RequestBody Rental rental) {
+        logger.info("New rental registration requested");
+        try {
+            if(checkIfAvailable(rental)) {
+                rentalRepository.saveRentalToDatabase(rental);
+                logger.info("Success - rental registered");
+                return new ResponseEntity<>("Registered successfully!", HttpStatus.CREATED);
+            }else{
+                logger.info("Rental not available");
+                return new ResponseEntity<>("Rental unavailable", HttpStatus.CONFLICT);
+            }
+
+        } catch(Exception e) {
+            logger.error("Rental registration error");
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     /**
      * Method for handling GET-requests for retrieving all rentals with a certain product_id.
@@ -48,7 +70,8 @@ public class RentalController {
             logger.info("Success - rentals retrieved");
             return new ResponseEntity<>(resultList, HttpStatus.OK);
         } catch(Exception e) {
-            logger.info("Rental retrieval error");
+            logger.error("Rental retrieval error");
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -72,41 +95,98 @@ public class RentalController {
             logger.info("Success - rentals retrieved");
             return new ResponseEntity<>(resultList, HttpStatus.OK);
         } catch(Exception e) {
-            logger.info("Rentals retrieval error");
+            logger.error("Rentals retrieval error");
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     /**
-     * Method for handling POST-requests for registering new rentals to the database.
-     * @param rental the rental object to be saved to the database
-     * @return an HTTP response containing a string with the status of the registration and a HTTP status code
+     * Method for handling GET-requests for retrieving all accepted or non-accepted rentals with a certain user_id.
+     * @param id the if of the user who rented
+     * @return an HTTP response containing a list of all accepted or non-accepted rentals with the correct user_id and a HTTP status code
      */
-    @PostMapping("/")
-    public ResponseEntity<String> registerNewRental(@RequestBody Rental rental) {
-        logger.info("New rental registration requested");
+    @GetMapping("/user/{id}")
+    public ResponseEntity<List<Rental>> getAcceptedRentalsByUser(@PathVariable("id") int id) {
+        logger.info("New GET-request for accepted rentals with user_id " + id);
         try {
-            Product test = productRepository.getProduct(rental.getProductId());
-            List<Rental> rentals = rentalRepository.getAcceptedRentals(test.getProductId(), true);
-            List<AvailabilityWindow> availabilityWindows = service.getAvailability(test,rentals);
-            boolean availableSpot = false;
-            for (AvailabilityWindow availabilityWindow : availabilityWindows){
-                if(!rental.getDateFrom().isBefore(availabilityWindow.getFrom()) && !rental.getDateTo().isAfter(availabilityWindow.getTo())){
-                    availableSpot = true;
-                }
+            List<Rental> resultList = rentalRepository.getAcceptedRentalsByUser(id, true);
+            if (resultList.isEmpty()) {
+                logger.info("No rentals with user_id " + id + " found");
+                return new ResponseEntity<>(null, HttpStatus.OK);
             }
-            if(availableSpot) {
-                rentalRepository.saveRentalToDatabase(rental);
-                logger.info("Success - rental registered");
-                return new ResponseEntity<>("Registered successfully!", HttpStatus.CREATED);
-            }else{
-                logger.info("Rental not available");
-                return new ResponseEntity<>("Rental unavailable", HttpStatus.CONFLICT);
-            }
-
+            logger.info("Success - rentals retrieved");
+            return new ResponseEntity<>(resultList, HttpStatus.OK);
         } catch(Exception e) {
-            logger.info("Rental registration error");
+            logger.error("Rentals retrieval error");
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    /**
+     * Method for handling POST-requests for accepting rentals.
+     * @param rentalId the id of the rental object to be accepted
+     * @return an HTTP response containing a string with the status of the change and a HTTP status code
+     */
+    @PutMapping("/accept/{rentalId}")
+    public ResponseEntity<String> acceptRental(@PathVariable int rentalId) {
+        logger.info("Accept request for rental " + rentalId);
+        try {
+            Rental rental = rentalRepository.getRentalById(rentalId).get(0);
+            if (checkIfAvailable(rental)) {
+                rentalRepository.acceptRental(rentalId);
+                logger.info("Rental " + rentalId + " was successfully accepted");
+                return new ResponseEntity<>("Acceptance was successful", HttpStatus.OK);
+            } else {
+                logger.info("Rental " + rentalId + " could not be accepted due to date conflict");
+                return new ResponseEntity<>("Acceptance was unsuccessful", HttpStatus.BAD_REQUEST);
+            }
+        } catch (Exception e){
+            logger.error("Acceptance failed");
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Method for handling DELETE-requests for deleting rentals from the database.
+     * @param rentalId the id of the rental to delete
+     * @return an HTTP response containing a string with the status of the deletion and a HTTP status code
+     */
+    @DeleteMapping("/{rentalId}")
+    public ResponseEntity<String> deleteRental(@PathVariable int rentalId) {
+        logger.info("Delete request for rental " + rentalId);
+        try {
+            if (rentalRepository.deleteRental(rentalId) == 1) {
+                logger.info("Deletion of rental " + rentalId + " was successful");
+                return new ResponseEntity<>("Deletion was successful", HttpStatus.OK);
+            } else {
+                logger.info("Deletion of rental " + rentalId + " was unsuccessful. No rental with id = " + rentalId + " was found.");
+                return new ResponseEntity<>("Deletion was unsuccessful", HttpStatus.BAD_REQUEST);
+            }
+        } catch (Exception e) {
+            logger.error("Deletion failed");
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Method for checking if a rental has a valid start and end date
+     * @param rental the rental to check
+     * @return true if start and end dates are valid, false otherwise
+     */
+    private boolean checkIfAvailable(Rental rental) {
+        boolean availableSpot = false;
+        Product test = productRepository.getProduct(rental.getProductId());
+        List<Rental> rentals = rentalRepository.getAcceptedRentals(test.getProductId(), true);
+        List<AvailabilityWindow> availabilityWindows = service.getAvailability(test,rentals);
+        for (AvailabilityWindow availabilityWindow : availabilityWindows){
+            if(!rental.getDateFrom().isBefore(availabilityWindow.getFrom()) && !rental.getDateTo().isAfter(availabilityWindow.getTo())){
+                availableSpot = true;
+            }
+        }
+        return availableSpot;
     }
 }

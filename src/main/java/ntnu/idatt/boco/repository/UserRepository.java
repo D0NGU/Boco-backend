@@ -1,5 +1,7 @@
 package ntnu.idatt.boco.repository;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -13,6 +15,7 @@ import ntnu.idatt.boco.security.Encryption;
  */
 @Repository
 public class UserRepository {
+    Logger logger = LoggerFactory.getLogger(ProductRepository.class);
     @Autowired private JdbcTemplate jdbcTemplate;
 
     /**
@@ -27,8 +30,34 @@ public class UserRepository {
                             new Object[] { user.getFname(), user.getLname(), hashedPassword, user.getEmail(), salt });
     }
 
+    /**
+     * Method for retrieving userId by email address
+     * @param email the users email address
+     * @return the id of the user with the email address
+     */
+    public int getIdByEmail(String email) {
+        logger.info("Finding userId for " + email);
+        return jdbcTemplate.queryForObject("SELECT user_id FROM users WHERE email = ?;", int.class, email);
+    }
+
+    /**
+     * Method for retrieving a user object by userId
+     * @param userId the id of the user to find
+     * @return a user with the given userId
+     */
     public User getUserById(int userId) {
-        return jdbcTemplate.queryForObject("SELECT * FROM users WHERE userid = ?;", BeanPropertyRowMapper.newInstance(User.class), userId);
+        logger.info("Finding user " + userId);
+        return jdbcTemplate.queryForObject("SELECT * FROM users WHERE user_id = ?;", BeanPropertyRowMapper.newInstance(User.class), userId);
+    }
+
+    /**
+     * Method for retrieving a user object by email
+     * @param email the email address of the user to find
+     * @return a user with the given email address
+     */
+    public User getUserByEmail(String email) {
+        logger.info("Finding user " + email);
+        return jdbcTemplate.queryForObject("SELECT * FROM users WHERE email = ?;", BeanPropertyRowMapper.newInstance(User.class), email);
     }
 
     /**
@@ -78,4 +107,5 @@ public class UserRepository {
     public int deleteUser(User user){
         return jdbcTemplate.update("DELETE FROM users WHERE email = ?;", user.getEmail());
     }
+
 }

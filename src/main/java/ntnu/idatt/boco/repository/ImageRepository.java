@@ -34,4 +34,14 @@ public class ImageRepository {
         return jdbcTemplate.query("SELECT * FROM images WHERE product_id = ?",
                 BeanPropertyRowMapper.newInstance(ProductImage.class), productId);
     }
+
+    /**
+     * Method for retrieving the images of a users products
+     * @param userId the id of the user
+     * @return a list of product images of the users products
+     */
+    public List<ProductImage> getImagesForUsersProducts(int userId) {
+        return jdbcTemplate.query("SELECT * FROM images INNER JOIN products WHERE products.user_id = ? GROUP BY images.product_id",
+                BeanPropertyRowMapper.newInstance(ProductImage.class), userId);
+    }
 }

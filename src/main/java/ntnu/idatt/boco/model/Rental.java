@@ -2,6 +2,9 @@ package ntnu.idatt.boco.model;
 
 import java.time.LocalDate;
 
+/**
+ * This class represents a rental request or rental agreement.
+ */
 public class Rental {
     private int rentalId;
     private LocalDate dateFrom;
@@ -11,7 +14,15 @@ public class Rental {
     private int userId;
 
     public Rental() {}
-    
+
+    /**
+     * Constructor for a rental object.
+     * @param rentalId the unique id of the rental request/agreement
+     * @param dateFrom the date the rental starts
+     * @param dateTo the date the rental ends
+     * @param productId the id of the product being rented
+     * @param userId the id of the user renting the product
+     */
     public Rental(int rentalId, LocalDate dateFrom, LocalDate dateTo, boolean accepted, int productId, int userId) {
         this.rentalId = rentalId;
         this.dateFrom = dateFrom;
@@ -30,9 +41,15 @@ public class Rental {
     public LocalDate getDateTo() { 
         return dateTo; 
     }
-    public boolean isAccepted() { return accepted; }
-    public int getProductId() { return productId; }
-    public int getUserId() { return userId; }
+    public boolean isAccepted() { 
+        return accepted; 
+    }
+    public int getProductId() { 
+        return productId; 
+    }
+    public int getUserId() { 
+        return userId; 
+    }
 
     public void setRentalId(int rentalId) {
         this.rentalId = rentalId;
@@ -49,7 +66,6 @@ public class Rental {
     public void setDateTo(LocalDate dateTo) {
         this.dateTo = dateTo;
     }
-
     public void setAccepted(boolean accepted) {
         this.accepted = accepted;
     }
