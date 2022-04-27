@@ -9,6 +9,7 @@ import ntnu.idatt.boco.service.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -85,7 +86,13 @@ public class ProductController {
         logger.info("Getting product " + productId);
         try {
             return new ResponseEntity<>(productRepository.getProduct(productId), HttpStatus.OK);
-        } catch (Exception e) {
+        }
+        catch (EmptyResultDataAccessException e) {
+            logger.error("Could not find products matching query");
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        catch (Exception e) {
             logger.error("Error getting product");
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -192,7 +199,12 @@ public class ProductController {
                     return new ResponseEntity<>(productRepository.searchProductByWordAndCategory(q, category, offset, sortBy, ascending), HttpStatus.OK);
                 }
             }
-        } catch (Exception e) {
+        } catch (EmptyResultDataAccessException e) {
+            logger.error("Could not find products matching query");
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        catch (Exception e) {
             logger.error("Could not search for a product");
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
