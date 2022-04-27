@@ -1,4 +1,4 @@
-package ntnu.idatt.boco.config;
+package ntnu.idatt.boco.security.config;
 
 import java.io.IOException;
 
@@ -7,7 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ntnu.idatt.boco.service.JwtUserDetailsService;
+import ntnu.idatt.boco.service.JWT_UserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,13 +20,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import io.jsonwebtoken.ExpiredJwtException;
 
 @Component
-public class JwtRequestFilter extends OncePerRequestFilter {
-
-    @Autowired
-    private JwtUserDetailsService jwtUserDetailsService;
-
-    @Autowired
-    private JwtTokenUtil jwtTokenUtil;
+public class JWT_RequestFilter extends OncePerRequestFilter {
+    @Autowired private JWT_UserDetailsService jwtUserDetailsService;
+    @Autowired private JWT_TokenUtil jwtTokenUtil;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
@@ -36,8 +32,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         String username = null;
         String jwtToken = null;
-        // JWT Token is in the form "Bearer token". Remove Bearer word and get
-        // only the Token
+        // JWT Token is in the form "Bearer token". Remove Bearer word and get only the Token
         if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
             jwtToken = requestTokenHeader.substring(7);
             try {
