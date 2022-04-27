@@ -28,6 +28,9 @@ public class UserController {
     /**
      * Method that gets user by user id
      * @param userId id of user you want to retrieve
+     * @return an HTTP response containing a user and a HTTP status code:
+     *          {@code 200} if success,
+     *          {@code 500} if error
      */
     @GetMapping("/get")
     public ResponseEntity<User> getUserByUserId(@RequestParam int userId){
@@ -43,7 +46,10 @@ public class UserController {
     /**
      * Method for handling DELETE-requests for deleting a user
      * @param user the user to be deleted
-     * @return an HTTP response containing a result message as a String and a HTTP status code
+     * @return an HTTP response containing a result message as a String and a HTTP status code:
+     *          {@code 200} if success,
+     *          {@code 403} if the password was wrong,
+     *          {@code 500} if error
      */
     @DeleteMapping
     public ResponseEntity<String> deleteUser(@RequestBody User user) {
@@ -70,7 +76,10 @@ public class UserController {
     /**
      * Method for handling POST-requests for editing a user
      * @param user the user to be edited
-     * @return an HTTP response containing a result message as a String and a HTTP status code
+     * @return an HTTP response containing a result message as a String and a HTTP status code:
+     *          {@code 200} if success,
+     *          {@code 403} if the old password was wrong,
+     *          {@code 500} if error
      */
     @PutMapping
     public ResponseEntity<String> editPassword(@RequestBody EditUserRequest user){
@@ -93,7 +102,5 @@ public class UserController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-
 }
 

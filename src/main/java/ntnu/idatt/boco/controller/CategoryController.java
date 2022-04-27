@@ -27,7 +27,9 @@ public class CategoryController {
 
     /**
      * Method for retrieving all categories
-     * @return an HTTP response containing a list of all categories and an HTTP status code
+     * @return an HTTP response containing a list of all categories and an HTTP status code:
+     *          {@code 200} if success or if no categories were found,
+     *          {@code 500} if error
      */
     @GetMapping
     public ResponseEntity<List<Category>> getAll() {

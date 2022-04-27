@@ -32,7 +32,9 @@ public class ProductController {
     /**
      * Method for handling POST-requests for registering a new product
      * @param product the product to be registered
-     * @return an HTTP response containing a result message as a String and a HTTP status code
+     * @return an HTTP response containing a result message as a String and a HTTP status code:
+     *          {@code 201} if success,
+     *          {@code 500} if error
      */
     @PostMapping
     public ResponseEntity<String> newProduct(@RequestBody Product product) {
@@ -52,7 +54,9 @@ public class ProductController {
      * Method for handling PUT-requests for editing a product
      * @param productId the id of the product
      * @param product   the edited product
-     * @return an HTTP response containing a result message as a String and an HTTP status code
+     * @return an HTTP response containing a result message as a String and an HTTP status code:
+     *          {@code 200} if success,
+     *          {@code 500} if error
      */
     @PutMapping("/{productId}")
     public ResponseEntity<String> editProduct(@PathVariable int productId,@RequestBody Product product) {
@@ -71,7 +75,9 @@ public class ProductController {
     /**
      * Method for handling GET-requests for retrieving a product by id
      * @param productId the id of the product
-     * @return an HTTP response containing the retrieved product and an HTTP status code
+     * @return an HTTP response containing the retrieved product and an HTTP status code:
+     *          {@code 200} if success,
+     *          {@code 500} if error
      */
     @GetMapping("/{productId}")
     @ResponseBody
@@ -89,7 +95,9 @@ public class ProductController {
     /**
      * Method for handling GET-requests for retrieving a products availability window
      * @param productId the id of the product
-     * @return an HTTP response containing a list of the availability windows of the product and an HTTP status code
+     * @return an HTTP response containing a list of the availability windows of the product and an HTTP status code:
+     *          {@code 200} if success,
+     *          {@code 500} if error
      */
     @GetMapping("/{productId}/availability")
     @ResponseBody
@@ -110,7 +118,9 @@ public class ProductController {
      * Method for handling POST-request for adding new images
      * @param productId the id of the product to add the image to
      * @param image     the image to be added
-     * @return an HTTP response containing a result message as a String and an HTTP status code
+     * @return an HTTP response containing a result message as a String and an HTTP status code:
+     *          {@code 201} if success,
+     *          {@code 500} if error
      */
     @PostMapping("/{productId}/image")
     public ResponseEntity<String> newImage(@PathVariable int productId, @RequestBody ProductImage image) {
@@ -129,7 +139,9 @@ public class ProductController {
     /**
      * Method for handling GET-requests for retrieving a products images
      * @param productId the id of the product
-     * @return an HTTP response containing a list of product images and an HTTP status code
+     * @return an HTTP response containing a list of product images and an HTTP status code:
+     *          {@code 200} if success,
+     *          {@code 500} if error
      */
     @GetMapping("/{productId}/image")
     @ResponseBody
@@ -151,7 +163,9 @@ public class ProductController {
      * Method for handling GET-requests for searching for products
      * @param q the word to search for
      * @param page the page the user is getting redirected to
-     * @return a list of all the products matching the search-word
+     * @return an HTTP response containing a list of all the products matching the search-word and an HTTP status code:
+     *          {@code 200} if success,
+     *          {@code 500} if error
      */
     @GetMapping("/search")
     @ResponseBody
@@ -188,7 +202,9 @@ public class ProductController {
     /**
      * Method for handling POST-requests for retrieving all of a users products
      * @param userId the id of the user to retrieve all the products for
-     * @return an HTTP response containing a list of all the users products and an HTTP status code
+     * @return an HTTP response containing a list of all the users products and an HTTP status code:
+     *          {@code 200} if success,
+     *          {@code 500} if error
      */
     @GetMapping("/user/{userId}")
     public ResponseEntity<UsersProducts> getUsersProducts(@PathVariable int userId) {
@@ -208,7 +224,9 @@ public class ProductController {
     /**
      * Method for handling POST-requests for retrieving a users rental history
      * @param userId the id of the user to retrieve the history for
-     * @return an HTTP response containing a list of the users history and an HTTP status code
+     * @return an HTTP response containing a list of the users history and an HTTP status code:
+     *          {@code 200} if success or if rental history is empty,
+     *          {@code 500} if error
      */
     @GetMapping("/user/{userId}/history")
     public ResponseEntity<List<Product>> getUserRentalHistory(@PathVariable int userId) {
@@ -233,7 +251,10 @@ public class ProductController {
      *  Method for handling DELETE-request for deleting a product based on product id and user id
      * @param userId the id of the owner of the product
      * @param productId the id of the product that is to be deleted
-     * @return an HTTP response containing a response string and an HTTP status code
+     * @return an HTTP response containing a response string and an HTTP status code:
+     *          {@code 200} if success,
+     *          {@code 409} if product_id or user_id is wrong,
+     *          {@code 500} if error
      */
     @DeleteMapping("/{userId}/delete")
     public ResponseEntity<String> deleteProductWithuserId(@PathVariable int userId, @RequestParam int productId){

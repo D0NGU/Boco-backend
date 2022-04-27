@@ -31,7 +31,10 @@ public class RentalController {
     /**
      * Method for handling POST-requests for registering new rentals to the database.
      * @param rental the rental object to be saved to the database
-     * @return an HTTP response containing a string with the status of the registration and a HTTP status code
+     * @return an HTTP response containing a string with the status of the registration and a HTTP status code:
+     *          {@code 201} if success,
+     *          {@code 409} if the rental time slot is unavailable,
+     *          {@code 500} if error
      */
     @PostMapping
     public ResponseEntity<String> registerNewRental(@RequestBody Rental rental) {
@@ -56,7 +59,9 @@ public class RentalController {
     /**
      * Method for handling GET-requests for retrieving all rentals with a certain product_id.
      * @param id the product_id of the rentals to be retrieved
-     * @return an HTTP response containing a list of all rentals with the correct product_id and a HTTP status code
+     * @return an HTTP response containing a list of all rentals with the correct product_id and a HTTP status code:
+     *          {@code 200} if success or if no rentals were found,
+     *          {@code 500} if error
      */
     @GetMapping("/product/{id}")
     public ResponseEntity<List<Rental>> getRentals(@PathVariable("id") int id) {
@@ -80,7 +85,9 @@ public class RentalController {
      * Method for handling GET-requests for retrieving all accepted or non-accepted rentals with a certain product_id.
      * @param id the product_id of the rentals to be retrieved
      * @param accepted true to retrieve all accepted rentals, false to retrieve all non-accepted rentals
-     * @return an HTTP response containing a list of all accepted or non-accepted rentals with the correct product_id and a HTTP status code
+     * @return an HTTP response containing a list of all accepted or non-accepted rentals with the correct product_id and a HTTP status code:
+     *          {@code 200} if success or if no rentals were found,
+     *          {@code 500} if error
      */
     @GetMapping("/product/{id}/{accepted}")
     public ResponseEntity<List<Rental>> getAcceptedRentals(@PathVariable("id") int id, @PathVariable("accepted") boolean accepted) {
@@ -104,7 +111,9 @@ public class RentalController {
     /**
      * Method for handling GET-requests for retrieving all accepted or non-accepted rentals with a certain user_id.
      * @param id the if of the user who rented
-     * @return an HTTP response containing a list of all accepted or non-accepted rentals with the correct user_id and a HTTP status code
+     * @return an HTTP response containing a list of all accepted or non-accepted rentals with the correct user_id and a HTTP status code:
+     *          {@code 200} if success or if no rentals were found,
+     *          {@code 500} if error
      */
     @GetMapping("/user/{id}")
     public ResponseEntity<List<Rental>> getAcceptedRentalsByUser(@PathVariable("id") int id) {
@@ -127,7 +136,10 @@ public class RentalController {
     /**
      * Method for handling POST-requests for accepting rentals.
      * @param rentalId the id of the rental object to be accepted
-     * @return an HTTP response containing a string with the status of the change and a HTTP status code
+     * @return an HTTP response containing a string with the status of the change and a HTTP status code:
+     *          {@code 200} if success,
+     *          {@code 400} if rental date is invalid,
+     *          {@code 500} if error
      */
     @PutMapping("/accept/{rentalId}")
     public ResponseEntity<String> acceptRental(@PathVariable int rentalId) {
@@ -153,6 +165,9 @@ public class RentalController {
      * Method for handling DELETE-requests for deleting rentals from the database.
      * @param rentalId the id of the rental to delete
      * @return an HTTP response containing a string with the status of the deletion and a HTTP status code
+     *          {@code 200} if success,
+     *          {@code 400} if no rental was found,
+     *          {@code 500} if error
      */
     @DeleteMapping("/{rentalId}")
     public ResponseEntity<String> deleteRental(@PathVariable int rentalId) {
