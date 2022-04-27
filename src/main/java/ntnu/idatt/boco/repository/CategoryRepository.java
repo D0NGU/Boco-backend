@@ -47,6 +47,11 @@ public class CategoryRepository {
         return subs;
     }
 
+    /**
+     * Method for retrieving a all main-categories of a given sub-category
+     * @param sub the name of the sub-category
+     * @return a list of the main categories
+     */
     public List<Category> getMainCategories(String sub) {
         Category category = getCategory(sub);
         List<Category> mains = new ArrayList<>();
