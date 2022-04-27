@@ -9,10 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,7 +30,6 @@ import ntnu.idatt.boco.security.Encryption;
 public class AuthController {
     Logger logger = LoggerFactory.getLogger(AuthController.class);
     @Autowired UserRepository databaseRepository;
-    @Autowired private AuthenticationManager authenticationManager;
     @Autowired JwtUserDetailsService userDetailsService;
     @Autowired JwtTokenUtil jwtTokenUtil;
 
@@ -92,7 +87,6 @@ public class AuthController {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
 
-            int id = databaseRepository.getIdByEmail(email);
             // Check if password is correct
             byte[] expectedHash = databaseRepository.getHashedPasswordByEmail(email);
             byte[] salt = databaseRepository.getSaltByEmail(email);
@@ -124,15 +118,5 @@ public class AuthController {
     @PostMapping("/signout")
     public void signoutAccount(@RequestBody User user) {
         // TODO
-    }
-
-    private void authenticate(String username, String password) throws Exception {
-        try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-        } catch (DisabledException e) {
-            throw new Exception("USER_DISABLED", e);
-        } catch (BadCredentialsException e) {
-            throw new Exception("INVALID_CREDENTIALS", e);
-        }
     }
 }
