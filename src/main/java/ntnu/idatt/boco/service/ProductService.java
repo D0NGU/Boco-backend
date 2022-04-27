@@ -29,8 +29,6 @@ public class ProductService {
         List<AvailabilityWindow> requested = new ArrayList<>();
         List<AvailabilityWindow> available = new ArrayList<>();
 
-        System.out.println(product.getAvailableFrom());
-        System.out.println(product.getAvailableTo());
         if(!rentals.isEmpty()){
 
             for (Rental rental : rentals) {
