@@ -114,4 +114,16 @@ public class ProductControllerTest {
         List<Product> list = Arrays.asList(EXISTING_TEST_PRODUCT);
         assertEquals(list.toString(),productController.getProductFromSearch("dragonbane", "hvitevarer", 1,"price", true).getBody().toString());
     }
+
+    @Test
+    @Order(11)
+    public void successfulDeletionOfProduct(){
+        assertEquals(200,productController.deleteProductWithuserId(1,1).getStatusCodeValue());
+    }
+
+    @Test
+    @Order(12)
+    public void unSuccessfulDeletionOfProduct(){
+        assertEquals(409,productController.deleteProductWithuserId(2,1).getStatusCodeValue());
+    }
 }

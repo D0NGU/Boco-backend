@@ -228,4 +228,30 @@ public class ProductController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    /**
+     *  Method for handling DELETE-request for deleting a product based on product id and user id
+     * @param userId the id of the owner of the product
+     * @param productId the id of the product that is to be deleted
+     * @return an HTTP response containing a response string and an HTTP status code
+     */
+    @DeleteMapping("/{userId}/delete")
+    public ResponseEntity<String> deleteProductWithuserId(@PathVariable int userId, @RequestParam int productId){
+        try{
+            logger.info("Attempting to delete product");
+            if(productRepository.deleteProductWithUserIdAndProductId(userId,productId) == 1){
+                logger.info("Deletion for product with product id " + productId + " was successful");
+                return new ResponseEntity<>("Deletion for product with product id " + productId + " was successful", HttpStatus.OK);
+            }else {
+                logger.info("Wrong product id or user id ");
+                return new ResponseEntity<>("Wrong product id or user id", HttpStatus.CONFLICT);
+            }
+
+        }catch (Exception e){
+            logger.error("Deletion was unsuccessful for product with product id " + productId + " for user with user id" + userId);
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

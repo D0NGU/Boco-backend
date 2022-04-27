@@ -15,9 +15,19 @@ public class CategoryRepository {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
+    /**
+     * Method for retrieving all categories stored in the database
+     * @return a list of all categories
+     */
     public List<Category> getAll() {
         return jdbcTemplate.query("SELECT * FROM categories", BeanPropertyRowMapper.newInstance(Category.class));
     }
+
+    /**
+     * Method for retrieving a category by name
+     * @param name the name of the category
+     * @return the category with the corresponding name
+     */
     public Category getCategory(String name) {
         return jdbcTemplate.queryForObject("SELECT * FROM categories WHERE CATEGORY = ?", BeanPropertyRowMapper.newInstance(Category.class), name);
     }

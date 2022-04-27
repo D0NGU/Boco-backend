@@ -24,6 +24,22 @@ public class UserController {
     @Autowired ProductRepository productRepository;
     @Autowired ImageRepository imageRepository;
 
+
+    /**
+     * Method that gets user by user id
+     * @param userId id of user you want to retrieve
+     */
+    @GetMapping("/get")
+    public ResponseEntity<User> getUserByUserId(@RequestParam int userId){
+        logger.info("Get user request by " + userId);
+        try{
+            logger.info("Successfully retrieved user");
+            return new ResponseEntity<>(userRepository.getUserById(userId), HttpStatus.OK);
+        }catch (Exception e){
+            logger.error("Error getting user by user id " + userId);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     /**
      * Method for handling DELETE-requests for deleting a user
      * @param user the user to be deleted
