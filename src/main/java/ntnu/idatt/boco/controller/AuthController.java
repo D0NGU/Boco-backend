@@ -42,16 +42,20 @@ public class AuthController {
      *          {@code 500} if error
      */
     @PostMapping("/signup")
-    public ResponseEntity<Integer> registerNewAccount(@RequestBody User user) {
+    public ResponseEntity<?> registerNewAccount(@RequestBody User user) {
         String email = user.getEmail();
         logger.info(email + ": Signup Requested");
         
         try {
             databaseRepository.saveUserToDatabase(user);
             logger.info(email + ": User registered");
-            // Return userId to client with status 201 (Created)
+            // Return token to client with status 201 (Created)
+
             int id = databaseRepository.getIdByEmail(email);
-            return new ResponseEntity<>(id, HttpStatus.CREATED);
+            final UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+            final String token = jwtTokenUtil.generateToken(userDetails);
+
+            return new ResponseEntity<>(new JWT_Response(id, token), HttpStatus.CREATED);
         } 
         
         catch (DuplicateKeyException dke) {
@@ -87,6 +91,7 @@ public class AuthController {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
 
+            int id = databaseRepository.getIdByEmail(email);
             // Check if password is correct
             byte[] expectedHash = databaseRepository.getHashedPasswordByEmail(email);
             byte[] salt = databaseRepository.getSaltByEmail(email);
@@ -98,7 +103,7 @@ public class AuthController {
 
                 final String token = jwtTokenUtil.generateToken(userDetails);
 
-                return new ResponseEntity<>(new JWT_Response(token), HttpStatus.OK);
+                return new ResponseEntity<>(new JWT_Response(id, token), HttpStatus.OK);
             } else {
                 // Return 403 if wrong password
                 logger.info(email + ": Wrong password");

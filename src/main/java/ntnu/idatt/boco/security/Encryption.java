@@ -14,8 +14,6 @@ import javax.crypto.spec.PBEKeySpec;
  */
 public class Encryption {
     private static final Random RANDOM = new SecureRandom();
-    private static final int ITERATIONS = 10000;
-    private static final int KEY_LENGTH = 128;
 
     /**
      * Returns a random salt to be used to hash a password.
@@ -34,7 +32,7 @@ public class Encryption {
      * @return the hashed password
      */
     public static byte[] hash(String password, byte[] salt) {
-        PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), salt, ITERATIONS, KEY_LENGTH);
+        PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), salt, SecurityConstants.ITERATIONS, SecurityConstants.KEY_LENGTH);
         try {
             SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
             return factory.generateSecret(spec).getEncoded();
