@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS) // Runs SpringBoot again before testing this class. Resets database.
 @TestMethodOrder(OrderAnnotation.class)
@@ -117,12 +118,25 @@ public class ProductControllerTest {
 
     @Test
     @Order(11)
+    public void successfullyRetrieveUserRentalHistory() {
+        List<Product> list = Arrays.asList(EXISTING_TEST_PRODUCT);
+        assertEquals(list.toString(), productController.getUserRentalHistory(2).getBody().toString());
+    }
+
+    @Test
+    @Order(12)
+    public void successfullyRetrieveUserRentalHistoryWhenEmpty() {
+        assertNull(productController.getUserRentalHistory(1).getBody());
+    }
+
+    @Test
+    @Order(13)
     public void successfulDeletionOfProduct(){
         assertEquals(200,productController.deleteProductWithuserId(1,1).getStatusCodeValue());
     }
 
     @Test
-    @Order(12)
+    @Order(14)
     public void unSuccessfulDeletionOfProduct(){
         assertEquals(409,productController.deleteProductWithuserId(2,1).getStatusCodeValue());
     }

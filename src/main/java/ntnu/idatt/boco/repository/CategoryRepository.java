@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * This class contains methods relating to managing categories in the database.
+ */
 @Repository
 public class CategoryRepository {
     @Autowired
