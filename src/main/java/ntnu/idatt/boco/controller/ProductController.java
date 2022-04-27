@@ -217,7 +217,7 @@ public class ProductController {
             List<Product> history = productRepository.getUserRentalHistory(userId);
             if (history.isEmpty()) {
                 logger.info("Rental history for user " + userId + " is empty.");
-                return new ResponseEntity<>(HttpStatus.OK);
+                return new ResponseEntity<>(null, HttpStatus.OK);
             } else {
                 logger.info("Rental history for user " + userId + " retrieved successfully.");
                 return new ResponseEntity<>(history, HttpStatus.OK);
