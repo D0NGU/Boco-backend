@@ -78,6 +78,7 @@ public class ProductController {
      * @param productId the id of the product
      * @return an HTTP response containing the retrieved product and an HTTP status code:
      *          {@code 200} if success,
+     *          {@code 404} if does not exist,
      *          {@code 500} if error
      */
     @GetMapping("/{productId}")
@@ -88,7 +89,7 @@ public class ProductController {
             return new ResponseEntity<>(productRepository.getProduct(productId), HttpStatus.OK);
         }
         catch (EmptyResultDataAccessException e) {
-            logger.error("Could not find products matching query");
+            logger.info("Could not find products matching query");
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

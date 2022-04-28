@@ -91,7 +91,7 @@ public class ProductControllerTest {
     @Test
     @Order(9)
     public void unSuccessfullyRetrievedProductById() {
-        assertEquals(500, productController.getById(25).getStatusCodeValue());
+        assertEquals(404, productController.getById(25).getStatusCodeValue());
     }
 
     @Test
@@ -104,7 +104,7 @@ public class ProductControllerTest {
     @Test
     @Order(11)
     public void successfullyRetrievedProductsByCategoryWhenEmpty() {
-        List<Product> list = new ArrayList<>(); //empty list
+        List<Product> list = new ArrayList<>(); // Empty
         assertEquals(list, productController.getProductFromSearch(null,"notACategory", 1, "price",true).getBody());
     }
 

@@ -18,6 +18,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import io.jsonwebtoken.ExpiredJwtException;
 
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+
 @Component
 public class JWT_RequestFilter extends OncePerRequestFilter {
     @Autowired private JWT_UserDetailsService jwtUserDetailsService;
@@ -25,20 +27,21 @@ public class JWT_RequestFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
-        final String requestTokenHeader = request.getHeader("Authorization");
+        final String requestTokenHeader = request.getHeader(AUTHORIZATION);
+        final String HeaderPrefix = "Bearer ";
 
         String username = null;
         String jwtToken = null;
         // JWT Token is in the form "Bearer 'token'". Remove Bearer word and get only the Token
         if (requestTokenHeader != null) {
-            if (requestTokenHeader.startsWith("Bearer ")) {
-                jwtToken = requestTokenHeader.substring(7);
+            if (requestTokenHeader.startsWith(HeaderPrefix)) {
+                jwtToken = requestTokenHeader.substring(HeaderPrefix.length());
                 try {
                     username = jwtTokenUtil.getUsernameFromToken(jwtToken);
                 } catch (IllegalArgumentException e) {logger.warn("Unable to get JWT Token");
                 } catch (ExpiredJwtException e) {logger.warn("JWT Token has expired");}
             } else {
-                logger.warn("JWT Token does not begin with Bearer String");
+                logger.warn("Authorization header exists but does not begin with 'Bearer' String");
             }
         }
 
