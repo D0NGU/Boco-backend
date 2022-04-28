@@ -41,7 +41,7 @@ public class ImageRepository {
      * @return a list of product images of the users products
      */
     public List<ProductImage> getImagesForUsersProducts(int userId) {
-        return jdbcTemplate.query("SELECT * FROM images INNER JOIN products WHERE products.user_id = ? GROUP BY images.product_id",
+        return jdbcTemplate.query("SELECT * FROM images INNER JOIN products WHERE products.user_id = ? AND img_id IN (SELECT min(img_id) FROM images GROUP BY images.product_id);",
                 BeanPropertyRowMapper.newInstance(ProductImage.class), userId);
     }
 }
