@@ -220,7 +220,7 @@ public class ProductController {
      */
     @GetMapping("/user/{userId}")
     public ResponseEntity<UsersProducts> getUsersProducts(@PathVariable int userId) {
-        logger.info("Getting users " + userId + "products");
+        logger.info("Getting users " + userId + " products");
         try {
             User user = userRepository.getUserById(userId);
             List<Product> products = productRepository.getFromUserId(userId);
