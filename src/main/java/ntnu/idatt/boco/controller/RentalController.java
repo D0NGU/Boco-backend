@@ -183,8 +183,9 @@ public class RentalController {
         List<Rental> rentals = rentalRepository.getAcceptedRentals(test.getProductId(), true);
         List<AvailabilityWindow> availabilityWindows = service.getAvailability(test,rentals);
         for (AvailabilityWindow availabilityWindow : availabilityWindows){
-            if(!rental.getDateFrom().isBefore(availabilityWindow.getFrom()) && !rental.getDateTo().isAfter(availabilityWindow.getTo())){
+            if(rental.getDateFrom().isAfter(availabilityWindow.getFrom()) && rental.getDateTo().isBefore(availabilityWindow.getTo())){
                 availableSpot = true;
+                logger.info("Rental is available");
             }
         }
         return availableSpot;

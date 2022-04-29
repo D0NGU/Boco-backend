@@ -4,6 +4,7 @@ package ntnu.idatt.boco.model;
  * This class represents an edit user request.
  */
 public class EditUserRequest {
+    private int id;
     private String email;
     private String oldPassword;
     private String newPassword;
@@ -16,12 +17,16 @@ public class EditUserRequest {
      * @param oldPassword the old password of the user requesting the edit
      * @param newPassword the new password
      */
-    public EditUserRequest(String email, String oldPassword, String newPassword) {
+    public EditUserRequest(int id, String email, String oldPassword, String newPassword) {
+        this.id = id;
         this.email = email;
         this.oldPassword = oldPassword;
         this.newPassword = newPassword;
     }
 
+    public int getId() {
+        return id;
+    }
     public String getEmail() {
         return email;
     }
@@ -32,6 +37,9 @@ public class EditUserRequest {
         return newPassword;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
     public void setEmail(String email) {
         this.email = email;
     }

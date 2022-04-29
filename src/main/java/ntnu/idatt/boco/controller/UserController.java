@@ -9,11 +9,15 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ntnu.idatt.boco.model.EditUserRequest;
-import ntnu.idatt.boco.model.Role;
+//import ntnu.idatt.boco.model.Role;
 import ntnu.idatt.boco.model.User;
+import ntnu.idatt.boco.repository.UserRepository;
 import ntnu.idatt.boco.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -31,8 +35,11 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController @RequestMapping("/api")
 @RequiredArgsConstructor
 public class UserController {
-    private final UserService userService;
+    private final UserRepository userService;
+    private final PasswordEncoder passwordEncoder;
 
+    @Autowired
+    UserRepository userRepository;
 
     @GetMapping("/users")
     public ResponseEntity<List<User>>getUsers() {
@@ -47,20 +54,6 @@ public class UserController {
         return ResponseEntity.created(uri).body(userService.saveUser(user));
     }
 
-    @PostMapping("/role/save")
-    public ResponseEntity<Role>saveRole(@RequestBody Role role) {
-
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/role/save").toUriString());
-        return ResponseEntity.created(uri).body(userService.saveRole(role));
-    }
-
-    @PostMapping("/role/addtouser")
-    public ResponseEntity<?>addRoleToUser(@RequestBody RoleToUserForm form) {
-        userService.addRoleToUser(form.getUsername(), form.getRoleName());
-        System.out.println(form.getUsername() + " " + form.getRoleName());
-        log.info("added role: {}, to user: {}", form.getRoleName(), form.getUsername());
-        return ResponseEntity.ok().build();
-    }
 
     @DeleteMapping("/user/delete")
     public ResponseEntity<String> deleteUser(@RequestBody User user) {
@@ -71,9 +64,15 @@ public class UserController {
 
 
     @PostMapping("/user/edit")
-    public ResponseEntity<User> editUser(@RequestBody EditUserRequest editUserRequest){
+    public ResponseEntity<?> editUser(@RequestBody EditUserRequest editUserRequest){
         log.info("Edit user : {}",editUserRequest.getEmail());
-        return new ResponseEntity<>(userService.editUser(editUserRequest), HttpStatus.OK);
+        if (BCrypt.checkpw(editUserRequest.getOldPassword(), userRepository.getUser(editUserRequest.getEmail()).getPassword())) {
+            return new ResponseEntity<>(userService.editUser(editUserRequest), HttpStatus.OK);
+        }
+        else {
+            log.info("User " + editUserRequest.getEmail() + " used wrong password");
+            return new ResponseEntity<>("Wrong password", FORBIDDEN);
+        }
     }
 
     @GetMapping("/user/get/{email}")
@@ -103,7 +102,7 @@ public class UserController {
                         .withSubject(user.getEmail())
                         .withExpiresAt(new Date(System.currentTimeMillis() + (10 * 60 * 1000)))
                         .withIssuer(request.getRequestURI().toString())
-                        .withClaim("roles", user.getRoles().stream().map(Role::getName).collect(Collectors.toList()))
+                        //.withClaim("roles", user.getRoles().stream().map(Role::getName).collect(Collectors.toList()))
                         .sign(algorithm);
 
                 Map<String, String> tokens = new HashMap<>();
@@ -125,8 +124,3 @@ public class UserController {
     }
 }
 
-@Data // tillater getters/setters
-class RoleToUserForm {
-    private String username;
-    private String roleName;
-}

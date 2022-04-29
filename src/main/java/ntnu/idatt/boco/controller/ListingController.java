@@ -5,6 +5,7 @@ import ntnu.idatt.boco.model.*;
 import ntnu.idatt.boco.repository.CategoryRepository;
 import ntnu.idatt.boco.repository.ImageRepository;
 import ntnu.idatt.boco.repository.ProductRepository;
+import ntnu.idatt.boco.repository.UserRepository;
 import ntnu.idatt.boco.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +30,7 @@ public class ListingController {
     @Autowired ProductController productController;
     @Autowired CategoryRepository categoryRepository;
     @Autowired ImageRepository imageRepository;
-    @Autowired UserService userService;
+    @Autowired UserRepository userService;
 
     /**
      * The get method to get a listing based on a productId
