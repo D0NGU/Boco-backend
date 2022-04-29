@@ -16,6 +16,7 @@ import ntnu.idatt.boco.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -65,7 +66,7 @@ public class UserController {
     @PostMapping("/user/edit")
     public ResponseEntity<?> editUser(@RequestBody EditUserRequest editUserRequest){
         log.info("Edit user : {}",editUserRequest.getEmail());
-        if (userRepository.getUserById(editUserRequest.getId()).equals(passwordEncoder.encode(editUserRequest.getOldPassword()))){
+        if (BCrypt.checkpw(editUserRequest.getOldPassword(), userRepository.getUser(editUserRequest.getEmail()).getPassword())) {
             return new ResponseEntity<>(userService.editUser(editUserRequest), HttpStatus.OK);
         }
         else {
