@@ -36,14 +36,6 @@ public class UserRepository implements UserService, UserDetailsService {
         return user;
     }
 
-/*    @Override
-    public Role saveRole(Role role) {
-        return null;
-    }*/
-
-    @Override
-    public void addRoleToUser(String username, String roleName) {
-    }
 
     @Override
     public User getUser(String email) {
