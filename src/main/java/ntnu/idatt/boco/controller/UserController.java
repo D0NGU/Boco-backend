@@ -5,19 +5,17 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import ntnu.idatt.boco.model.EditUserRequest;
-//import ntnu.idatt.boco.model.Role;
 import ntnu.idatt.boco.model.User;
 import ntnu.idatt.boco.repository.UserRepository;
-import ntnu.idatt.boco.service.UserService;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -26,17 +24,17 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-@Slf4j
-@RestController @RequestMapping("/api")
+
+@RestController 
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class UserController {
     private final UserRepository userService;
-    private final PasswordEncoder passwordEncoder;
+    Logger logger = LoggerFactory.getLogger(RentalController.class);
 
     @Autowired
     UserRepository userRepository;
@@ -57,7 +55,7 @@ public class UserController {
 
     @DeleteMapping("/user/delete")
     public ResponseEntity<String> deleteUser(@RequestBody User user) {
-        log.info("Deleting user: {}", user.getEmail());
+        logger.info("Deleting user: {}", user.getEmail());
         userService.deleteUser(user);
         return new ResponseEntity<>("Deletion was successful", HttpStatus.OK);
     }
@@ -65,25 +63,25 @@ public class UserController {
 
     @PostMapping("/user/edit")
     public ResponseEntity<?> editUser(@RequestBody EditUserRequest editUserRequest){
-        log.info("Edit user : {}",editUserRequest.getEmail());
+        logger.info("Edit user : {}",editUserRequest.getEmail());
         if (BCrypt.checkpw(editUserRequest.getOldPassword(), userRepository.getUser(editUserRequest.getEmail()).getPassword())) {
             return new ResponseEntity<>(userService.editUser(editUserRequest), HttpStatus.OK);
         }
         else {
-            log.info("User " + editUserRequest.getEmail() + " used wrong password");
+            logger.info("User " + editUserRequest.getEmail() + " used wrong password");
             return new ResponseEntity<>("Wrong password", FORBIDDEN);
         }
     }
 
     @GetMapping("/user/get/{email}")
     public ResponseEntity<User> getUserByEmail(@PathVariable String email){
-        log.info("Getting user by email: {}", email);
+        logger.info("Getting user by email: {}", email);
         return new ResponseEntity<>(userService.getUser(email), HttpStatus.OK);
     }
 
     @GetMapping("/user/get/")
     public ResponseEntity<User> getUserById(@RequestParam int userId){
-        log.info("Getting user by id: {}", userId);
+        logger.info("Getting user by id: {}", userId);
         return new ResponseEntity<>(userService.getUserById(userId), HttpStatus.OK);
     }
 
@@ -102,7 +100,6 @@ public class UserController {
                         .withSubject(user.getEmail())
                         .withExpiresAt(new Date(System.currentTimeMillis() + (10 * 60 * 1000)))
                         .withIssuer(request.getRequestURI().toString())
-                        //.withClaim("roles", user.getRoles().stream().map(Role::getName).collect(Collectors.toList()))
                         .sign(algorithm);
 
                 Map<String, String> tokens = new HashMap<>();

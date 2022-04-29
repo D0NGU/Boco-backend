@@ -1,9 +1,7 @@
 package ntnu.idatt.boco.repository;
 
 import lombok.RequiredArgsConstructor;
-import ntnu.idatt.boco.controller.CategoryController;
 import ntnu.idatt.boco.model.EditUserRequest;
-//import ntnu.idatt.boco.model.Role;
 import ntnu.idatt.boco.model.User;
 import ntnu.idatt.boco.service.UserService;
 import org.slf4j.Logger;

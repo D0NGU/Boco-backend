@@ -80,4 +80,17 @@ public class Review {
     public void setDate(LocalDateTime date) {
         this.date = date;
     }
+
+    @Override
+    public String toString() {
+        return "Review{" +
+                "reviewId=" + reviewId +
+                ", text='" + text + '\'' +
+                ", stars='" + stars + '\'' +
+                ", owner='" + owner + '\'' +
+                ", author=" + author +
+                ", subject=" + subject +
+                ", date=" + date +
+                '}';
+    }
 }
