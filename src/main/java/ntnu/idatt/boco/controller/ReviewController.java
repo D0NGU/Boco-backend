@@ -1,5 +1,7 @@
 package ntnu.idatt.boco.controller;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -50,7 +53,31 @@ public class ReviewController {
         try {
             return new ResponseEntity<>(reviewRepository.getReview(reviewId), HttpStatus.OK);
         } catch (Exception e) {
-            logger.error("Error getting product");
+            logger.error("Error getting review");
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping
+    @ResponseBody
+    public ResponseEntity<List<Review>> getBySubject(@RequestParam(required=false) Integer subject, @RequestParam(required=false) Integer author) {
+        try {
+            if (subject == null && author != null) {
+                logger.info("Getting reviews - By author");
+                return new ResponseEntity<>(reviewRepository.getAllReviewsByAuthor(author), HttpStatus.OK);
+            } else if (subject != null && author == null) {
+                logger.info("Getting reviews - By subject");
+                return new ResponseEntity<>(reviewRepository.getAllReviewsBySubject(subject), HttpStatus.OK);
+            } else if (subject != null && author != null) {
+                logger.info("Getting reviews - By both");
+                return new ResponseEntity<>(reviewRepository.getReviewsByAuthorSubject(author, subject), HttpStatus.OK);
+            } else {
+                logger.info("Getting reviews - All");
+                return new ResponseEntity<>(reviewRepository.getAllReviews(), HttpStatus.OK);
+            }
+        } catch (Exception e) {
+            logger.error("Error getting reviews for userId=" + subject);
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

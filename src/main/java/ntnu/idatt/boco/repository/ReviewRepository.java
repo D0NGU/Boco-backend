@@ -14,9 +14,24 @@ import ntnu.idatt.boco.model.Review;
 public class ReviewRepository {
     @Autowired private JdbcTemplate jdbcTemplate;
 
-    public List<Review> getAllReviews(int offset) {
-        String sql = "SELECT * FROM reviews ORDER BY date LIMIT 10 OFFSET ?;";
-        return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Review.class), offset);
+    public List<Review> getAllReviews() {
+        String sql = "SELECT * FROM reviews ORDER BY date;";
+        return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Review.class));
+    }
+
+    public List<Review> getAllReviewsBySubject(int subject) {
+        String sql = "SELECT * FROM reviews WHERE subject="+subject+" ORDER BY date;";
+        return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Review.class));
+    }
+
+    public List<Review> getAllReviewsByAuthor(int author) {
+        String sql = "SELECT * FROM reviews WHERE author="+author+" ORDER BY date;";
+        return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Review.class));
+    }
+
+    public List<Review> getReviewsByAuthorSubject(int author, int subject) {
+        String sql = "SELECT * FROM reviews WHERE author="+author+" AND subject="+subject+" ORDER BY date;";
+        return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Review.class));
     }
 
     public Review getReview(int reviewId) {
