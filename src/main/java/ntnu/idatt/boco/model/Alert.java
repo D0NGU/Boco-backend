@@ -8,7 +8,7 @@ import java.time.LocalDate;
 public class Alert {
     private int alertId;
     private String description;
-    private LocalDate date;
+    private LocalDate alertDate;
     private int optionalId;
     private int userId;
 
@@ -18,14 +18,14 @@ public class Alert {
      * Constructor for an alert object.
      * @param alertId the unique id of the alert
      * @param description a description of the alert
-     * @param date the date the alert was created
+     * @param alertDate the date the alert was created
      * @param optionalId an optional id to link the alert to a product/listing
      * @param userId the id of the user the alert is targeted at
      */
-    public Alert(int alertId, String description, LocalDate date, int optionalId, int userId) {
+    public Alert(int alertId, String description, LocalDate alertDate, int optionalId, int userId) {
         this.alertId = alertId;
         this.description = description;
-        this.date = date;
+        this.alertDate = alertDate;
         this.optionalId = optionalId;
         this.userId = userId;
     }
@@ -34,25 +34,25 @@ public class Alert {
      * Constructor for an alert object.
      * @param alertId the unique id of the alert
      * @param description a description of the alert
-     * @param date the date the alert was created
+     * @param alertDate the date the alert was created
      * @param userId the id of the user the alert is targeted at
      */
-    public Alert(int alertId, String description, LocalDate date, int userId) {
+    public Alert(int alertId, String description, LocalDate alertDate, int userId) {
         this.alertId = alertId;
         this.description = description;
-        this.date = date;
+        this.alertDate = alertDate;
         this.userId = userId;
     }
 
     public int getAlertId() { return alertId; }
     public String getDescription() { return description; }
-    public LocalDate getDate() { return date; }
+    public LocalDate getAlertDate() { return alertDate; }
     public int getOptionalId() { return optionalId; }
     public int getUserId() { return userId; }
 
     public void setAlert(int alertId) { this.alertId = alertId; }
     public void setDescription(String description) { this.description = description; }
-    public void setDate(LocalDate date) { this.date = date; }
+    public void setAlertDate(LocalDate alertDate) { this.alertDate = alertDate; }
     public void setOptionalId(int optionalId) { this.optionalId = optionalId; }
     public void setUserId(int userId) { this.userId = userId; }
 
@@ -61,7 +61,7 @@ public class Alert {
         return "Alert{" +
                 "alertId=" + alertId +
                 ", description='" + description + '\'' +
-                ", date=" + date +
+                ", alertDate=" + alertDate +
                 ", optionalId=" + optionalId +
                 ", userId=" + userId +
                 '}';
