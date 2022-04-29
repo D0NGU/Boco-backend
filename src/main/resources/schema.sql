@@ -1,12 +1,12 @@
 -- Create tables
 
 create table user (
-                      id INTEGER NOT NULL AUTO_INCREMENT,
-                      fname varchar(255),
-                      lname varchar(255),
-                      password varchar(255),
-                      email varchar(255),
-                      primary key (id)
+    id INTEGER NOT NULL AUTO_INCREMENT,
+    fname varchar(255),
+    lname varchar(255),
+    password varchar(255),
+    email varchar(255),
+    primary key (id)
 );
 
 
@@ -19,6 +19,7 @@ CREATE TABLE reviews (
     owner boolean NOT NULL,
     author INTEGER NOT NULL,
     subject INTEGER NOT NULL,
+    date DATETIME NOT NULL,
     PRIMARY KEY (review_id)
 );
 

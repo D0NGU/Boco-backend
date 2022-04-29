@@ -1,5 +1,7 @@
 package ntnu.idatt.boco.model;
 
+import java.time.LocalDateTime;
+
 /**
  * This class represents a user review.
  */
@@ -10,6 +12,7 @@ public class Review {
     private boolean owner;
     private int author;
     private int subject;
+    private LocalDateTime date;
 
     public Review () {}
 
@@ -22,13 +25,14 @@ public class Review {
      * @param author the user that wrote the review
      * @param subject the user the review is targeted at
      */
-    public Review(int reviewId, String text, int stars, boolean owner, int author, int subject) {
+    public Review(int reviewId, String text, int stars, boolean owner, int author, int subject, LocalDateTime date) {
         this.reviewId = reviewId;
         this.text = text;
         this.stars = stars;
         this.owner = owner;
         this.author = author;
         this.subject = subject;
+        this.date = date;
     }
 
     public int getReviewId() {
@@ -48,6 +52,9 @@ public class Review {
     }
     public int getSubject() {
         return subject;
+    }
+    public LocalDateTime getDate() {
+        return date;
     }
 
     public void setText(String text) {
@@ -69,5 +76,8 @@ public class Review {
     }
     public void setSubject(int subject) {
         this.subject = subject;
+    }
+    public void setDate(LocalDateTime date) {
+        this.date = date;
     }
 }
