@@ -11,9 +11,12 @@ import lombok.extern.slf4j.Slf4j;
 import ntnu.idatt.boco.model.EditUserRequest;
 import ntnu.idatt.boco.model.Role;
 import ntnu.idatt.boco.model.User;
+import ntnu.idatt.boco.repository.UserRepository;
 import ntnu.idatt.boco.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -32,7 +35,10 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
+    @Autowired
+    UserRepository userRepository;
 
     @GetMapping("/users")
     public ResponseEntity<List<User>>getUsers() {
@@ -71,9 +77,15 @@ public class UserController {
 
 
     @PostMapping("/user/edit")
-    public ResponseEntity<User> editUser(@RequestBody EditUserRequest editUserRequest){
+    public ResponseEntity<?> editUser(@RequestBody EditUserRequest editUserRequest){
         log.info("Edit user : {}",editUserRequest.getEmail());
-        return new ResponseEntity<>(userService.editUser(editUserRequest), HttpStatus.OK);
+        if (userRepository.getUserById(editUserRequest.getId()).equals(passwordEncoder.encode(editUserRequest.getOldPassword()))){
+            return new ResponseEntity<>(userService.editUser(editUserRequest), HttpStatus.OK);
+        }
+        else {
+            log.info("User " + editUserRequest.getEmail() + " used wrong password");
+            return new ResponseEntity<>("Wrong password", FORBIDDEN);
+        }
     }
 
     @GetMapping("/user/get/{email}")
