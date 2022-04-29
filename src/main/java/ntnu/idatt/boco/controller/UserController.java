@@ -70,10 +70,11 @@ public class UserController {
     }
 
 
-    @PostMapping("/user/edit")
-    public ResponseEntity<User> editUser(@RequestBody EditUserRequest editUserRequest){
+    @PutMapping("/user/edit")
+    public ResponseEntity<String> editUser(@RequestBody EditUserRequest editUserRequest){
         log.info("Edit user : {}",editUserRequest.getEmail());
-        return new ResponseEntity<>(userService.editUser(editUserRequest), HttpStatus.OK);
+        userService.editUser(editUserRequest);
+        return new ResponseEntity<>("Successfully edited user",HttpStatus.OK);
     }
 
     @GetMapping("/user/get/{email}")
