@@ -5,6 +5,8 @@ import ntnu.idatt.boco.model.Product;
 import ntnu.idatt.boco.model.Rental;
 import ntnu.idatt.boco.repository.ProductRepository;
 import ntnu.idatt.boco.repository.RentalRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,8 @@ public class ProductService {
     @Autowired
     RentalRepository rentalRepository;
 
+    Logger logger = LoggerFactory.getLogger(ProductService.class);
+
     /**
      * Method to get a list of time windows where a product is available for rental.
      * The method takes a product and uses its listing period as lower and upper bound.
@@ -33,13 +37,11 @@ public class ProductService {
         List<AvailabilityWindow> requested = new ArrayList<>();
         List<AvailabilityWindow> available = new ArrayList<>();
 
-        System.out.println(product.getAvailableFrom());
-        System.out.println(product.getAvailableTo());
+        logger.info("Product is available from " +product.getAvailableFrom());
+        logger.info("Product is available from " +product.getAvailableTo());
         if(!rentals.isEmpty()){
 
             for (Rental rental : rentals) {
-            /*
-            */
                 requested.add(new AvailabilityWindow(rental.getDateFrom(), rental.getDateTo()));
             }
 

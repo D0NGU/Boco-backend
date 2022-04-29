@@ -5,8 +5,8 @@ import ntnu.idatt.boco.model.*;
 import ntnu.idatt.boco.repository.ImageRepository;
 import ntnu.idatt.boco.repository.ProductRepository;
 import ntnu.idatt.boco.repository.RentalRepository;
+import ntnu.idatt.boco.repository.UserRepository;
 import ntnu.idatt.boco.service.ProductService;
-import ntnu.idatt.boco.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class ProductController {
     @Autowired RentalRepository rentalRepository;
     @Autowired ImageRepository imageRepository;
     @Autowired ProductService service;
-    @Autowired UserService userService;
+    @Autowired UserRepository userService;
 
     /**
      * Method for handling POST-requests for registering a new product
