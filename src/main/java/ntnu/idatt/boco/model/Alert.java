@@ -49,6 +49,7 @@ public class Alert {
         this.userId = userId;
     }
 
+    public boolean isHasSeen() {return hasSeen;}
     public int getAlertId() { return alertId; }
     public String getDescription() { return description; }
     public LocalDate getAlertDate() { return alertDate; }
@@ -60,6 +61,7 @@ public class Alert {
     public void setAlertDate(LocalDate alertDate) { this.alertDate = alertDate; }
     public void setOptionalId(int optionalId) { this.optionalId = optionalId; }
     public void setUserId(int userId) { this.userId = userId; }
+    public void setHasSeen(boolean hasSeen) {this.hasSeen = hasSeen;}
 
     @Override
     public String toString() {
@@ -67,6 +69,7 @@ public class Alert {
                 "alertId=" + alertId +
                 ", description='" + description + '\'' +
                 ", alertDate=" + alertDate +
+                ", hasSeen=" + hasSeen +
                 ", optionalId=" + optionalId +
                 ", userId=" + userId +
                 '}';
