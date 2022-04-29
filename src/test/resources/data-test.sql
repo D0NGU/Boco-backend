@@ -12,8 +12,8 @@ INSERT INTO categories(CATEGORY, MAIN_CATEGORY) VALUES
     ('stjerneskrutrekkere', 'skrutrekkere');
 
 INSERT INTO user(fname, lname, password, email) VALUES
-    ('test', 'tester', '$2a$10$OsIqAo6pFMHKjUzDRiOq9Os1L2tXfocby4mcspG2g2QrWqR6j7aBm', 't.est@tset.edu'),--password=password
-    ('Satoru', 'Gojo', '$2a$10$OsIqAo6pFMHKjUzDRiOq9Os1L2tXfocby4mcspG2g2QrWqR6j7aBm', 'satoru.gojo@tokyo.high.edu');--password=password
+    ('test', 'tester', '$2a$10$OsIqAo6pFMHKjUzDRiOq9Os1L2tXfocby4mcspG2g2QrWqR6j7aBm', 't.est@tset.edu'), --password=password
+    ('Satoru', 'Gojo', '$2a$10$OsIqAo6pFMHKjUzDRiOq9Os1L2tXfocby4mcspG2g2QrWqR6j7aBm', 'satoru.gojo@tokyo.high.edu'); --password=password
 
 
 INSERT INTO products(title, description, address, price, unlisted, available_from, available_to, user_id, category)

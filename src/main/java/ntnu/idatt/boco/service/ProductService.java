@@ -38,8 +38,6 @@ public class ProductService {
         if(!rentals.isEmpty()){
 
             for (Rental rental : rentals) {
-            /*
-            */
                 requested.add(new AvailabilityWindow(rental.getDateFrom(), rental.getDateTo()));
             }
 
