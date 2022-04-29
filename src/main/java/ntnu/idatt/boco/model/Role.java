@@ -1,6 +1,6 @@
 package ntnu.idatt.boco.model;
 
-import lombok.Data;
+/*import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
@@ -16,4 +16,4 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-}
+}*/

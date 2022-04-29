@@ -9,7 +9,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ntnu.idatt.boco.model.EditUserRequest;
-import ntnu.idatt.boco.model.Role;
+//import ntnu.idatt.boco.model.Role;
 import ntnu.idatt.boco.model.User;
 import ntnu.idatt.boco.repository.UserRepository;
 import ntnu.idatt.boco.service.UserService;
@@ -34,7 +34,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController @RequestMapping("/api")
 @RequiredArgsConstructor
 public class UserController {
-    private final UserService userService;
+    private final UserRepository userService;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -53,12 +53,12 @@ public class UserController {
         return ResponseEntity.created(uri).body(userService.saveUser(user));
     }
 
-    @PostMapping("/role/save")
+    /*@PostMapping("/role/save")
     public ResponseEntity<Role>saveRole(@RequestBody Role role) {
 
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/role/save").toUriString());
         return ResponseEntity.created(uri).body(userService.saveRole(role));
-    }
+    }*/
 
     @PostMapping("/role/addtouser")
     public ResponseEntity<?>addRoleToUser(@RequestBody RoleToUserForm form) {
@@ -115,7 +115,7 @@ public class UserController {
                         .withSubject(user.getEmail())
                         .withExpiresAt(new Date(System.currentTimeMillis() + (10 * 60 * 1000)))
                         .withIssuer(request.getRequestURI().toString())
-                        .withClaim("roles", user.getRoles().stream().map(Role::getName).collect(Collectors.toList()))
+                        //.withClaim("roles", user.getRoles().stream().map(Role::getName).collect(Collectors.toList()))
                         .sign(algorithm);
 
                 Map<String, String> tokens = new HashMap<>();

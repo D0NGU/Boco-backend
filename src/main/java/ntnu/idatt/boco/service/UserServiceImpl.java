@@ -1,6 +1,6 @@
 package ntnu.idatt.boco.service;
 
-import lombok.RequiredArgsConstructor;
+/*import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ntnu.idatt.boco.model.EditUserRequest;
 import ntnu.idatt.boco.model.Role;
@@ -107,4 +107,4 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
 
-}
+}*/
