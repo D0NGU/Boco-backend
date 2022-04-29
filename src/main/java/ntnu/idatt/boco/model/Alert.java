@@ -9,6 +9,7 @@ public class Alert {
     private int alertId;
     private String description;
     private LocalDate alertDate;
+    private boolean hasSeen;
     private int optionalId;
     private int userId;
 
@@ -19,13 +20,15 @@ public class Alert {
      * @param alertId the unique id of the alert
      * @param description a description of the alert
      * @param alertDate the date the alert was created
+     * @param hasSeen true is alert has been seen, false otherwise
      * @param optionalId an optional id to link the alert to a product/listing
      * @param userId the id of the user the alert is targeted at
      */
-    public Alert(int alertId, String description, LocalDate alertDate, int optionalId, int userId) {
+    public Alert(int alertId, String description, LocalDate alertDate, boolean hasSeen, int optionalId, int userId) {
         this.alertId = alertId;
         this.description = description;
         this.alertDate = alertDate;
+        this.hasSeen = hasSeen;
         this.optionalId = optionalId;
         this.userId = userId;
     }
@@ -35,12 +38,14 @@ public class Alert {
      * @param alertId the unique id of the alert
      * @param description a description of the alert
      * @param alertDate the date the alert was created
+     * @param hasSeen true is alert has been seen, false otherwise
      * @param userId the id of the user the alert is targeted at
      */
-    public Alert(int alertId, String description, LocalDate alertDate, int userId) {
+    public Alert(int alertId, String description, LocalDate alertDate, boolean hasSeen, int userId) {
         this.alertId = alertId;
         this.description = description;
         this.alertDate = alertDate;
+        this.hasSeen = hasSeen;
         this.userId = userId;
     }
 

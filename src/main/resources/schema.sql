@@ -93,6 +93,7 @@ CREATE TABLE alerts(
     alert_id INTEGER NOT NULL AUTO_INCREMENT,
     description VARCHAR(6000) NOT NULL,
     alert_date DATE NOT NULL,
+    has_seen boolean NOT NULL,
     optional_id INTEGER,
     user_id INTEGER NOT NULL,
     PRIMARY KEY (alert_id)
