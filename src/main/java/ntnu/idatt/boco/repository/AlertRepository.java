@@ -50,7 +50,7 @@ public class AlertRepository {
      * @return the number of rows in the database that was affected
      */
     public int changeAlertToSeen(int alertId) {
-        return jdbcTemplate.update("UPDATE alerts SET has_seen = true WHERE alert_id = ?", BeanPropertyRowMapper.newInstance(Alert.class), alertId);
+        return jdbcTemplate.update("UPDATE alerts SET has_seen = true WHERE alert_id = ?", alertId);
     }
 
     /**

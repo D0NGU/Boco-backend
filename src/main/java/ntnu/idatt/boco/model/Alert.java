@@ -56,7 +56,7 @@ public class Alert {
     public int getOptionalId() { return optionalId; }
     public int getUserId() { return userId; }
 
-    public void setAlert(int alertId) { this.alertId = alertId; }
+    public void setAlertId(int alertId) { this.alertId = alertId; }
     public void setDescription(String description) { this.description = description; }
     public void setAlertDate(LocalDate alertDate) { this.alertDate = alertDate; }
     public void setOptionalId(int optionalId) { this.optionalId = optionalId; }
