@@ -4,6 +4,7 @@ create table user (
     id INTEGER NOT NULL AUTO_INCREMENT,
     fname VARCHAR(75),
     lname VARCHAR(75),
+    description varchar(6000),
     password VARCHAR(255),
     email VARCHAR(120),
     signup DATE DEFAULT CURRENT_TIMESTAMP,
