@@ -81,6 +81,6 @@ public class UserRepository implements UserService, UserDetailsService {
     }
 
     public String getDescription(int id) {
-        return jdbcTemplate.queryForObject("SELECT description FROM user", BeanPropertyRowMapper.newInstance(String.class));
+        return jdbcTemplate.queryForObject("SELECT description FROM user WHERE id= ?", BeanPropertyRowMapper.newInstance(String.class), id);
     }
 }
