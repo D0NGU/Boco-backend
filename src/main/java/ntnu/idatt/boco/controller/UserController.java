@@ -68,9 +68,9 @@ public class UserController {
 
 
     @DeleteMapping("/user/delete")
-    public ResponseEntity<String> deleteUser(@RequestBody User user) {
-        logger.info("Deleting user: {}", user.getEmail());
-        userService.deleteUser(user);
+    public ResponseEntity<String> deleteUser(@RequestParam int userId) {
+        logger.info("Deleting user: {}", userId);
+        userService.deleteUser(userService.getUserById(userId));
         return new ResponseEntity<>("Deletion was successful", HttpStatus.OK);
     }
 
@@ -83,7 +83,7 @@ public class UserController {
         }
         else {
             logger.info("User " + editUserRequest.getEmail() + " used wrong password");
-            return new ResponseEntity<>("Wrong password", FORBIDDEN);
+            return new ResponseEntity<>("Wrong password", HttpStatus.FORBIDDEN);
         }
     }
 

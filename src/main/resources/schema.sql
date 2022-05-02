@@ -78,7 +78,7 @@ ALTER TABLE user
 ALTER TABLE reviews
     ADD CONSTRAINT FK_author
         FOREIGN KEY (author) 
-        REFERENCES user(id);
+        REFERENCES user(id) ON DELETE CASCADE;
 
 ALTER TABLE reviews
     ADD CONSTRAINT FK_subject
