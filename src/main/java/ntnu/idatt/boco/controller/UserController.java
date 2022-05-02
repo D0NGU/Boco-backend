@@ -131,6 +131,17 @@ public class UserController {
         return new ResponseEntity<>(userService.getUserById(userId), HttpStatus.OK);
     }
 
+    @PostMapping("/user/{userid}/description")
+    public ResponseEntity<?> newDescription(@PathVariable int userid, String description) {
+        userRepository.newDescription(userid, description);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("user/{userid}/description")
+    public ResponseEntity<String> getDescription(@PathVariable int userid) {
+        return new ResponseEntity<>(userService.getDescription(userid), HttpStatus.OK);
+    }
+
     @GetMapping("/token/refresh")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String authorizationHeader = request.getHeader(AUTHORIZATION);

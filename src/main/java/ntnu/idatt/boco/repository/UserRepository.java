@@ -75,4 +75,12 @@ public class UserRepository implements UserService, UserDetailsService {
         User user = getUser(email);
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
     }
+
+    public void newDescription(int id, String description) {
+        jdbcTemplate.update("UPDATE  user SET description=? WHERE id=?", new Object[]{description, id});
+    }
+
+    public String getDescription(int id) {
+        return jdbcTemplate.queryForObject("SELECT description FROM user", BeanPropertyRowMapper.newInstance(String.class));
+    }
 }
