@@ -1,6 +1,7 @@
 package ntnu.idatt.boco.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 /**
  * This class represents a product.
@@ -16,8 +17,23 @@ public class Product {
     private LocalDate availableTo;
     private int userId;
     private String category;
+    private ArrayList<ProductImage> image;
 
     public Product () {}
+
+    public Product(int productId, String title, String description, String address, Double price, boolean unlisted, LocalDate availableFrom, LocalDate availableTo, int userId, String category, ArrayList<ProductImage> image) {
+        this.productId = productId;
+        this.title = title;
+        this.description = description;
+        this.address = address;
+        this.price = price;
+        this.unlisted = unlisted;
+        this.availableFrom = availableFrom;
+        this.availableTo = availableTo;
+        this.userId = userId;
+        this.category = category;
+        this.image = image;
+    }
 
     /**
      * Constructor for a product object.
@@ -95,6 +111,9 @@ public class Product {
     public LocalDate getAvailableTo() {
         return availableTo;
     }
+    public ArrayList<ProductImage> getImage() {
+        return image;
+    }
 
     public void setDescription(String description) {
         this.description = description;
@@ -125,6 +144,9 @@ public class Product {
     }
     public void setAvailableTo(LocalDate availableTo) {
         this.availableTo = availableTo;
+    }
+    public void setImage(ArrayList<ProductImage> image) {
+        this.image = image;
     }
 
     @Override
