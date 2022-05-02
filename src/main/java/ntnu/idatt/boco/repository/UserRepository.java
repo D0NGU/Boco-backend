@@ -60,7 +60,7 @@ public class UserRepository implements UserService, UserDetailsService {
     public User editUser(EditUserRequest editUserRequest) {
         logger.info("Editing user: " + editUserRequest.getEmail());
         jdbcTemplate.update("UPDATE user SET email = ?, password = ? WHERE email = ?", new Object[]{editUserRequest.getEmail(), passwordEncoder.encode(editUserRequest.getNewPassword()), editUserRequest.getEmail()});
-        return getUserById(editUserRequest.getId());
+        return getUser(editUserRequest.getEmail());
     }
 
     @Override
