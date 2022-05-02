@@ -142,7 +142,8 @@ public class UserController {
     }
 
     @PostMapping("/user/{userid}/description")
-    public ResponseEntity<?> newDescription(@PathVariable int userid, String description) {
+    public ResponseEntity<?> newDescription(@PathVariable int userid, @RequestBody String description) {
+        logger.info("Adding description " + description + " to user "+ userid);
         userRepository.newDescription(userid, description);
         return new ResponseEntity<>(HttpStatus.OK);
     }
