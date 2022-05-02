@@ -27,11 +27,9 @@ public class AlertController {
      */
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Alert>> getUserAlerts(@PathVariable("userId") int userId) {
-        logger.info("New GET-request for alerts for user " + userId);
         try {
             List<Alert> resultList = alertRepository.getAlertByUserId(userId);
             if (resultList.isEmpty()) {
-                logger.info("No alerts with user_id " + userId + " found");
                 return new ResponseEntity<>(null, HttpStatus.OK);
             }
             logger.info("Success - alerts retrieved");
