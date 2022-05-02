@@ -25,7 +25,7 @@ public class UserRepository implements UserService, UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final Logger logger = LoggerFactory.getLogger(UserRepository.class);
     @Autowired JdbcTemplate jdbcTemplate;
-    
+
     @Override
     public User saveUser(User user) {
         logger.info("Saving user: " + user.getEmail());
@@ -81,6 +81,6 @@ public class UserRepository implements UserService, UserDetailsService {
     }
 
     public String getDescription(int id) {
-        return jdbcTemplate.queryForObject("SELECT description FROM user WHERE id= ?", BeanPropertyRowMapper.newInstance(String.class), id);
+        return jdbcTemplate.queryForObject("SELECT description FROM user WHERE id= ?", String.class, id);
     }
 }

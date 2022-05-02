@@ -36,7 +36,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
  * Class containing endpoints to do with users
  * @see User
  */
-@RestController 
+@RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class UserController {
@@ -96,7 +96,7 @@ public class UserController {
     /**
      * Endpoint for checking user vertification
      * <p>
-     * Users should only be vertified if they have received atleast 10 reviews 
+     * Users should only be vertified if they have received atleast 10 reviews
      * with an average score over 4. Their account also have to be over 1 month old.
      * @param userId the user
      * @return {@code true} if vertified, {@code false} if not
@@ -110,7 +110,7 @@ public class UserController {
             int amount = reviewRepository.getAmountOfSubjectReviews(userId);
             LocalDate signup = getUserById(userId).getBody().getSignup();
             logger.info("Data: amount=" + amount + ", avg=" + avg_stars + ", singup='" + signup + "'.");
-            
+
             // Check vertification
             // From product owner: "kan være å ha fått minst 10 anmeldelser som har et gjennomsnitt over 4 stjerner, og vært medlem i minst en måned"
             if (avg_stars>4.00 && amount>=10 && signup.isBefore(LocalDate.now().minusMonths(1))) {
@@ -150,6 +150,7 @@ public class UserController {
 
     @GetMapping("user/{userid}/description")
     public ResponseEntity<String> getDescription(@PathVariable int userid) {
+        logger.info("Getting description for " + userid + " : " + userService.getDescription(userid));
         return new ResponseEntity<>(userService.getDescription(userid), HttpStatus.OK);
     }
 

@@ -10,19 +10,19 @@ public class User {
     private String fname;
     private String lname;
     private String email;
-    private String desciption;
+    private String description;
     private String password;
     private LocalDate signup;
 
     public User() {
     }
 
-    public User(Integer id, String fname, String lname, String email, String desciption, String password, LocalDate signup) {
+    public User(Integer id, String fname, String lname, String email, String description, String password, LocalDate signup) {
         this.id = id;
         this.fname = fname;
         this.lname = lname;
         this.email = email;
-        this.desciption = desciption;
+        this.description = description;
         this.password = password;
         this.signup = signup;
     }
@@ -46,8 +46,8 @@ public class User {
         return signup;
     }
 
-    public String getDesciption() {
-        return desciption;
+    public String getDescription() {
+        return description;
     }
 
     public void setId(Integer id) {
@@ -69,8 +69,8 @@ public class User {
         this.signup = signup;
     }
 
-    public void setDesciption(String desciption) {
-        this.desciption = desciption;
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
 
