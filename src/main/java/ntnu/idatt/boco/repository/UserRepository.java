@@ -24,20 +24,19 @@ import java.util.List;
 public class UserRepository implements UserService, UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final Logger logger = LoggerFactory.getLogger(UserRepository.class);
-
     @Autowired JdbcTemplate jdbcTemplate;
+    
     @Override
     public User saveUser(User user) {
-        logger.info("saving user: " + user.getEmail());
+        logger.info("Saving user: " + user.getEmail());
         jdbcTemplate.update("INSERT INTO user(fname, lname, password, email) VALUES (?,?,?,?)",
                 user.getFname(), user.getLname(), passwordEncoder.encode(user.getPassword()), user.getEmail());
         return user;
     }
 
-
     @Override
     public User getUser(String email) {
-        logger.info("fetching user: " + email);
+        logger.info("Fetching user: " + email);
         User user = jdbcTemplate.queryForObject("SELECT * FROM user WHERE email = ?",
                 BeanPropertyRowMapper.newInstance(User.class), email);
         logger.info("Found user " + user.getFname() +" "+ user.getLname());
@@ -46,7 +45,7 @@ public class UserRepository implements UserService, UserDetailsService {
 
     @Override
     public User getUserById(Integer id) {
-        logger.info("fetching user: " + id);
+        logger.info("Fetching user: " + id);
         return jdbcTemplate.queryForObject("SELECT * FROM user WHERE id = ?",
                 BeanPropertyRowMapper.newInstance(User.class), id);
     }

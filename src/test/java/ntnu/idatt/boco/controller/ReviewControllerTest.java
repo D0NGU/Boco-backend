@@ -1,6 +1,7 @@
 package ntnu.idatt.boco.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDateTime;
@@ -31,18 +32,42 @@ public class ReviewControllerTest {
 
     @Test
     @Order(1)
+    public void getAmountOfReviews_correctAmount_true() {
+        assertEquals(1, reviewController.getAmountOfReviews(2).getBody());
+    }
+
+    @Test
+    @Order(2)
+    public void getAmountOfReviews_notCorrectAmount_false() {
+        assertNotEquals(2, reviewController.getAmountOfReviews(2).getBody());
+    }
+
+    @Test
+    @Order(3)
+    public void getAverageScore_correntAverage_true() {
+        assertEquals(4.50, reviewController.getAverageScore(2).getBody());
+    }
+
+    @Test
+    @Order(4)
+    public void getAverageScore_notCorrentAverage_false() {
+        assertNotEquals(3.68, reviewController.getAverageScore(1).getBody());
+    }
+
+    @Test
+    @Order(5)
     public void registerNewReview_success_true() {
         assertEquals(201, reviewController.registerNewReview(TEST_REVIEW).getStatusCodeValue());
     }
 
     @Test
-    @Order(2)
+    @Order(6)
     public void getById_isSame_true() {
         assertEquals(200, reviewController.getById(2).getStatusCodeValue());
     }
 
     @Test
-    @Order(3)
+    @Order(7)
     public void getReviewList_isExpected_true() {
         assertTrue(reviewController.getReviewList(null, null).getBody().size() == 4);
     }

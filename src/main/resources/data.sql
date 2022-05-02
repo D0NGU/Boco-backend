@@ -17,7 +17,7 @@ INSERT INTO categories(CATEGORY, MAIN_CATEGORY) VALUES
     ('båt', 'kjøretøy');
 
 
-INSERT INTO user (id, fname, lname, password, email )
+INSERT INTO user (id, fname, lname, password, email)
     values (1, 'Per', 'Persen', '$2a$10$OsIqAo6pFMHKjUzDRiOq9Os1L2tXfocby4mcspG2g2QrWqR6j7aBm', 'per@persen.com'), -- password=password
            (2, 'Guro', 'Gurosen', '$2a$10$OsIqAo6pFMHKjUzDRiOq9Os1L2tXfocby4mcspG2g2QrWqR6j7aBm', 'guro@gurosen.com'); -- password=password
 

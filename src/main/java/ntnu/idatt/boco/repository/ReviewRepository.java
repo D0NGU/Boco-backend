@@ -48,5 +48,25 @@ public class ReviewRepository {
     public Review getReview(int reviewId) {
         String sql = "SELECT * FROM reviews WHERE review_id = ?;";
         return jdbcTemplate.queryForObject(sql, BeanPropertyRowMapper.newInstance(Review.class), reviewId);
-    } 
+    }
+
+    /**
+     * Gets amount of reviews written by a spesific user
+     * @param userId the user
+     * @return the amount of reviews written
+     */
+    public int getAmountOfReviews(int userId) {
+        String sql = "SELECT COUNT(review_id) AS NumberOfReviews FROM reviews WHERE author=?;";
+        return jdbcTemplate.queryForObject(sql, Integer.class, userId);
+    }
+
+    /**
+     * Gets the average review-score for a spesific user
+     * @param userId the user
+     * @return the average score (a decimal number between 1 and 5)
+     */
+    public Double getAverageUserReviews(int userId) {
+        String sql = "SELECT CAST(AVG(stars+0.0) AS DECIMAL(10,3)) FROM reviews WHERE subject=?;";
+        return jdbcTemplate.queryForObject(sql, Double.class, userId);
+    }
 }
