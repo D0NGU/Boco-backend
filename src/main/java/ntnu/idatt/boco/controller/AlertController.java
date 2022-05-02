@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.AbstractQueue;
@@ -39,6 +41,19 @@ public class AlertController {
             return new ResponseEntity<>(resultList, HttpStatus.OK);
         } catch(Exception e) {
             logger.error("Alert retrieval error");
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/user/{userId}/newAlert")
+    public ResponseEntity<String> newAlert(@RequestBody Alert alert){
+        try{
+            logger.info("new alert");
+            alertRepository.newAlert(alert);
+            alert(true);
+            return new ResponseEntity<>("Alert created successfully", HttpStatus.OK);
+        }catch (Exception e){
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -112,4 +127,11 @@ public class AlertController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @MessageMapping("/test")
+    @SendTo("/alerts/greetings")
+    public boolean alert(boolean newAlert) throws Exception{
+        Thread.sleep(1000);
+        return newAlert;
+    }
+
 }
