@@ -42,6 +42,9 @@ public class ProductController {
         try {
             productRepository.newProduct(product);
             logger.info("Product created");
+            int id = productRepository.getProductByTitle(product.getTitle()).getProductId();
+            product.getImage().setProductId(id);
+            imageRepository.newPicture(product.getImage());
             return new ResponseEntity<>("Created successfully!", HttpStatus.CREATED);
         } catch (Exception e) {
             logger.error("Error creating new product");

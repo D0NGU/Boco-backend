@@ -41,6 +41,13 @@ public class ProductImage {
         this.productId = productId;
     }
 
+    public ProductImage(String imgName, String img64, int productId) {
+        this.imgName = imgName;
+        this.img64 = img64;
+        this.imgBlob = Base64.getDecoder().decode(img64);
+        this.productId = productId;
+    }
+
     public int getImgId() {
         return imgId;
     }

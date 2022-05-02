@@ -17,11 +17,11 @@ public class Product {
     private LocalDate availableTo;
     private int userId;
     private String category;
-    private ArrayList<ProductImage> image;
+    private ProductImage image;
 
     public Product () {}
 
-    public Product(int productId, String title, String description, String address, Double price, boolean unlisted, LocalDate availableFrom, LocalDate availableTo, int userId, String category, ArrayList<ProductImage> image) {
+    public Product(int productId, String title, String description, String address, Double price, boolean unlisted, LocalDate availableFrom, LocalDate availableTo, int userId, String category, ProductImage image) {
         this.productId = productId;
         this.title = title;
         this.description = description;
@@ -33,6 +33,7 @@ public class Product {
         this.userId = userId;
         this.category = category;
         this.image = image;
+        System.out.println(image);
     }
 
     /**
@@ -111,7 +112,7 @@ public class Product {
     public LocalDate getAvailableTo() {
         return availableTo;
     }
-    public ArrayList<ProductImage> getImage() {
+    public ProductImage getImage() {
         return image;
     }
 
@@ -145,7 +146,7 @@ public class Product {
     public void setAvailableTo(LocalDate availableTo) {
         this.availableTo = availableTo;
     }
-    public void setImage(ArrayList<ProductImage> image) {
+    public void setImage(ProductImage image) {
         this.image = image;
     }
 
