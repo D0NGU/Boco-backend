@@ -60,11 +60,9 @@ public class AlertController {
      */
     @GetMapping("/user/{userId}/unseen")
     public ResponseEntity<List<Alert>> getUnSeenAlerts(@PathVariable int userId){
-        logger.info("New GET-request for unseen alerts for user " + userId);
         try {
             List<Alert> resultList = alertRepository.getUnseenAlertsByUserId(userId);
             if (resultList.isEmpty()) {
-                logger.info("No alerts that are unseen with user_id " + userId + " found");
                 return new ResponseEntity<>(null, HttpStatus.OK);
             }
             logger.info("Success - unseen alerts retrieved");
