@@ -14,6 +14,7 @@ import ntnu.idatt.boco.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -128,7 +129,28 @@ public class UserController {
     @GetMapping("/user/get/")
     public ResponseEntity<User> getUserById(@RequestParam int userId){
         logger.info("Getting user by id: {}", userId);
-        return new ResponseEntity<>(userService.getUserById(userId), HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(userService.getUserById(userId), HttpStatus.OK);
+        }catch (EmptyResultDataAccessException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        catch (Exception e){
+                e.printStackTrace();
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/user/{userid}/description")
+    public ResponseEntity<?> newDescription(@PathVariable int userid, @RequestBody String description) {
+        logger.info("Adding description " + description + " to user "+ userid);
+        userRepository.newDescription(userid, description);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("user/{userid}/description")
+    public ResponseEntity<String> getDescription(@PathVariable int userid) {
+        return new ResponseEntity<>(userService.getDescription(userid), HttpStatus.OK);
     }
 
     @GetMapping("/token/refresh")
