@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import ntnu.idatt.boco.model.EditUserRequest;
 import ntnu.idatt.boco.model.User;
+import ntnu.idatt.boco.repository.ReviewRepository;
 import ntnu.idatt.boco.repository.UserRepository;
 
 import org.slf4j.Logger;
@@ -23,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.*;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -34,7 +36,8 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequiredArgsConstructor
 public class UserController {
     private final UserRepository userService;
-    Logger logger = LoggerFactory.getLogger(RentalController.class);
+    private final ReviewRepository reviewRepository;
+    Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
     UserRepository userRepository;
@@ -46,7 +49,6 @@ public class UserController {
 
     @PostMapping("/user/save")
     public ResponseEntity<User>saveUser(@RequestBody User user) {
-
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/save").toUriString());
         System.out.println(user.toString());
         return ResponseEntity.created(uri).body(userService.saveUser(user));
@@ -77,6 +79,39 @@ public class UserController {
     public ResponseEntity<User> getUserByEmail(@PathVariable String email){
         logger.info("Getting user by email: {}", email);
         return new ResponseEntity<>(userService.getUser(email), HttpStatus.OK);
+    }
+
+    /**
+     * Endpoint for checking user vertification
+     * <p>
+     * Users should only be vertified if they have received atleast 10 reviews 
+     * with an average score over 4. Their account also have to be over 1 month old.
+     * @param userId the user
+     * @return {@code true} if vertified, {@code false} if not
+     */
+    @GetMapping("/user/{userId}/vertified")
+    public ResponseEntity<Boolean> isUserVertified(@PathVariable int userId){
+        logger.info("Checking vertification of user" + userId);
+        try {
+            // Get info needed
+            double avg_stars = reviewRepository.getAverageUserReviews(userId);
+            int amount = reviewRepository.getAmountOfSubjectReviews(userId);
+            LocalDate signup = getUserById(userId).getBody().getSignup();
+            logger.info("Data: avg_stars=" + avg_stars +", amount=" + amount + ", singup_date='" + signup + "'.");
+            
+            // Check vertification
+            // From product owner: "kan være å ha fått minst 10 anmeldelser som har et gjennomsnitt over 4 stjerner, og vært medlem i minst en måned"
+            if (avg_stars>4.00 && amount>=10 && signup.isBefore(LocalDate.now().minusMonths(1))) {
+                logger.info("User is vertified");
+                return new ResponseEntity<>(true, HttpStatus.OK);
+            }
+            logger.info("User not vertified");
+            return new ResponseEntity<>(false, HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error("Could not check if vertified");
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/user/get/")

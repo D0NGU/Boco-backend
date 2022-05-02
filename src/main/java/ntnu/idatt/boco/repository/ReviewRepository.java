@@ -55,8 +55,18 @@ public class ReviewRepository {
      * @param userId the user
      * @return the amount of reviews written
      */
-    public int getAmountOfReviews(int userId) {
+    public int getAmountOfAuthorReviews(int userId) {
         String sql = "SELECT COUNT(review_id) AS NumberOfReviews FROM reviews WHERE author=?;";
+        return jdbcTemplate.queryForObject(sql, Integer.class, userId);
+    }
+
+    /**
+     * Gets amount of reviews written about a spesific user
+     * @param userId the user
+     * @return the amount of reviews written
+     */
+    public int getAmountOfSubjectReviews(int userId) {
+        String sql = "SELECT COUNT(review_id) AS NumberOfReviews FROM reviews WHERE subject=?;";
         return jdbcTemplate.queryForObject(sql, Integer.class, userId);
     }
 
