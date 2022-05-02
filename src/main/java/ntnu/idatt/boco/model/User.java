@@ -10,8 +10,22 @@ public class User {
     private String fname;
     private String lname;
     private String email;
+    private String desciption;
     private String password;
     private LocalDate signup;
+
+    public User() {
+    }
+
+    public User(Integer id, String fname, String lname, String email, String desciption, String password, LocalDate signup) {
+        this.id = id;
+        this.fname = fname;
+        this.lname = lname;
+        this.email = email;
+        this.desciption = desciption;
+        this.password = password;
+        this.signup = signup;
+    }
 
     public Integer getId() {
         return id;
@@ -32,6 +46,10 @@ public class User {
         return signup;
     }
 
+    public String getDesciption() {
+        return desciption;
+    }
+
     public void setId(Integer id) {
         this.id = id;
     }
@@ -49,6 +67,10 @@ public class User {
     }
     public void setSignup(LocalDate signup) {
         this.signup = signup;
+    }
+
+    public void setDesciption(String desciption) {
+        this.desciption = desciption;
     }
 }
 
