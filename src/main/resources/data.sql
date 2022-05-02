@@ -17,9 +17,9 @@ INSERT INTO categories(CATEGORY, MAIN_CATEGORY) VALUES
     ('båt', 'kjøretøy');
 
 
-INSERT INTO user (id, fname, lname, password, email)
-    values (1, 'Per', 'Persen', '$2a$10$OsIqAo6pFMHKjUzDRiOq9Os1L2tXfocby4mcspG2g2QrWqR6j7aBm', 'per@persen.com'), -- password=password
-           (2, 'Guro', 'Gurosen', '$2a$10$OsIqAo6pFMHKjUzDRiOq9Os1L2tXfocby4mcspG2g2QrWqR6j7aBm', 'guro@gurosen.com'); -- password=password
+INSERT INTO user (id, fname, lname, password, email, signup)
+    values (1, 'Per', 'Persen', '$2a$10$OsIqAo6pFMHKjUzDRiOq9Os1L2tXfocby4mcspG2g2QrWqR6j7aBm', 'per@persen.com', '2008-11-11'), -- password=password
+           (2, 'Guro', 'Gurosen', '$2a$10$OsIqAo6pFMHKjUzDRiOq9Os1L2tXfocby4mcspG2g2QrWqR6j7aBm', 'guro@gurosen.com', '2022-05-01'); -- password=password
 
 INSERT INTO products(title, description, address, price, unlisted, available_from, available_to, user_id, category)
     VALUES ('John Deere 7280R', 'Pent brukt traktor!', 'Myrangvegen 4, 2040 Kløfta', 450, false, '2022-04-11', '2022-06-20', 1, 'kjøretøy'),

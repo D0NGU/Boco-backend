@@ -59,7 +59,7 @@ public class RentalController {
      * @return an HTTP response containing a list of all rentals with the correct product_id and a HTTP status code
      */
     @GetMapping("/product/{id}")
-    public ResponseEntity<List<Rental>> getRentals(@PathVariable("id") int id) {
+    public ResponseEntity<List<Rental>> getRentals(@PathVariable int id) {
         logger.info("New GET-request for rentals with product_id " + id);
         try {
             List<Rental> resultList = rentalRepository.getRentals(id);
@@ -83,7 +83,7 @@ public class RentalController {
      * @return an HTTP response containing a list of all accepted or non-accepted rentals with the correct product_id and a HTTP status code
      */
     @GetMapping("/product/{id}/{accepted}")
-    public ResponseEntity<List<Rental>> getAcceptedRentals(@PathVariable("id") int id, @PathVariable("accepted") boolean accepted) {
+    public ResponseEntity<List<Rental>> getAcceptedRentals(@PathVariable int id, @PathVariable boolean accepted) {
         if (accepted) logger.info("New GET-request for accepted rentals with product_id " + id);
         else logger.info("New GET-request for non-accepted rentals with product_id " + id);
         try {
@@ -107,7 +107,7 @@ public class RentalController {
      * @return an HTTP response containing a list of all accepted or non-accepted rentals with the correct user_id and a HTTP status code
      */
     @GetMapping("/user/{id}")
-    public ResponseEntity<List<Rental>> getAcceptedRentalsByUser(@PathVariable("id") int id) {
+    public ResponseEntity<List<Rental>> getAcceptedRentalsByUser(@PathVariable int id) {
         logger.info("New GET-request for accepted rentals with user_id " + id);
         try {
             List<Rental> resultList = rentalRepository.getAcceptedRentalsByUser(id, true);
@@ -179,7 +179,7 @@ public class RentalController {
      */
     private boolean checkIfAvailable(Rental rental) {
         boolean availableSpot = false;
-        Product test = productRepository.getProduct(rental.getProductId());
+        Product test = productRepository.getProduct(rental.getProductId()); 
         List<Rental> rentals = rentalRepository.getAcceptedRentals(test.getProductId(), true);
         List<AvailabilityWindow> availabilityWindows = service.getAvailability(test,rentals);
         for (AvailabilityWindow availabilityWindow : availabilityWindows){

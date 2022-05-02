@@ -1,5 +1,7 @@
 package ntnu.idatt.boco.model;
 
+import java.time.LocalDate;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -9,6 +11,7 @@ public class User {
     private String lname;
     private String email;
     private String password;
+    private LocalDate signup;
 
     public Integer getId() {
         return id;
@@ -25,6 +28,9 @@ public class User {
     public String getPassword() {
         return password;
     }
+    public LocalDate getSignup() {
+        return signup;
+    }
 
     public void setId(Integer id) {
         this.id = id;
@@ -40,6 +46,9 @@ public class User {
     }
     public void setPassword(String password) {
         this.password = password;
+    }
+    public void setSignup(LocalDate signup) {
+        this.signup = signup;
     }
 }
 
