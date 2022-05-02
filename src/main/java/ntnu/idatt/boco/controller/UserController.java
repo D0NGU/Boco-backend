@@ -31,6 +31,10 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+/**
+ * Class containing endpoints to do with users
+ * @see User
+ */
 @RestController 
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -38,17 +42,24 @@ public class UserController {
     private final UserRepository userService;
     private final ReviewRepository reviewRepository;
     Logger logger = LoggerFactory.getLogger(UserController.class);
+    @Autowired UserRepository userRepository;
 
-    @Autowired
-    UserRepository userRepository;
-
+    /**
+     * Endpoint for getting all users
+     * @return a list of users and HttpStatus
+     */
     @GetMapping("/users")
-    public ResponseEntity<List<User>>getUsers() {
+    public ResponseEntity<List<User>> getUsers() {
         return ResponseEntity.ok().body(userService.getUsers());
     }
 
+    /**
+     * Endpoint for registering a new user
+     * @param user the user-info
+     * @return the user
+     */
     @PostMapping("/user/save")
-    public ResponseEntity<User>saveUser(@RequestBody User user) {
+    public ResponseEntity<User> saveUser(@RequestBody User user) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/save").toUriString());
         System.out.println(user.toString());
         return ResponseEntity.created(uri).body(userService.saveUser(user));
@@ -97,7 +108,7 @@ public class UserController {
             double avg_stars = reviewRepository.getAverageUserReviews(userId);
             int amount = reviewRepository.getAmountOfSubjectReviews(userId);
             LocalDate signup = getUserById(userId).getBody().getSignup();
-            logger.info("Data: avg_stars=" + avg_stars +", amount=" + amount + ", singup_date='" + signup + "'.");
+            logger.info("Data: amount=" + amount + ", avg=" + avg_stars + ", singup='" + signup + "'.");
             
             // Check vertification
             // From product owner: "kan være å ha fått minst 10 anmeldelser som har et gjennomsnitt over 4 stjerner, og vært medlem i minst en måned"

@@ -24,7 +24,7 @@ import java.util.List;
 @RequestMapping("api/listing")
 @NoArgsConstructor
 public class ListingController {
-    Logger logger = LoggerFactory.getLogger(ProductController.class);
+    Logger logger = LoggerFactory.getLogger(ListingController.class);
     @Autowired ProductRepository productRepository;
     @Autowired ProductController productController;
     @Autowired CategoryRepository categoryRepository;
