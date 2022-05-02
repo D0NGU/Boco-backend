@@ -1,7 +1,10 @@
 package ntnu.idatt.boco.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
+import ntnu.idatt.boco.model.Alert;
+import ntnu.idatt.boco.repository.AlertRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +30,7 @@ import ntnu.idatt.boco.repository.ReviewRepository;
 public class ReviewController {
     Logger logger = LoggerFactory.getLogger(ReviewController.class);
     @Autowired ReviewRepository reviewRepository;
+    @Autowired AlertRepository alertRepository;
 
     /**
      * Endpoint for adding a new review
@@ -39,6 +43,7 @@ public class ReviewController {
         try {
             // Try to add a new review to database
             reviewRepository.newReview(review);
+            alertRepository.newAlert(new Alert(1, "Du har fått en ny anmeldelse!", LocalDate.now(), false, review.getSubject()));
             return new ResponseEntity<>("Review created", HttpStatus.CREATED);
         }
         catch(DataIntegrityViolationException dve) {

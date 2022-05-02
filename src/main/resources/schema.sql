@@ -60,6 +60,15 @@ CREATE TABLE images(
     PRIMARY KEY (img_id)
 );
 
+CREATE TABLE alerts(
+    alert_id INTEGER NOT NULL AUTO_INCREMENT,
+    description VARCHAR(6000) NOT NULL,
+    alert_date DATE NOT NULL,
+    has_seen boolean NOT NULL,
+    optional_id INTEGER,
+    user_id INTEGER NOT NULL,
+    PRIMARY KEY (alert_id)
+);
 
 -- Configure dependencies (FK/PK)
 ALTER TABLE user
@@ -109,6 +118,10 @@ ALTER TABLE images
         FOREIGN KEY (product_id)
         REFERENCES products(product_id) ON DELETE CASCADE;
 
+ALTER TABLE alerts
+    ADD CONSTRAINT FK_target
+        FOREIGN KEY (user_id)
+        REFERENCES user(id) ON DELETE CASCADE;
 
 -- Create index table for fulltext search. The table is updated in realtime.
 CREATE ALIAS IF NOT EXISTS FT_INIT FOR "org.h2.fulltext.FullText.init";

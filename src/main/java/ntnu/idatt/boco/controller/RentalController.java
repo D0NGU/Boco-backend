@@ -1,12 +1,15 @@
 package ntnu.idatt.boco.controller;
 
+import ntnu.idatt.boco.model.Alert;
 import ntnu.idatt.boco.model.AvailabilityWindow;
 import ntnu.idatt.boco.model.Product;
 import ntnu.idatt.boco.model.Rental;
+import ntnu.idatt.boco.repository.AlertRepository;
 import ntnu.idatt.boco.repository.ProductRepository;
 import ntnu.idatt.boco.repository.RentalRepository;
 
 import ntnu.idatt.boco.service.ProductService;
+import ntnu.idatt.boco.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.slf4j.Logger;
@@ -14,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -27,6 +31,8 @@ public class RentalController {
     @Autowired RentalRepository rentalRepository;
     @Autowired ProductRepository productRepository;
     @Autowired ProductService service;
+    @Autowired AlertRepository alertRepository;
+    @Autowired UserService userService;
 
     /**
      * Method for handling POST-requests for registering new rentals to the database.
@@ -40,6 +46,8 @@ public class RentalController {
             if(checkIfAvailable(rental)) {
                 rentalRepository.saveRentalToDatabase(rental);
                 logger.info("Success - rental registered");
+                alertRepository.newAlert(new Alert(1, "Ny forespørsel om utleie.", LocalDate.now(), false,
+                        rental.getProductId(), productRepository.getProduct(rental.getProductId()).getUserId()));
                 return new ResponseEntity<>("Registered successfully!", HttpStatus.CREATED);
             }else{
                 logger.info("Rental not available");
@@ -133,10 +141,11 @@ public class RentalController {
     public ResponseEntity<String> acceptRental(@PathVariable int rentalId) {
         logger.info("Accept request for rental " + rentalId);
         try {
-            Rental rental = rentalRepository.getRentalById(rentalId).get(0);
+            Rental rental = rentalRepository.getRentalById(rentalId);
             if (checkIfAvailable(rental)) {
                 rentalRepository.acceptRental(rentalId);
                 logger.info("Rental " + rentalId + " was successfully accepted");
+                alertRepository.newAlert(new Alert(1, "Din forespørsel om utleie ble godtatt!", LocalDate.now(), false, rental.getProductId(), rental.getUserId()));
                 return new ResponseEntity<>("Acceptance was successful", HttpStatus.OK);
             } else {
                 logger.info("Rental " + rentalId + " could not be accepted due to date conflict");
@@ -158,8 +167,10 @@ public class RentalController {
     public ResponseEntity<String> deleteRental(@PathVariable int rentalId) {
         logger.info("Delete request for rental " + rentalId);
         try {
+            Rental rental = rentalRepository.getRentalById(rentalId);
             if (rentalRepository.deleteRental(rentalId) == 1) {
                 logger.info("Deletion of rental " + rentalId + " was successful");
+                alertRepository.newAlert(new Alert(1, "Din forespørsel om utleie ble avslått!", LocalDate.now(), false, rental.getProductId(), rental.getUserId()));
                 return new ResponseEntity<>("Deletion was successful", HttpStatus.OK);
             } else {
                 logger.info("Deletion of rental " + rentalId + " was unsuccessful. No rental with id = " + rentalId + " was found.");
