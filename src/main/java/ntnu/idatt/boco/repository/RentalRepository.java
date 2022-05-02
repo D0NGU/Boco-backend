@@ -73,8 +73,8 @@ public class RentalRepository {
      * @param rentalId the id of the rental
      * @return a list containing the retrieved rental
      */
-    public List<Rental> getRentalById(int rentalId) {
-        return jdbcTemplate.query("SELECT * FROM rentals WHERE rental_id = ?;", BeanPropertyRowMapper.newInstance(Rental.class), rentalId);
+    public Rental getRentalById(int rentalId) {
+        return jdbcTemplate.queryForObject("SELECT * FROM rentals WHERE rental_id = ?;", BeanPropertyRowMapper.newInstance(Rental.class), rentalId);
     }
 
     /**

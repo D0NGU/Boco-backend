@@ -105,6 +105,6 @@ public class RentalControllerTest {
     @Test
     @Order(13)
     public void unSuccessfullyDeleteRental() {
-        assertEquals(400, rentalController.deleteRental(2).getStatusCodeValue());
+        assertEquals(500, rentalController.deleteRental(2).getStatusCodeValue());
     }
 }

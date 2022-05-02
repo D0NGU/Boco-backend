@@ -141,7 +141,7 @@ public class RentalController {
     public ResponseEntity<String> acceptRental(@PathVariable int rentalId) {
         logger.info("Accept request for rental " + rentalId);
         try {
-            Rental rental = rentalRepository.getRentalById(rentalId).get(0);
+            Rental rental = rentalRepository.getRentalById(rentalId);
             if (checkIfAvailable(rental)) {
                 rentalRepository.acceptRental(rentalId);
                 logger.info("Rental " + rentalId + " was successfully accepted");
@@ -167,9 +167,9 @@ public class RentalController {
     public ResponseEntity<String> deleteRental(@PathVariable int rentalId) {
         logger.info("Delete request for rental " + rentalId);
         try {
+            Rental rental = rentalRepository.getRentalById(rentalId);
             if (rentalRepository.deleteRental(rentalId) == 1) {
                 logger.info("Deletion of rental " + rentalId + " was successful");
-                Rental rental = rentalRepository.getRentalById(rentalId).get(0);
                 alertRepository.newAlert(new Alert(1, "Din forespørsel om utleie ble avslått!", LocalDate.now(), false, rental.getProductId(), rental.getUserId()));
                 return new ResponseEntity<>("Deletion was successful", HttpStatus.OK);
             } else {
