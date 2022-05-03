@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,8 +21,8 @@ public class ImageRepository {
      * @param image the product image to be added
      */
     public void newPicture(ProductImage image) {
-        jdbcTemplate.update("INSERT INTO images(img_name, img_blob, product_id) VALUES (?,?,?);",
-                new Object[] {image.getImgName(), image.getImgBlob(), image.getProductId()});
+        jdbcTemplate.update("INSERT INTO images(img_name, img_blob, product_id, img_data) VALUES (?,?,?,?);",
+                new Object[] {image.getImgName(), image.getImgBlob(), image.getProductId(), image.getImgData()});
     }
 
     /**
@@ -42,5 +43,9 @@ public class ImageRepository {
     public List<ProductImage> getImagesForUsersProducts(int userId) {
         return jdbcTemplate.query("SELECT * FROM images INNER JOIN products WHERE products.user_id = ? AND img_id IN (SELECT min(img_id) FROM images GROUP BY images.product_id);",
                 BeanPropertyRowMapper.newInstance(ProductImage.class), userId);
+    }
+
+    public void deleteProductsImages(int productId) {
+        jdbcTemplate.update("DELETE FROM images WHERE product_id = ?", productId);
     }
 }

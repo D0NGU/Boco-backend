@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -42,6 +43,12 @@ public class ProductController {
         try {
             productRepository.newProduct(product);
             logger.info("Product created");
+            int id = productRepository.getProductByTitle(product.getTitle()).getProductId();
+            for (ProductImage image : product.getImages()) {
+                logger.info("Image: " + image.toString());
+                image.setProductId(id);
+                imageRepository.newPicture(image);
+            }
             return new ResponseEntity<>("Created successfully!", HttpStatus.CREATED);
         } catch (Exception e) {
             logger.error("Error creating new product");
@@ -61,6 +68,12 @@ public class ProductController {
         logger.info("Editing product: " + productId);
         try {
             productRepository.editProduct(product, productId);
+            imageRepository.deleteProductsImages(productId);
+            for (ProductImage image : product.getImages()) {
+                logger.info("Image: " + image.toString());
+                image.setProductId(productId);
+                imageRepository.newPicture(image);
+            }
             logger.info("Editing product: " + productId);
             return new ResponseEntity<>("Created successfully!", HttpStatus.OK);
         } catch (Exception e) {
@@ -111,15 +124,17 @@ public class ProductController {
     /**
      * Method for handling POST-request for adding new images
      * @param productId the id of the product to add the image to
-     * @param image     the image to be added
+     * @param images     the images to be added
      * @return an HTTP response containing a result message as a String and an HTTP status code
      */
     @PostMapping("/{productId}/image")
-    public ResponseEntity<String> newImage(@PathVariable int productId, @RequestBody ProductImage image) {
-        logger.info("Adding picture: " + image.getImgName() + " to product " + productId);
+    public ResponseEntity<String> newImage(@PathVariable int productId, @RequestBody ArrayList<ProductImage> images) {
+        logger.info("Adding" + images.size() + "pictures: "  + " to product " + productId);
         try {
-            imageRepository.newPicture(image);
-            logger.info("Image saved");
+            for (ProductImage image : images) {
+                imageRepository.newPicture(image);
+                logger.info("Image saved");
+            }
             return new ResponseEntity<>("Created successfully!", HttpStatus.CREATED);
         }catch (Exception e) {
             logger.error("Error saving new product");
@@ -135,7 +150,7 @@ public class ProductController {
      */
     @GetMapping("/{productId}/image")
     @ResponseBody
-    public ResponseEntity<List<ProductImage>> getImagesByProudctId(@PathVariable int productId) {
+    public ResponseEntity<List<ProductImage>> getImagesByProductId(@PathVariable int productId) {
         logger.info("Finding images by product id: " + productId);
         try {
             List<ProductImage> images = imageRepository.getImagesByProductId(productId);

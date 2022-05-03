@@ -79,6 +79,11 @@ public class ProductRepository {
         return jdbcTemplate.queryForObject("SELECT * FROM products WHERE product_id = ?", BeanPropertyRowMapper.newInstance(Product.class), productId);
     }
 
+    public Product getProductByTitle(String title) {
+        logger.info("Finding product " + title);
+        return jdbcTemplate.queryForObject("SELECT * FROM products WHERE title = ?", BeanPropertyRowMapper.newInstance(Product.class), title);
+    }
+
     /**
      * Method for retrieving all of a users products
      *

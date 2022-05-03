@@ -56,7 +56,8 @@ CREATE TABLE rentals(
 CREATE TABLE images(
     img_id INTEGER NOT NULL AUTO_INCREMENT,
     img_name VARCHAR(75),
-    img_blob BLOB,
+    img_blob MEDIUMBLOB,
+    img_data VARCHAR(150),
     product_id INTEGER,
     PRIMARY KEY (img_id)
 );
@@ -74,6 +75,9 @@ CREATE TABLE alerts(
 -- Configure dependencies (FK/PK)
 ALTER TABLE user
     ADD CONSTRAINT emailUnique UNIQUE (email);
+
+ALTER TABLE products
+    ADD CONSTRAINT titleUnique UNIQUE (title);
 
 ALTER TABLE reviews
     ADD CONSTRAINT FK_author
@@ -103,6 +107,10 @@ ALTER TABLE products
     ADD CONSTRAINT FK_category
         FOREIGN KEY (category) 
         REFERENCES categories(category);
+
+ALTER TABLE products
+    ADD CONSTRAINT title_unique
+    UNIQUE (title);
 
 ALTER TABLE rentals
     ADD CONSTRAINT FK_renter
