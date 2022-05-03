@@ -76,6 +76,9 @@ CREATE TABLE alerts(
 ALTER TABLE user
     ADD CONSTRAINT emailUnique UNIQUE (email);
 
+ALTER TABLE products
+    ADD CONSTRAINT titleUnique UNIQUE (title);
+
 ALTER TABLE reviews
     ADD CONSTRAINT FK_author
         FOREIGN KEY (author) 
