@@ -65,7 +65,7 @@ public class ProductRepository {
         } else {
             order = "DESC";
         }
-        return jdbcTemplate.query("SELECT * FROM products ORDER BY " + sortBy + " " + order + " LIMIT 10 OFFSET ? ", BeanPropertyRowMapper.newInstance(Product.class), new Object[]{offset});
+        return jdbcTemplate.query("SELECT * FROM products WHERE unlisted = false ORDER BY " + sortBy + " " + order + " LIMIT 10 OFFSET ?", BeanPropertyRowMapper.newInstance(Product.class), new Object[]{offset});
     }
 
     /**
@@ -108,7 +108,7 @@ public class ProductRepository {
         if (env.acceptsProfiles(Profiles.of("mysql"))) {
             return jdbcTemplate.query("SELECT * FROM products WHERE MATCH (title, description) AGAINST (? IN NATURAL LANGUAGE MODE) ORDER BY " + sortBy + " " + order + " LIMIT 10 OFFSET ?", BeanPropertyRowMapper.newInstance(Product.class), new Object[]{word, offset});
         } else {
-            String sql = "SELECT product_id,title,description,address,price,unlisted,available_from,available_to,user_id,category FROM products LEFT JOIN (FT_SEARCH_DATA('" + word + "', 10, ?)) ON products.product_id=keys[1] WHERE keys IS NOT NULL ORDER BY " + sortBy + " " + order + ";";
+            String sql = "SELECT product_id,title,description,address,price,unlisted,available_from,available_to,user_id,category FROM products LEFT JOIN (FT_SEARCH_DATA('" + word + "', 10, ?)) ON products.product_id=keys[1] WHERE keys IS NOT NULL AND unlisted = false ORDER BY " + sortBy + " " + order + ";";
             return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Product.class), new Object[]{offset});
         }
     }
@@ -137,10 +137,10 @@ public class ProductRepository {
         }
         String inSql = String.join(",", Collections.nCopies(categories.size(), "?"));
         if (env.acceptsProfiles(Profiles.of("mysql"))) {
-            return jdbcTemplate.query(String.format("SELECT * FROM products WHERE MATCH (title, description) AGAINST (%s IN NATURAL LANGUAGE MODE)" +
+            return jdbcTemplate.query(String.format("SELECT * FROM products WHERE MATCH (title, description) AGAINST (%s IN NATURAL LANGUAGE MODE) AND unlisted = false" +
                     " AND category IN (%s) ORDER BY %s %s LIMIT 10 OFFSET %s", word, inSql, sortBy, order, offset), BeanPropertyRowMapper.newInstance(Product.class), catNames.toArray());
         } else {
-            return jdbcTemplate.query(String.format("SELECT product_id,title,description,address,price,unlisted,available_from,available_to,user_id,category FROM products LEFT JOIN (FT_SEARCH_DATA('" + word + "', 10, %s)) ON products.product_id=keys[1] WHERE keys IS NOT NULL" +
+            return jdbcTemplate.query(String.format("SELECT product_id,title,description,address,price,unlisted,available_from,available_to,user_id,category FROM products LEFT JOIN (FT_SEARCH_DATA('" + word + "', 10, %s)) ON products.product_id=keys[1] WHERE keys IS NOT NULL AND unlisted = false" +
                     " AND category IN (%s) ORDER BY %s %s", offset, inSql, sortBy, order), BeanPropertyRowMapper.newInstance(Product.class), catNames.toArray());
         }
     }
@@ -167,7 +167,7 @@ public class ProductRepository {
             catNames.add(cat.getCategory());
         }
         String inSql = String.join(",", Collections.nCopies(categories.size(), "?"));
-        return jdbcTemplate.query(String.format("SELECT * FROM products WHERE category IN (%s) ORDER BY %s %s LIMIT 10 OFFSET %s", inSql, sortBy, order, offset), BeanPropertyRowMapper.newInstance(Product.class), catNames.toArray());
+        return jdbcTemplate.query(String.format("SELECT * FROM products WHERE category IN (%s) AND unlisted = false ORDER BY %s %s LIMIT 10 OFFSET %s", inSql, sortBy, order, offset), BeanPropertyRowMapper.newInstance(Product.class), catNames.toArray());
     }
 
     /**
