@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,8 +22,8 @@ public class ImageRepository {
      * @param image the product image to be added
      */
     public void newPicture(ProductImage image) {
-        jdbcTemplate.update("INSERT INTO images(img_name, img_blob, product_id) VALUES (?,?,?);",
-                new Object[] {image.getImgName(), image.getImgBlob(), image.getProductId()});
+        jdbcTemplate.update("INSERT INTO images(img_name, img_blob, product_id, img_data) VALUES (?,?,?,?);",
+                new Object[] {image.getImgName(), image.getImgBlob(), image.getProductId(), image.getImgData()});
     }
 
     /**

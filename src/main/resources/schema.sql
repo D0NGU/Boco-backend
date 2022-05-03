@@ -58,6 +58,7 @@ CREATE TABLE images(
     img_id INTEGER NOT NULL AUTO_INCREMENT,
     img_name VARCHAR(75),
     img_blob MEDIUMBLOB,
+    img_data VARCHAR(150),
     product_id INTEGER,
     PRIMARY KEY (img_id)
 );
