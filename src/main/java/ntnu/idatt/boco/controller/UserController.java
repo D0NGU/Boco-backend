@@ -67,14 +67,28 @@ public class UserController {
     }
 
 
+    /**
+     * Endpoint for deleting a user
+     * @param userId the id of the user to delete
+     * @return a result message
+     */
     @DeleteMapping("/user/delete")
-    public ResponseEntity<String> deleteUser(@RequestParam int userId) {
+    public ResponseEntity<String> deleteUser(@RequestParam int userId, @RequestParam String password) {
         logger.info("Deleting user: {}", userId);
-        userService.deleteUser(userService.getUserById(userId));
-        return new ResponseEntity<>("Deletion was successful", HttpStatus.OK);
+        if ((BCrypt.checkpw(password, userRepository.getUserById(userId).getPassword()))) {
+            userService.deleteUser(userService.getUserById(userId));
+            return new ResponseEntity<>("Deletion was successful", HttpStatus.OK);
+        } else {
+            logger.info("User " + userId + " used wrong password");
+            return new ResponseEntity<>("Wrong password", HttpStatus.FORBIDDEN);
+        }
     }
 
-
+    /**
+     * Endpoint for editing a user
+     * @param editUserRequest an object containing all the necessary information for editing a user
+     * @return an HTTP response containing HTTP status code
+     */
     @PostMapping("/user/edit")
     public ResponseEntity<?> editUser(@RequestBody EditUserRequest editUserRequest){
         logger.info("Edit user : {}",editUserRequest.getEmail());
