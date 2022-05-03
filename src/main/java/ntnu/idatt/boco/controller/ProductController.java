@@ -64,7 +64,7 @@ public class ProductController {
      * @return an HTTP response containing a result message as a String and an HTTP status code
      */
     @PutMapping("/{productId}")
-    public ResponseEntity<String> editProduct(@PathVariable int productId,@RequestBody Product product) {
+    public ResponseEntity<String> editProduct(@PathVariable int productId, @RequestBody Product product) {
         logger.info("Editing product: " + productId);
         try {
             productRepository.editProduct(product, productId);
@@ -172,9 +172,7 @@ public class ProductController {
      */
     @GetMapping("/search")
     @ResponseBody
-    public ResponseEntity<List<Product>> getProductFromSearch(@RequestParam(required = false) String q, @RequestParam(required = false) String category, @RequestParam int page, @RequestParam String sortBy,
-                                                              @RequestParam boolean ascending) {
-        logger.info("Request for a search " + q);
+    public ResponseEntity<List<Product>> getProductFromSearch(@RequestParam(required = false) String q, @RequestParam(required = false) String category, @RequestParam int page, @RequestParam String sortBy, @RequestParam boolean ascending) {
         try {
             int offset = (page - 1) * 10;
 
