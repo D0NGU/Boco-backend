@@ -106,10 +106,17 @@ public class UserController {
         logger.info("Checking vertification of user" + userId);
         try {
             // Get info needed
-            double avg_stars = reviewRepository.getAverageUserReviews(userId);
-            int amount = reviewRepository.getAmountOfSubjectReviews(userId);
-            LocalDate signup = getUserById(userId).getBody().getSignup();
-            logger.info("Data: amount=" + amount + ", avg=" + avg_stars + ", singup='" + signup + "'.");
+            double avg_stars = 0;
+            int amount = 0;
+            LocalDate signup = LocalDate.now();
+            try {
+                avg_stars = reviewRepository.getAverageUserReviews(userId);
+                amount = reviewRepository.getAmountOfSubjectReviews(userId);
+                signup = getUserById(userId).getBody().getSignup();
+                logger.info("Data: amount=" + amount + ", avg=" + avg_stars + ", singup='" + signup + "'.");
+            } catch (Exception e) {
+                logger.error("Could not get vertified status", e);
+            }
 
             // Check vertification
             // From product owner: "kan være å ha fått minst 10 anmeldelser som har et gjennomsnitt over 4 stjerner, og vært medlem i minst en måned"
