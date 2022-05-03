@@ -1,7 +1,10 @@
 package ntnu.idatt.boco.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
+import ntnu.idatt.boco.model.Alert;
+import ntnu.idatt.boco.repository.AlertRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +28,9 @@ import ntnu.idatt.boco.repository.ReviewRepository;
 @RestController
 @RequestMapping("api/review")
 public class ReviewController {
-    Logger logger = LoggerFactory.getLogger(RentalController.class);
+    Logger logger = LoggerFactory.getLogger(ReviewController.class);
     @Autowired ReviewRepository reviewRepository;
+    @Autowired AlertRepository alertRepository;
 
     /**
      * Endpoint for adding a new review
@@ -39,6 +43,7 @@ public class ReviewController {
         try {
             // Try to add a new review to database
             reviewRepository.newReview(review);
+            alertRepository.newAlert(new Alert(1, "Du har fått en ny anmeldelse!", LocalDate.now(), false, review.getSubject()));
             return new ResponseEntity<>("Review created", HttpStatus.CREATED);
         }
         catch(DataIntegrityViolationException dve) {
@@ -98,6 +103,42 @@ public class ReviewController {
             }
         } catch (Exception e) {
             logger.error("Error getting reviews");
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Endpoint for getting a users average review-score
+     * @param userId the user
+     * @return a decimal number between 1 and 5
+     */
+    @GetMapping("/user/{userId}/average")
+    @ResponseBody
+    public ResponseEntity<Double> getAverageScore(@PathVariable int userId) {
+        logger.info("Getting average review for user" + userId);
+        try {
+            return new ResponseEntity<>(reviewRepository.getAverageUserReviews(userId), HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error("Error getting review");
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Endpoint for getting the amount of reviews given by a user
+     * @param userId the user
+     * @return the amount of reviews written
+     */
+    @GetMapping("/user/{userId}/amount")
+    @ResponseBody
+    public ResponseEntity<Integer> getAmountOfReviews(@PathVariable int userId) {
+        logger.info("Getting amount of reviews from user" + userId);
+        try {
+            return new ResponseEntity<>(reviewRepository.getAmountOfAuthorReviews(userId), HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error("Error getting review");
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

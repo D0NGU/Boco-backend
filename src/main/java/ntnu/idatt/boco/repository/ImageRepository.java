@@ -14,8 +14,7 @@ import java.util.List;
  */
 @Repository
 public class ImageRepository {
-    @Autowired
-    JdbcTemplate jdbcTemplate;
+    @Autowired JdbcTemplate jdbcTemplate;
 
     /**
      * Method for adding a new product image to the database

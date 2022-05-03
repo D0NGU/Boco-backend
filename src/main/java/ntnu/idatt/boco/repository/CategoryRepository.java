@@ -12,8 +12,7 @@ import java.util.List;
 
 @Repository
 public class CategoryRepository {
-    @Autowired
-    JdbcTemplate jdbcTemplate;
+    @Autowired JdbcTemplate jdbcTemplate;
 
     /**
      * Method for retrieving all categories stored in the database
