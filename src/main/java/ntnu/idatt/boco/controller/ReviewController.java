@@ -127,6 +127,42 @@ public class ReviewController {
     }
 
     /**
+     * Endpoint for getting a users average review-score as an owner
+     * @param userId the user
+     * @return a decimal number between 1 and 5
+     */
+    @GetMapping("/user/{userId}/average/owner")
+    @ResponseBody
+    public ResponseEntity<Double> getAverageScoreAsOwner(@PathVariable int userId) {
+        logger.info("Getting average review for user as an owner" + userId);
+        try {
+            return new ResponseEntity<>(reviewRepository.getAverageUserReviewsAsOwner(userId), HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error("Error getting review score");
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Endpoint for getting a users average review-score as a renter
+     * @param userId the user
+     * @return a decimal number between 1 and 5
+     */
+    @GetMapping("/user/{userId}/average/renter")
+    @ResponseBody
+    public ResponseEntity<Double> getAverageScoreAsRenter(@PathVariable int userId) {
+        logger.info("Getting average review for user as a renter" + userId);
+        try {
+            return new ResponseEntity<>(reviewRepository.getAverageUserReviewsAsRenter(userId), HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error("Error getting review score");
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
      * Endpoint for getting the amount of reviews given by a user
      * @param userId the user
      * @return the amount of reviews written

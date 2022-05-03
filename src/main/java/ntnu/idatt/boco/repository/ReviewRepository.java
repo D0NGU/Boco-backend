@@ -79,4 +79,24 @@ public class ReviewRepository {
         String sql = "SELECT CAST(AVG(stars+0.0) AS DECIMAL(10,3)) FROM reviews WHERE subject=?;";
         return jdbcTemplate.queryForObject(sql, Double.class, userId);
     }
+
+    /**
+     * Gets the average review-score for a spesific user as owner
+     * @param userId the user
+     * @return the average score (a decimal number between 1 and 5)
+     */
+    public Double getAverageUserReviewsAsOwner(int userId) {
+        String sql = "SELECT CAST(AVG(stars+0.0) AS DECIMAL(10,3)) FROM reviews WHERE subject=? AND owner = true;";
+        return jdbcTemplate.queryForObject(sql, Double.class, userId);
+    }
+
+    /**
+     * Gets the average review-score for a spesific user as renter
+     * @param userId the user
+     * @return the average score (a decimal number between 1 and 5)
+     */
+    public Double getAverageUserReviewsAsRenter(int userId) {
+        String sql = "SELECT CAST(AVG(stars+0.0) AS DECIMAL(10,3)) FROM reviews WHERE subject=? AND owner = false;";
+        return jdbcTemplate.queryForObject(sql, Double.class, userId);
+    }
 }
