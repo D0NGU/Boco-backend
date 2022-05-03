@@ -79,6 +79,7 @@ public class Product {
         this.availableFrom = availableFrom;
         this.availableTo = availableTo;
         this.category = category;
+        this.images = new ArrayList<ProductImage>();
     }
 
     public int getProductId() {
