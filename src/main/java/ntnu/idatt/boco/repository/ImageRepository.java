@@ -45,4 +45,8 @@ public class ImageRepository {
         return jdbcTemplate.query("SELECT * FROM images INNER JOIN products WHERE products.user_id = ? AND img_id IN (SELECT min(img_id) FROM images GROUP BY images.product_id);",
                 BeanPropertyRowMapper.newInstance(ProductImage.class), userId);
     }
+
+    public void deleteProductsImages(int productId) {
+        jdbcTemplate.update("DELETE FROM images WHERE product_id = ?", productId);
+    }
 }

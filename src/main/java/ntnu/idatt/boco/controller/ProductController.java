@@ -68,6 +68,12 @@ public class ProductController {
         logger.info("Editing product: " + productId);
         try {
             productRepository.editProduct(product, productId);
+            imageRepository.deleteProductsImages(productId);
+            for (ProductImage image : product.getImages()) {
+                logger.info("Image: " + image.toString());
+                image.setProductId(productId);
+                imageRepository.newPicture(image);
+            }
             logger.info("Editing product: " + productId);
             return new ResponseEntity<>("Created successfully!", HttpStatus.OK);
         } catch (Exception e) {
