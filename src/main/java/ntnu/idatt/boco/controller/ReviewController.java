@@ -172,7 +172,7 @@ public class ReviewController {
     public ResponseEntity<Integer> getAmountOfReviews(@PathVariable int userId) {
         logger.info("Getting amount of reviews from user" + userId);
         try {
-            return new ResponseEntity<>(reviewRepository.getAmountOfAuthorReviews(userId), HttpStatus.OK);
+            return new ResponseEntity<>(reviewRepository.getAmountOfSubjectReviews(userId), HttpStatus.OK);
         } catch (Exception e) {
             logger.error("Error getting review");
             e.printStackTrace();
