@@ -33,13 +33,13 @@ public class ReviewControllerTest {
     @Test
     @Order(1)
     public void getAmountOfReviews_correctAmount_true() {
-        assertEquals(1, reviewController.getAmountOfReviews(2).getBody());
+        assertEquals(2, reviewController.getAmountOfReviews(2).getBody());
     }
 
     @Test
     @Order(2)
     public void getAmountOfReviews_notCorrectAmount_false() {
-        assertNotEquals(2, reviewController.getAmountOfReviews(2).getBody());
+        assertNotEquals(1, reviewController.getAmountOfReviews(2).getBody());
     }
 
     @Test
