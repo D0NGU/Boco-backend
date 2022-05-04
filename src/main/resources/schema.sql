@@ -143,15 +143,6 @@ ALTER TABLE alerts
         FOREIGN KEY (user_id)
         REFERENCES user(id) ON DELETE CASCADE;
 
-ALTER TABLE friendship
-    ADD CONSTRAINT FK_friend1
-    FOREIGN KEY (friend1_id)
-    REFERENCES user(id) ON DELETE CASCADE;
-
-ALTER TABLE friendship
-    ADD CONSTRAINT FK_friend2
-    FOREIGN KEY (friend2_id)
-    REFERENCES user(id) ON DELETE CASCADE;
 
 ALTER TABLE contact_forms
     ADD CONSTRAINT FK_user
