@@ -217,6 +217,7 @@ public class UserController {
      */
     @PutMapping("/{profileId}/picture")
     public ResponseEntity<String> upload(@RequestBody String base64, @PathVariable int profileId) {
+        logger.info("Setting new picture for user " +profileId);
         try {
             byte[] picBlob = Base64.getDecoder().decode(base64);
             userRepository.setPicture(picBlob, profileId);

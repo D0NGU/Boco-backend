@@ -104,7 +104,9 @@ public class User {
     }
     public void setProfilePic(byte[] profilePic) {
         this.profilePic = profilePic;
-        this.profile64 = Base64.getEncoder().encodeToString(profilePic);
+        if (profilePic != null) {
+            this.profile64 = Base64.getEncoder().encodeToString(profilePic);
+        }
     }
     public void setProfile64(String profile64) {
         this.profile64 = profile64;
