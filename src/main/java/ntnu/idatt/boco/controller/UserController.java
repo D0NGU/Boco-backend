@@ -216,9 +216,30 @@ public class UserController {
      * @param profileId
      */
     @PutMapping("/{profileId}/picture")
-    public void upload(@RequestBody String base64, @PathVariable int profileId) {
-        byte[] picBlob = Base64.getDecoder().decode(base64);
-        userRepository.setPicture(picBlob, profileId);
+    public ResponseEntity<String> upload(@RequestBody String base64, @PathVariable int profileId) {
+        try {
+            byte[] picBlob = Base64.getDecoder().decode(base64);
+            userRepository.setPicture(picBlob, profileId);
+            return new ResponseEntity<>("Picture uploaded?", HttpStatus.OK);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/{profileId}/picture")
+    public ResponseEntity<String> getPicture(@PathVariable int profileId) {
+        try {
+            Byte[] blob = userRepository.getPicture(profileId);
+            byte[] b = new byte[blob.length];
+            for (var x = 0; x <blob.length; x++) {
+                b[x] = (byte) blob[x];
+            }
+            String pic64 = Base64.getEncoder().encodeToString(b);
+            return new ResponseEntity<>(pic64, HttpStatus.OK);
+        }catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
 
