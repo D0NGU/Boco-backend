@@ -28,16 +28,16 @@ public class ForgotPasswordController {
 
 
     @PostMapping("/forgot_password")
-    public ResponseEntity<String> processForgotPassword(@RequestParam String email) {
+    public ResponseEntity<Boolean> processForgotPassword(@RequestParam String email) {
         String token = RandomString.make(30);
         try{
             if(userRepository.getUser(email) != null){
                 userRepository.updatePasswordToken(email,token);
                 String resetPasswordLink = "http://localhost:8081/reset_password?token=" + token;
                 sendEmail(email,resetPasswordLink);
-                return new ResponseEntity<>("Success sending mail", HttpStatus.OK);
+                return new ResponseEntity<>(true, HttpStatus.OK);
             }else{
-                return new ResponseEntity<>("No such user", HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
             }
         }catch (Exception e){
             e.printStackTrace();
