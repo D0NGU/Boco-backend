@@ -72,6 +72,16 @@ CREATE TABLE alerts(
     PRIMARY KEY (alert_id)
 );
 
+CREATE TABLE contact_forms (
+    contact_form_id INTEGER NOT NULL AUTO_INCREMENT,
+    fname VARCHAR(75),
+    lname VARCHAR(75),
+    email VARCHAR(120) NOT NULL,
+    comment VARCHAR(6000) NOT NULL,
+    user_id INTEGER NOT NULL,
+    PRIMARY KEY (contact_form_id)
+);
+
 -- Configure dependencies (FK/PK)
 ALTER TABLE user
     ADD CONSTRAINT emailUnique UNIQUE (email);
@@ -81,7 +91,7 @@ ALTER TABLE products
 
 ALTER TABLE reviews
     ADD CONSTRAINT FK_author
-        FOREIGN KEY (author) 
+        FOREIGN KEY (author)
         REFERENCES user(id) ON DELETE CASCADE;
 
 ALTER TABLE reviews
@@ -129,6 +139,11 @@ ALTER TABLE images
 
 ALTER TABLE alerts
     ADD CONSTRAINT FK_target
+        FOREIGN KEY (user_id)
+        REFERENCES user(id) ON DELETE CASCADE;
+
+ALTER TABLE contact_forms
+    ADD CONSTRAINT FK_user
         FOREIGN KEY (user_id)
         REFERENCES user(id) ON DELETE CASCADE;
 
