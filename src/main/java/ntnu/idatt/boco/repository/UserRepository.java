@@ -85,13 +85,13 @@ public class UserRepository implements UserService, UserDetailsService {
     }
 
     public void updatePasswordToken(String email, String token){
-        jdbcTemplate.update("update user SET reset_password_token=? WHERE email=?;", String.class, new Object[]{token,email});
+        jdbcTemplate.update("update user SET reset_password_token=? WHERE email=?;", new Object[]{token,email});
     }
 
     public User getByResetPasswordToken(String token){
-        return jdbcTemplate.queryForObject("SELECT * FROM user WHERE reset_password_token=?", User.class, token);
+        return jdbcTemplate.queryForObject("SELECT * FROM user WHERE reset_password_token=?", BeanPropertyRowMapper.newInstance(User.class), token);
     }
     public void resetJustPassword(String token, String newPassword){
-        jdbcTemplate.update("UPDATE user SET password=? WHERE reset_password_token=?", String.class, new Object[]{passwordEncoder.encode(newPassword),token});
+        jdbcTemplate.update("UPDATE user SET password=? WHERE reset_password_token=?", new Object[]{passwordEncoder.encode(newPassword),token});
     }
 }
