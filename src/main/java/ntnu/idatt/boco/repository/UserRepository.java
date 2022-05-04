@@ -91,7 +91,7 @@ public class UserRepository implements UserService, UserDetailsService {
     public User getByResetPasswordToken(String token){
         return jdbcTemplate.queryForObject("SELECT * FROM user WHERE reset_password_token=?", User.class, token);
     }
-    public void resetJustPassword(String email, String newPassword){
-        jdbcTemplate.update("UPDATE user SET password=? WHERE email=?", String.class, new Object[]{passwordEncoder.encode(newPassword),email});
+    public void resetJustPassword(String token, String newPassword){
+        jdbcTemplate.update("UPDATE user SET password=? WHERE reset_password_token=?", String.class, new Object[]{passwordEncoder.encode(newPassword),token});
     }
 }
