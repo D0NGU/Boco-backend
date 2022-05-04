@@ -8,6 +8,7 @@ create table user (
     password VARCHAR(255),
     email VARCHAR(120),
     signup DATE DEFAULT CURRENT_TIMESTAMP,
+    reset_password_token VARCHAR(30),
     PRIMARY KEY (id)
 );
 

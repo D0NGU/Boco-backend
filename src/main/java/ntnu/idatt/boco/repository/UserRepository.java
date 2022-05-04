@@ -83,4 +83,15 @@ public class UserRepository implements UserService, UserDetailsService {
     public String getDescription(int id) {
         return jdbcTemplate.queryForObject("SELECT description FROM user WHERE id= ?", String.class, id);
     }
+
+    public void updatePasswordToken(String email, String token){
+        jdbcTemplate.update("update user SET reset_password_token=? WHERE email=?;", String.class, new Object[]{token,email});
+    }
+
+    public User getByResetPasswordToken(String token){
+        return jdbcTemplate.queryForObject("SELECT * FROM user WHERE reset_password_token=?", User.class, token);
+    }
+    public void resetJustPassword(String email, String newPassword){
+        jdbcTemplate.update("UPDATE user SET password=? WHERE email=?", String.class, new Object[]{passwordEncoder.encode(newPassword),email});
+    }
 }
