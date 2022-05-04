@@ -227,6 +227,11 @@ public class UserController {
         }
     }
 
+    /**
+     * Method for getting a profile picture
+     * @param profileId
+     * @return base 64 encode image
+     */
     @GetMapping("/{profileId}/picture")
     public ResponseEntity<String> getPicture(@PathVariable int profileId) {
         try {
