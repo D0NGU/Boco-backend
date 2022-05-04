@@ -8,6 +8,7 @@ create table user (
     password VARCHAR(255),
     email VARCHAR(120),
     signup DATE DEFAULT CURRENT_TIMESTAMP,
+    profilePic MEDIUMBLOB,
     PRIMARY KEY (id)
 );
 
@@ -141,6 +142,16 @@ ALTER TABLE alerts
     ADD CONSTRAINT FK_target
         FOREIGN KEY (user_id)
         REFERENCES user(id) ON DELETE CASCADE;
+
+ALTER TABLE friendship
+    ADD CONSTRAINT FK_friend1
+    FOREIGN KEY (friend1_id)
+    REFERENCES user(id) ON DELETE CASCADE;
+
+ALTER TABLE friendship
+    ADD CONSTRAINT FK_friend2
+    FOREIGN KEY (friend2_id)
+    REFERENCES user(id) ON DELETE CASCADE;
 
 ALTER TABLE contact_forms
     ADD CONSTRAINT FK_user
