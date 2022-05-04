@@ -8,6 +8,7 @@ create table user (
     password VARCHAR(255),
     email VARCHAR(120),
     signup DATE DEFAULT CURRENT_TIMESTAMP,
+    profilePic MEDIUMBLOB,
     PRIMARY KEY (id)
 );
 
@@ -72,6 +73,12 @@ CREATE TABLE alerts(
     PRIMARY KEY (alert_id)
 );
 
+CREATE TABLE friendship(
+    friend1_id INTEGER NOT NULL,
+    friend2_id INTEGER NOT NULL,
+    since DATE NOT NULL,
+    PRIMARY KEY (friend1_id, friend2_id)
+);
 -- Configure dependencies (FK/PK)
 ALTER TABLE user
     ADD CONSTRAINT emailUnique UNIQUE (email);
@@ -131,6 +138,16 @@ ALTER TABLE alerts
     ADD CONSTRAINT FK_target
         FOREIGN KEY (user_id)
         REFERENCES user(id) ON DELETE CASCADE;
+
+ALTER TABLE friendship
+    ADD CONSTRAINT FK_friend1
+    FOREIGN KEY (friend1_id)
+    REFERENCES user(id) ON DELETE CASCADE;
+
+ALTER TABLE friendship
+    ADD CONSTRAINT FK_friend2
+    FOREIGN KEY (friend2_id)
+    REFERENCES user(id) ON DELETE CASCADE;
 
 -- Create index table for fulltext search. The table is updated in realtime.
 CREATE ALIAS IF NOT EXISTS FT_INIT FOR "org.h2.fulltext.FullText.init";

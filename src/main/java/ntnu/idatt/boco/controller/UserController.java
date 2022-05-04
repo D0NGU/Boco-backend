@@ -209,5 +209,16 @@ public class UserController {
             throw new RuntimeException("Refresh token is missing");
         }
     }
+
+    /**
+     * Method for uploading a profile picture
+     * @param base64 base 64 encoded image
+     * @param profileId
+     */
+    @PutMapping("/{profileId}/picture")
+    public void upload(@RequestBody String base64, @PathVariable int profileId) {
+        byte[] picBlob = Base64.getDecoder().decode(base64);
+        userRepository.setPicture(picBlob, profileId);
+    }
 }
 

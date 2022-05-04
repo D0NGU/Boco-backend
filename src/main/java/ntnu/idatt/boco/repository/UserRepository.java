@@ -83,4 +83,8 @@ public class UserRepository implements UserService, UserDetailsService {
     public String getDescription(int id) {
         return jdbcTemplate.queryForObject("SELECT description FROM user WHERE id= ?", String.class, id);
     }
+
+    public void setPicture(byte[] picBlob, int id) {
+        jdbcTemplate.update("UPDATE user SET profilePic = ? WHERE id = ?", new Object[]{picBlob, id});
+    }
 }
