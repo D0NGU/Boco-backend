@@ -65,7 +65,7 @@ public class RentalRepository {
      * @return the number of rows in the database that was affected
      */
     public int acceptRental(int rentalId) {
-        return jdbcTemplate.update("UPDATE rentals SET accepted = ? WHERE rental_id = ?;", "true", rentalId);
+        return jdbcTemplate.update("UPDATE rentals SET accepted = ? WHERE rental_id = ?;", true, rentalId);
     }
 
     /**
