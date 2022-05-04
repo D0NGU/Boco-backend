@@ -33,7 +33,7 @@ public class ForgotPasswordController {
         try{
             if(userRepository.getUser(email) != null){
                 userRepository.updatePasswordToken(email,token);
-                String resetPasswordLink = "http://localhost:8081/reset_password?token=" + token;
+                String resetPasswordLink = "http://localhost:8081/password/reset?token=" + token;
                 sendEmail(email,resetPasswordLink);
                 return new ResponseEntity<>(true, HttpStatus.OK);
             }else{
@@ -49,16 +49,16 @@ public class ForgotPasswordController {
         try{
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message);
-            helper.setFrom("kontakt.boco@gmail.com","BoCo brukerstøtte");
+            helper.setFrom("kontakt.boco@gmail.com","BoCo Brukerstøtte");
             helper.setTo(recipientEmail);
 
-            String subject = "tilbakestil passord";
+            String subject = "Tilbakestilling av passord";
             String content = "<p>Hei,</p>"
-                    +"<p>Trykk på lenken under til å tilbakestille passordet</p>"
-                    + "<p><a href=\"" + link + "\"> TilbakeStill passord</a></p>"
+                    +"<p>Trykk på lenken under for å tilbakestille passordet</p>"
+                    + "<p><a href=\"" + link + "\"> Tilbakestill passord</a></p>"
                     + "<br>"
                     + "<p>Ignorer denne meldingen om du ikke etterspurte "
-                    + "om å tilbakestille passordet.</p>";
+                    + "tilbakestilling av passordet ditt.</p>";
 
             helper.setSubject(subject);
             helper.setText(content, true);
