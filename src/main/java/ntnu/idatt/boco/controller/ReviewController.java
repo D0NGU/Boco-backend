@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 import ntnu.idatt.boco.model.Alert;
-import ntnu.idatt.boco.model.Rental;
 import ntnu.idatt.boco.repository.AlertRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

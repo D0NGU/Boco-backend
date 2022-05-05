@@ -1,7 +1,6 @@
 package ntnu.idatt.boco.repository;
 
 import ntnu.idatt.boco.model.ProductImage;
-import ntnu.idatt.boco.model.Review;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;

@@ -1,11 +1,11 @@
 -- Create tables
 create table user (
     id INTEGER NOT NULL AUTO_INCREMENT,
-    fname VARCHAR(75),
-    lname VARCHAR(75),
+    fname VARCHAR(75) NOT NULL,
+    lname VARCHAR(75) NOT NULL,
     description varchar(6000),
-    password VARCHAR(255),
-    email VARCHAR(120),
+    password VARCHAR(255) NOT NULL,
+    email VARCHAR(120) NOT NULL,
     signup DATE DEFAULT CURRENT_TIMESTAMP,
     reset_password_token VARCHAR(30),
     profilePic MEDIUMBLOB,
