@@ -145,6 +145,11 @@ public class UserController {
         }
     }
 
+    /**
+     * Endpoint for retrieving a user by id
+     * @param userId the id of the user to retrieve
+     * @return an HTTP response containing a user object and an HTTP status code
+     */
     @GetMapping("/user/get/")
     public ResponseEntity<User> getUserById(@RequestParam int userId){
         logger.info("User " + userId + " - getting user");
@@ -160,6 +165,12 @@ public class UserController {
         }
     }
 
+    /**
+     * Endpoint for registering a new user description
+     * @param userid the id of the user the description belongs to
+     * @param description a string containing the description
+     * @return an HTTP response containing HTTP status code
+     */
     @PostMapping("/user/{userid}/description")
     public ResponseEntity<?> newDescription(@PathVariable int userid, @RequestBody String description) {
         logger.info("User " + userid + " - adding description");
@@ -167,12 +178,23 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    /**
+     * Endpoint for retrieving a users description
+     * @param userid the id of the user
+     * @return an HTTP response containing a user description and an HTTP status code
+     */
     @GetMapping("user/{userid}/description")
     public ResponseEntity<String> getDescription(@PathVariable int userid) {
         logger.info("User " + userid + " - getting description");
         return new ResponseEntity<>(userService.getDescription(userid), HttpStatus.OK);
     }
 
+    /**
+     * Endpoint for refreshing a token
+     * @param request all of the request data
+     * @param response all of the response data
+     * @throws IOException exception throws if an IO error occurs
+     */
     @GetMapping("/token/refresh")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
@@ -211,7 +233,8 @@ public class UserController {
     /**
      * Method for uploading a profile picture
      * @param base64 base 64 encoded image
-     * @param userId
+     * @param userId the id of the user to upload the profile picture for
+     * @return an HTTP response containing a result string and an HTTP status code
      */
     @PutMapping("/{userId}/picture")
     public ResponseEntity<String> upload(@RequestBody ImgString base64, @PathVariable int userId) {
@@ -228,8 +251,8 @@ public class UserController {
 
     /**
      * Method for getting a profile picture
-     * @param userId
-     * @return base 64 encode image
+     * @param userId the id of the user to retrieve the profile picture for
+     * @return an HTTP response containing a base 64 encode image and an HTTP status code
      */
     @GetMapping("/{userId}/picture")
     public ResponseEntity<String> getPicture(@PathVariable int userId) {
