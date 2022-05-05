@@ -209,8 +209,7 @@ public class ProductController {
         try {
             User user = userService.getUserById(userId);
             List<Product> products = productRepository.getFromUserId(userId);
-            List<ProductImage> images = imageRepository.getImagesForUsersProducts(userId);
-            return new ResponseEntity<>(new UsersProducts(user, products, images), HttpStatus.OK);
+            return new ResponseEntity<>(new UsersProducts(user, products), HttpStatus.OK);
         }catch (Exception e ){
             logger.error("Getting users products failed");
             e.printStackTrace();
