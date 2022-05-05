@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This class contains methods responsible for handling HTTP requests regarding products.
+ * This class contains methods responsible for handling HTTP requests regarding {@link Product}
  */
 @CrossOrigin
 @RestController

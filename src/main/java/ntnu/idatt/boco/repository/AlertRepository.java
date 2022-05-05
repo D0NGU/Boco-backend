@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * This class is responsible for communication with the database regarding alerts.
+ * This class is responsible for communication with the database regarding {@link Alert}.
  */
 @Repository
 public class AlertRepository {

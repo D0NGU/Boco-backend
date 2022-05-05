@@ -1,6 +1,7 @@
 package ntnu.idatt.boco.repository;
 
 import ntnu.idatt.boco.model.ProductImage;
+import ntnu.idatt.boco.model.Review;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * This class is responsible for communication with the database regarding product images.
+ * This class is responsible for communication with the database regarding {@link ProductImage}.
  */
 @Repository
 public class ImageRepository {
@@ -44,6 +45,10 @@ public class ImageRepository {
                 BeanPropertyRowMapper.newInstance(ProductImage.class), userId);
     }
 
+    /**
+     * Method for deleting a products images
+     * @param productId the id of the product to delete the images for
+     */
     public void deleteProductsImages(int productId) {
         jdbcTemplate.update("DELETE FROM images WHERE product_id = ?", productId);
     }

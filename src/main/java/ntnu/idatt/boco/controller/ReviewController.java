@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import ntnu.idatt.boco.model.Alert;
+import ntnu.idatt.boco.model.Rental;
 import ntnu.idatt.boco.repository.AlertRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,9 @@ import org.springframework.web.bind.annotation.RestController;
 import ntnu.idatt.boco.model.Review;
 import ntnu.idatt.boco.repository.ReviewRepository;
 
+/**
+ * This class contains methods responsible for handling HTTP requests regarding {@link Review}.
+ */
 @CrossOrigin
 @RestController
 @RequestMapping("api/review")

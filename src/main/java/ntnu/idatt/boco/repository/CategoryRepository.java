@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * This class is responsible for communication with the database regarding {@link Category}.
+ */
 @Repository
 public class CategoryRepository {
     @Autowired JdbcTemplate jdbcTemplate;

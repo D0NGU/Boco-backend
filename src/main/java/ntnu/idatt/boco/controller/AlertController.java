@@ -1,6 +1,7 @@
 package ntnu.idatt.boco.controller;
 
 import ntnu.idatt.boco.model.Alert;
+import ntnu.idatt.boco.model.Category;
 import ntnu.idatt.boco.repository.AlertRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * This class contains methods responsible for handling HTTP requests regarding {@link Alert}.
+ */
 @CrossOrigin
 @RestController
 @RequestMapping("/api/alerts")
@@ -40,6 +44,11 @@ public class AlertController {
         }
     }
 
+    /**
+     * Method for handling POST-requests for registering new alerts
+     * @param alert the new alert to register
+     * @return an HTTP response containing a response string and an HTTP status code
+     */
     @PostMapping("/user/{userId}/newAlert")
     public ResponseEntity<String> newAlert(@RequestBody Alert alert){
         try{

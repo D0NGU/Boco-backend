@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * This class is responsible for communication with the database regarding products.
+ * This class is responsible for communication with the database regarding {@link Product}.
  */
 @Repository
 public class ProductRepository {

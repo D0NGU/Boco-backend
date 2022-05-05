@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * This class contains methods responsible for handling HTTP requests regarding contact forms.
+ * This class contains methods responsible for handling HTTP requests regarding {@link ContactForm}.
  */
 @CrossOrigin
 @RestController

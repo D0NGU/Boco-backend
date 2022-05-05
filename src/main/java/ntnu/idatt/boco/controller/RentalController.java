@@ -21,7 +21,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 /**
- * This class contains methods responsible for handling HTTP requests regarding rentals.
+ * This class contains methods responsible for handling HTTP requests regarding {@link Rental}.
  */
 @CrossOrigin
 @RestController

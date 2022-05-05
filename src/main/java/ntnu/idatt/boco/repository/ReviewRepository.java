@@ -27,24 +27,51 @@ public class ReviewRepository {
                 new Object[]{review.getText(), review.getStars(), review.isOwner(), review.getAuthor(), review.getSubject(), LocalDateTime.now()});
     }
 
-    // Methods for getting reviews
-    // TODO - Pagination when getting reviews?
+    /**
+     * Method for retrieving all reviews
+     * @return a list of all reviews
+     */
     public List<Review> getAllReviews() {
         String sql = "SELECT * FROM reviews ORDER BY date DESC;";
         return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Review.class));
     }
+
+    /**
+     * Method for retrieving all reviews regarding a subject
+     * @param subject the user subject of the reviews
+     * @return a list of reviews
+     */
     public List<Review> getAllReviewsBySubject(int subject) {
         String sql = "SELECT * FROM reviews WHERE subject="+subject+" ORDER BY date DESC;";
         return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Review.class));
     }
+
+    /**
+     * Method for retrieving all reviews written by a user
+     * @param author the user that is the author of the reviews
+     * @return a list of reviews
+     */
     public List<Review> getAllReviewsByAuthor(int author) {
         String sql = "SELECT * FROM reviews WHERE author="+author+" ORDER BY date DESC;";
         return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Review.class));
     }
+
+    /**
+     * Method for retrieving reviews by a specific author of a specific subject
+     * @param author the author of the review
+     * @param subject the subject of the review
+     * @return a list of reviews
+     */
     public List<Review> getReviewsByAuthorSubject(int author, int subject) {
         String sql = "SELECT * FROM reviews WHERE author="+author+" AND subject="+subject+" ORDER BY date DESC;";
         return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Review.class));
     }
+
+    /**
+     * Method for retrieving a review by id
+     * @param reviewId the id of the review
+     * @return a review object
+     */
     public Review getReview(int reviewId) {
         String sql = "SELECT * FROM reviews WHERE review_id = ?;";
         return jdbcTemplate.queryForObject(sql, BeanPropertyRowMapper.newInstance(Review.class), reviewId);

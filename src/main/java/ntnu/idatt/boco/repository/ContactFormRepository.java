@@ -6,7 +6,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 /**
- * This class contains methods relating to managing contact forms in the database.
+ * This class is responsible for communication with the database regarding {@link ContactForm}.
  */
 @Repository
 public class ContactFormRepository {
