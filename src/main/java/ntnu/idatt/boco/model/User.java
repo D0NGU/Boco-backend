@@ -5,6 +5,9 @@ import java.util.Base64;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+/**
+ * This class represents a user
+ */
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User {
     private Integer id;
@@ -20,6 +23,16 @@ public class User {
     public User() {
     }
 
+    /**
+     * Constructor for creating a user object
+     * @param id the unique id of the user
+     * @param fname the first name of the user
+     * @param lname the last name of the user
+     * @param email the email address of the user
+     * @param description the description of the user displayed in the user profile
+     * @param password the users password
+     * @param signup the date the user signed up
+     */
     public User(Integer id, String fname, String lname, String email, String description, String password, LocalDate signup) {
         this.id = id;
         this.fname = fname;
@@ -29,6 +42,18 @@ public class User {
         this.password = password;
         this.signup = signup;
     }
+
+    /**
+     * Constructor for creating a user object
+     * @param id the unique id of the user
+     * @param fname the first name of the user
+     * @param lname the last name of the user
+     * @param email the email address of the user
+     * @param description the description of the user displayed in the user profile
+     * @param password the users password
+     * @param signup the date the user signed up
+     * @param profilePic a byte array representing the users profile picture
+     */
     public User(Integer id, String fname, String lname, String email, String description, String password, LocalDate signup, byte[] profilePic) {
         this.id = id;
         this.fname = fname;
@@ -41,6 +66,16 @@ public class User {
         this.profile64 = Base64.getEncoder().encodeToString(profilePic);
     }
 
+    /**
+     * Constructor for creating a user object
+     * @param id the unique id of the user
+     * @param fname the first name of the user
+     * @param lname the last name of the user
+     * @param email the email address of the user
+     * @param description the description of the user displayed in the user profile
+     * @param password the users password
+     * @param profile64 base64 encoded profile picture
+     */
     public User(Integer id, String fname, String lname, String email, String description, String password, LocalDate signup, String profile64) {
         this.id = id;
         this.fname = fname;

@@ -21,6 +21,20 @@ public class Product {
 
     public Product () {}
 
+    /**
+     * Constructor for a product object.
+     * @param productId the unique id of the product
+     * @param title the title of the product
+     * @param description a description of the product
+     * @param address the address where the product is to be picked up
+     * @param price the price of renting the product
+     * @param unlisted true if the product is unlisted, false otherwise
+     * @param availableFrom the date the product is available to rent from
+     * @param availableTo the date the product is available to rent to
+     * @param userId the id of the user who owns the product
+     * @param category the category of the product
+     * @param images a list of the product images
+     */
     public Product(int productId, String title, String description, String address, Double price, boolean unlisted, LocalDate availableFrom, LocalDate availableTo, int userId, String category, ArrayList<ProductImage> images) {
         this.productId = productId;
         this.title = title;
