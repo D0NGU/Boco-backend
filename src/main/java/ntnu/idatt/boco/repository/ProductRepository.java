@@ -49,8 +49,8 @@ public class ProductRepository {
      * @param productId the id of the product to edit
      */
     public void editProduct(Product product, int productId) {
-        jdbcTemplate.update("UPDATE products SET description=?, address=?, price=?, unlisted=?, category=? WHERE product_id=?",
-                new Object[]{product.getDescription(), product.getAddress(), product.getPrice(), product.isUnlisted(), product.getCategory(), productId});
+        jdbcTemplate.update("UPDATE products SET description=?, address=?, price=?, unlisted=?, available_from=?, available_to=?, category=? WHERE product_id=?",
+                new Object[]{product.getDescription(), product.getAddress(), product.getPrice(), product.isUnlisted(), product.getAvailableFrom(), product.getAvailableTo(), product.getCategory(), productId});
     }
 
     /**
