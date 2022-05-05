@@ -1,5 +1,4 @@
 -- Create tables
-
 create table user (
     id INTEGER NOT NULL AUTO_INCREMENT,
     fname VARCHAR(75),
@@ -42,7 +41,7 @@ CREATE TABLE products (
     user_id INTEGER NOT NULL,
     category VARCHAR(20),
     PRIMARY KEY (product_id)
-    -- FULLTEXT(title, description) only in use on the mysql database
+    -- FULLTEXT(title, description) -- Compatible with MySQL DBMS. To implement fulltext-search
 );
 
 CREATE TABLE rentals(
@@ -149,7 +148,7 @@ ALTER TABLE contact_forms
         FOREIGN KEY (user_id)
         REFERENCES user(id) ON DELETE CASCADE;
 
--- Create index table for fulltext search. The table is updated in realtime.
+-- Create index table for fulltext search. The table is updated in realtime. Only compatible with H2 DBMS
 CREATE ALIAS IF NOT EXISTS FT_INIT FOR "org.h2.fulltext.FullText.init";
 CALL FT_INIT();
 CALL FT_CREATE_INDEX('PUBLIC', 'PRODUCTS', 'TITLE,DESCRIPTION');

@@ -11,10 +11,9 @@
 <hr>
 <p align="center">
   <a href="http://idatt2106_2022_08.pages.stud.idi.ntnu.no/backend/allpackages-index.html">JavaDoc</a>
-  &bull; <a href="https://gitlab.stud.idi.ntnu.no/idatt2106_2022_08/backend/-/wikis/home">Wiki</a> 
+  &bull; <a href="https://gitlab.stud.idi.ntnu.no/idatt2106_2022_08/frontend/-/wikis/home">Wiki</a> 
   &bull; <a href="https://gitlab.stud.idi.ntnu.no/idatt2106_2022_08/backend/-/boards">Issue board</a>
   &bull; <a href="#installation">Installation</a> 
-  &bull; <a href="#api-example-references">API Examples</a> 
   &bull; <a href="#authors">Authors</a> 
 </p>
 <hr>
@@ -27,36 +26,10 @@ Clone repository locally, browse to project folder and execute:
   mvn install
   mvn spring-boot:run
 ```
-For running on the mysql database
-```
+For running on the MySQL database
+```cmd
   mvn spring-boot:run -'Dspring-boot.run.profiles=mysql'
 ```
-
-
-## API Example References
-
-#### Get all products in category
-
-```
-  GET /api/products/${category}
-```
-
-| Field | Type     | Description                |
-| :-------- | :------- | :------------------------- |
-| `category` | `string` | **Required**. The category |
-
-#### Edit product
-
-```
-  PUT /api/products/${productId}/edit
-```
-
-|   Field   |  Type    | Description                       |
-| :-------- | :------- | :-------------------------------- |
-|`productId`| `string` | **Required**. Id of item to edit |
-| `product` | `array`  | **Required**. Array of new data.
-| `api_key` | `string` | **Required**. Your API key |
-
 
 ## Authors
 
