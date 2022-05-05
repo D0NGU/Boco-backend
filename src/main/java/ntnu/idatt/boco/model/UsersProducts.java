@@ -16,7 +16,6 @@ public class UsersProducts {
      * Constructor for a UsersProducts object
      * @param user a user that owns products
      * @param products a list of all the products the user owns
-     * @param images a list of all the images of the products
      */
     public UsersProducts(User user, List<Product> products) {
         this.user = user;
