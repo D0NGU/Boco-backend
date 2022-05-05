@@ -94,4 +94,11 @@ public class UserRepository implements UserService, UserDetailsService {
     public void resetJustPassword(String token, String newPassword){
         jdbcTemplate.update("UPDATE user SET password=? WHERE reset_password_token=?", new Object[]{passwordEncoder.encode(newPassword),token});
     }
+    public Byte[] getPicture(int id) {
+        return jdbcTemplate.queryForObject("SELECT profilePic FROM user WHERE id= ?", Byte[].class, id);
+    }
+
+    public void setPicture(byte[] picBlob, int id) {
+        jdbcTemplate.update("UPDATE user SET profilePic = ? WHERE id = ?", new Object[]{picBlob, id});
+    }
 }
