@@ -90,7 +90,7 @@ public class UserController {
      */
     @PostMapping("/user/edit")
     public ResponseEntity<?> editUser(@RequestBody EditUserRequest editUserRequest){
-        if (BCrypt.checkpw(editUserRequest.getOldPassword(), userRepository.getUser(editUserRequest.getEmail()).getPassword())) {
+        if (BCrypt.checkpw(editUserRequest.getOldPassword(), userRepository.getUserById(editUserRequest.getId()).getPassword())) {
             logger.info("User : " + editUserRequest.getEmail() + " - edited");
             return new ResponseEntity<>(userService.editUser(editUserRequest), HttpStatus.OK);
         }
