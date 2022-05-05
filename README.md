@@ -29,7 +29,7 @@ Clone repository locally, browse to project folder and execute:
 ```
 For running on the mysql database
 ```
-  mvn spring-boot:run -Dspring-boot.run.profiles=mysql
+  mvn spring-boot:run -'Dspring-boot.run.profiles=mysql'
 ```
 
 

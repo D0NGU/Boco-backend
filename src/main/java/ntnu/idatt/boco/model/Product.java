@@ -161,6 +161,8 @@ public class Product {
                 ", unlisted=" + unlisted +
                 ", userId=" + userId +
                 ", category='" + category + '\'' +
+                ", date_from=" + availableFrom +
+                ", date_to=" + availableTo +
                 '}';
     }
 }
