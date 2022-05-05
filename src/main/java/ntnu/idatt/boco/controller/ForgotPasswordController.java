@@ -15,6 +15,9 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
 
+/**
+ * This class contains methods responsible for handling HTTP requests regarding reset password requests.
+ */
 @RestController
 @RequestMapping("/api")
 public class ForgotPasswordController {
@@ -23,6 +26,11 @@ public class ForgotPasswordController {
 
     Logger logger = LoggerFactory.getLogger(ForgotPasswordController.class);
 
+    /**
+     * Endpoint for sending a "forgot password" email to a user
+     * @param email the email address to send the "forgot password" mail to
+     * @return {@code: true} if the users email address is valid, {@code: false} if the email address is invalid
+     */
     @PostMapping("/forgot_password")
     public ResponseEntity<Boolean> processForgotPassword(@RequestParam String email) {
         String token = RandomString.make(30);
@@ -44,6 +52,11 @@ public class ForgotPasswordController {
         }
     }
 
+    /**
+     * Method for sending an email to a recipient
+     * @param recipientEmail email address of the recipient
+     * @param link url to send
+     */
     public void sendEmail(String recipientEmail, String link){
         try {
             MimeMessage message = mailSender.createMimeMessage();
@@ -69,6 +82,12 @@ public class ForgotPasswordController {
         }
     }
 
+    /**
+     * Endpoint for resetting a users password
+     * @param token a token for identifying the user
+     * @param password the new password
+     * @return {@code: true} if the user was found, {@code: false} if the user could not be found
+     */
     @PutMapping("/reset_password")
     public ResponseEntity<Boolean> processRestPassword(@RequestParam String token, @RequestParam String password){
         try {
