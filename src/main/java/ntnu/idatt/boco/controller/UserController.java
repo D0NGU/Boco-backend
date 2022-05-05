@@ -126,9 +126,9 @@ public class UserController {
                 avg_stars = reviewRepository.getAverageUserReviews(userId);
                 amount = reviewRepository.getAmountOfSubjectReviews(userId);
                 signup = getUserById(userId).getBody().getSignup();
-                logger.info("Data: amount=" + amount + ", avg=" + avg_stars + ", singup='" + signup + "'.");
             } catch (Exception e) {
-                logger.error("User " + userId + " - could not get vertified status");
+                logger.info("User " + userId + " - not vertified");
+                return new ResponseEntity<>(false, HttpStatus.OK);
             }
 
             // Check vertification
