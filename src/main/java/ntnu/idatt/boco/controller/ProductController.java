@@ -66,7 +66,6 @@ public class ProductController {
     @PutMapping("/{productId}")
     public ResponseEntity<String> editProduct(@PathVariable int productId, @RequestBody Product product) {
         logger.info("Editing product: " + productId);
-        logger.info("Editing product: " + product.getAvailableFrom());
         try {
             productRepository.editProduct(product, productId);
             imageRepository.deleteProductsImages(productId);
