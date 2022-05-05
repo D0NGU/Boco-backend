@@ -172,25 +172,23 @@ public class ProductController {
      */
     @GetMapping("/search")
     @ResponseBody
-    public ResponseEntity<List<Product>> getProductFromSearch(@RequestParam(required = false) String q, @RequestParam(required = false) String category, @RequestParam int page, @RequestParam String sortBy, @RequestParam boolean ascending) {
+    public ResponseEntity<List<Product>> getProductFromSearch(@RequestParam(required = false) String q, @RequestParam(required = false) String category, @RequestParam String sortBy, @RequestParam boolean ascending) {
         try {
-            int offset = (page - 1) * 10;
-
             if (category == null || category.isBlank()) {
                 if (q == null || q.isBlank()) {
-                    logger.info("Searching on page " + page + " sorted by" + sortBy + " " + ascending);
-                    return new ResponseEntity<>(productRepository.getAll(offset, sortBy, ascending), HttpStatus.OK);
+                    logger.info("Searching sorted by" + sortBy + " " + ascending);
+                    return new ResponseEntity<>(productRepository.getAll(sortBy, ascending), HttpStatus.OK);
                 } else {
-                    logger.info("Searching for " + q + " on page " + page + " sorted by" + sortBy + " " + ascending);
-                    return new ResponseEntity<>(productRepository.searchProductByWord(q, offset, sortBy, ascending), HttpStatus.OK);
+                    logger.info("Searching for " + q + " sorted by" + sortBy + " " + ascending);
+                    return new ResponseEntity<>(productRepository.searchProductByWord(q, sortBy, ascending), HttpStatus.OK);
                 }
             } else {
                 if (q == null || q.isBlank()) {
-                    logger.info("Searching for " + category + " on page " + page + " sorted by" + sortBy + " " + ascending);
-                    return new ResponseEntity<>(productRepository.searchProductByCategory(category, offset, sortBy, ascending), HttpStatus.OK);
+                    logger.info("Searching for " + category + " sorted by" + sortBy + " " + ascending);
+                    return new ResponseEntity<>(productRepository.searchProductByCategory(category, sortBy, ascending), HttpStatus.OK);
                 } else {
-                    logger.info("Searching for " + q + " and " + category + " on page " + page + " sorted by" + sortBy + " " + ascending);
-                    return new ResponseEntity<>(productRepository.searchProductByWordAndCategory(q, category, offset, sortBy, ascending), HttpStatus.OK);
+                    logger.info("Searching for " + q + " and " + category + " sorted by" + sortBy + " " + ascending);
+                    return new ResponseEntity<>(productRepository.searchProductByWordAndCategory(q, category, sortBy, ascending), HttpStatus.OK);
                 }
             }
         } catch (Exception e) {

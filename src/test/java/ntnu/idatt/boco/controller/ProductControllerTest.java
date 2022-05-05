@@ -52,7 +52,7 @@ public class ProductControllerTest {
     public void successfullyRetrievedAllProducts() {        
         List<Product> list = Arrays.asList(TEST_PRODUCT, EXISTING_TEST_PRODUCT);
 
-        assertEquals(list.toString(), productController.getProductFromSearch(null, null, 1,"price", true).getBody().toString());
+        assertEquals(list.toString(), productController.getProductFromSearch(null, null, "price", true).getBody().toString());
     }
 
     @Test
@@ -72,7 +72,7 @@ public class ProductControllerTest {
     @Order(6)
     public void successfullyRetrievedProductsByCategory() {
         List<Product> list = Arrays.asList(EXISTING_TEST_PRODUCT);
-        assertEquals(list.toString(), productController.getProductFromSearch(null,"hvitevarer", 1, "price",true).getBody().toString());
+        assertEquals(list.toString(), productController.getProductFromSearch(null,"hvitevarer", "price",true).getBody().toString());
     }
 
     @Test
@@ -105,14 +105,14 @@ public class ProductControllerTest {
     @Order(9)
     public void successfulSearchWithWord(){
         List<Product> list = Arrays.asList(EXISTING_TEST_PRODUCT);
-        assertEquals(list.toString(),productController.getProductFromSearch("dragonbane", null, 1,"price", true).getBody().toString());
+        assertEquals(list.toString(),productController.getProductFromSearch("dragonbane", null, "price", true).getBody().toString());
     }
 
     @Test
     @Order(10)
     public void successfulSearchWithWordAndCategory(){
         List<Product> list = Arrays.asList(EXISTING_TEST_PRODUCT);
-        assertEquals(list.toString(),productController.getProductFromSearch("dragonbane", "hvitevarer", 1,"price", true).getBody().toString());
+        assertEquals(list.toString(),productController.getProductFromSearch("dragonbane", "hvitevarer", "price", true).getBody().toString());
     }
 
     @Test

@@ -58,14 +58,14 @@ public class ProductRepository {
      *
      * @return a list of all the products in the database
      */
-    public List<Product> getAll(int offset, String sortBy, boolean ascending) {
+    public List<Product> getAll(String sortBy, boolean ascending) {
         String order = "";
         if (ascending) {
             order = "ASC";
         } else {
             order = "DESC";
         }
-        return jdbcTemplate.query("SELECT * FROM products WHERE unlisted = false ORDER BY " + sortBy + " " + order + " LIMIT 10 OFFSET ?", BeanPropertyRowMapper.newInstance(Product.class), new Object[]{offset});
+        return jdbcTemplate.query("SELECT * FROM products WHERE unlisted = false ORDER BY " + sortBy + " " + order , BeanPropertyRowMapper.newInstance(Product.class));
     }
 
     /**
@@ -98,12 +98,11 @@ public class ProductRepository {
      * Method for searching for products by search word
      *
      * @param word      the word to search for
-     * @param offset    how many rows to skip
      * @param sortBy    what to sort the list by
      * @param ascending true if sort order is ascending, false for descending
      * @return a list of all the products matching the search-word
      */
-    public List<Product> searchProductByWord(String word, int offset, String sortBy, boolean ascending) {
+    public List<Product> searchProductByWord(String word, String sortBy, boolean ascending) {
         String order = "";
         if (ascending) {
             order = "ASC";
@@ -111,10 +110,10 @@ public class ProductRepository {
             order = "DESC";
         }
         if (env.acceptsProfiles(Profiles.of("mysql"))) {
-            return jdbcTemplate.query("SELECT * FROM products WHERE MATCH (title, description) AGAINST (? IN NATURAL LANGUAGE MODE) AND unlisted = false ORDER BY " + sortBy + " " + order + " LIMIT 10 OFFSET ?", BeanPropertyRowMapper.newInstance(Product.class), new Object[]{word, offset});
+            return jdbcTemplate.query("SELECT * FROM products WHERE MATCH (title, description) AGAINST (? IN NATURAL LANGUAGE MODE) AND unlisted = false ORDER BY " + sortBy + " " + order , BeanPropertyRowMapper.newInstance(Product.class), new Object[]{word});
         } else {
-            String sql = "SELECT product_id,title,description,address,price,unlisted,available_from,available_to,user_id,category FROM products LEFT JOIN (FT_SEARCH_DATA('" + word + "', 10, ?)) ON products.product_id=keys[1] WHERE keys IS NOT NULL AND unlisted = false ORDER BY " + sortBy + " " + order + ";";
-            return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Product.class), new Object[]{offset});
+            String sql = "SELECT product_id,title,description,address,price,unlisted,available_from,available_to,user_id,category FROM products LEFT JOIN (FT_SEARCH_DATA('" + word + "', 0, 0)) ON products.product_id=keys[1] WHERE keys IS NOT NULL AND unlisted = false ORDER BY " + sortBy + " " + order + ";";
+            return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Product.class));
         }
     }
 
@@ -128,7 +127,7 @@ public class ProductRepository {
      * @param ascending true if sort order is ascending, false for descending
      * @return a list of all the products matching the search-word and category
      */
-    public List<Product> searchProductByWordAndCategory(String word, String category, int offset, String sortBy, boolean ascending) {
+    public List<Product> searchProductByWordAndCategory(String word, String category, String sortBy, boolean ascending) {
         String order = "";
         if (ascending) {
             order = "ASC";
@@ -143,10 +142,10 @@ public class ProductRepository {
         String inSql = String.join(",", Collections.nCopies(categories.size(), "?"));
         if (env.acceptsProfiles(Profiles.of("mysql"))) {
             return jdbcTemplate.query(String.format("SELECT * FROM products WHERE MATCH (title, description) AGAINST (%s IN NATURAL LANGUAGE MODE) AND unlisted = false" +
-                    " AND category IN (%s) ORDER BY %s %s LIMIT 10 OFFSET %s", word, inSql, sortBy, order, offset), BeanPropertyRowMapper.newInstance(Product.class), catNames.toArray());
+                    " AND category IN (%s) ORDER BY %s %s", word, inSql, sortBy, order), BeanPropertyRowMapper.newInstance(Product.class), catNames.toArray());
         } else {
-            return jdbcTemplate.query(String.format("SELECT product_id,title,description,address,price,unlisted,available_from,available_to,user_id,category FROM products LEFT JOIN (FT_SEARCH_DATA('" + word + "', 10, %s)) ON products.product_id=keys[1] WHERE keys IS NOT NULL AND unlisted = false" +
-                    " AND category IN (%s) ORDER BY %s %s", offset, inSql, sortBy, order), BeanPropertyRowMapper.newInstance(Product.class), catNames.toArray());
+            return jdbcTemplate.query(String.format("SELECT product_id,title,description,address,price,unlisted,available_from,available_to,user_id,category FROM products LEFT JOIN (FT_SEARCH_DATA('" + word + "', 0, 0)) ON products.product_id=keys[1] WHERE keys IS NOT NULL AND unlisted = false" +
+                    " AND category IN (%s) ORDER BY %s %s", inSql, sortBy, order), BeanPropertyRowMapper.newInstance(Product.class), catNames.toArray());
         }
     }
 
@@ -159,7 +158,7 @@ public class ProductRepository {
      * @param ascending true if sort order is ascending, false for descending
      * @return a list of all the products matching the category
      */
-    public List<Product> searchProductByCategory(String category, int offset, String sortBy, boolean ascending) {
+    public List<Product> searchProductByCategory(String category, String sortBy, boolean ascending) {
         String order = "";
         if (ascending) {
             order = "ASC";
@@ -172,7 +171,7 @@ public class ProductRepository {
             catNames.add(cat.getCategory());
         }
         String inSql = String.join(",", Collections.nCopies(categories.size(), "?"));
-        return jdbcTemplate.query(String.format("SELECT * FROM products WHERE category IN (%s) AND unlisted = false ORDER BY %s %s LIMIT 10 OFFSET %s", inSql, sortBy, order, offset), BeanPropertyRowMapper.newInstance(Product.class), catNames.toArray());
+        return jdbcTemplate.query(String.format("SELECT * FROM products WHERE category IN (%s) AND unlisted = false ORDER BY %s %s", inSql, sortBy, order), BeanPropertyRowMapper.newInstance(Product.class), catNames.toArray());
     }
 
     /**
