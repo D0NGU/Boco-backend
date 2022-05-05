@@ -13,10 +13,18 @@
   <a href="http://idatt2106_2022_08.pages.stud.idi.ntnu.no/backend/allpackages-index.html">JavaDoc</a>
   &bull; <a href="https://gitlab.stud.idi.ntnu.no/idatt2106_2022_08/frontend/-/wikis/home">Wiki</a> 
   &bull; <a href="https://gitlab.stud.idi.ntnu.no/idatt2106_2022_08/backend/-/boards">Issue board</a>
-  &bull; <a href="#installation">Installation</a> 
+  &bull; <a href="#installation">Installation</a>
+  &bull; <a href="https://gitlab.stud.idi.ntnu.no/idatt2106_2022_08/frontend">Frontend</a>
   &bull; <a href="#authors">Authors</a> 
 </p>
 <hr>
+
+## Requirements
+
+This application requires the following:
+
+ * [Java Development Kit (JDK) 11](https://adoptium.net/?variant=openjdk11) or higher
+ * [Apache Maven 3.8.5](https://maven.apache.org/download.cgi) or higher
 
 ## Installation
 
@@ -42,5 +50,3 @@ For running on the MySQL database
 - [@krihaan](https://gitlab.stud.idi.ntnu.no/krihaan)
 - [@mathangp](https://gitlab.stud.idi.ntnu.no/mathangp)
 - [@oskareid](https://gitlab.stud.idi.ntnu.no/oskareid)
-
-
