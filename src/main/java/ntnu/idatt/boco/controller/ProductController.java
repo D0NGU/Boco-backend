@@ -65,7 +65,7 @@ public class ProductController {
      */
     @PutMapping("/{productId}")
     public ResponseEntity<String> editProduct(@PathVariable int productId, @RequestBody Product product) {
-        logger.info("Editing product: " + productId);
+        logger.info("Product " + productId + " - editing product");
         try {
             productRepository.editProduct(product, productId);
             imageRepository.deleteProductsImages(productId);
@@ -76,7 +76,6 @@ public class ProductController {
                     imageRepository.newPicture(image);
                 }
             }
-            logger.info("Editing product: " + productId);
             return new ResponseEntity<>("Created successfully!", HttpStatus.OK);
         } catch (Exception e) {
             logger.error("Error editing product");
@@ -93,7 +92,7 @@ public class ProductController {
     @GetMapping("/{productId}")
     @ResponseBody
     public ResponseEntity<Product> getById(@PathVariable int productId) {
-        logger.info("Getting product " + productId);
+        logger.info("Product " + productId + " - getting product");
         try {
             return new ResponseEntity<>(productRepository.getProduct(productId), HttpStatus.OK);
         } catch (Exception e) {
@@ -111,13 +110,13 @@ public class ProductController {
     @GetMapping("/{productId}/availability")
     @ResponseBody
     public ResponseEntity<List<AvailabilityWindow>> getAvailability(@PathVariable int productId) {
-        logger.info("Request for availability window for product " + productId);
+        logger.info("Product " + productId + " - getting availability window");
         try {
             Product product = productRepository.getProduct(productId);
             List<Rental> rentals = rentalRepository.getAcceptedRentals(productId, true);
             return new ResponseEntity<>(service.getAvailability(product, rentals), HttpStatus.OK);
         } catch (Exception e) {
-            logger.error("Could not get availability for product " + productId);
+            logger.error("Could not get availability");
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -131,11 +130,10 @@ public class ProductController {
      */
     @PostMapping("/{productId}/image")
     public ResponseEntity<String> newImage(@PathVariable int productId, @RequestBody ArrayList<ProductImage> images) {
-        logger.info("Adding" + images.size() + "pictures: "  + " to product " + productId);
+        logger.info("Product " + productId + " - adding " + images.size() + " images");
         try {
             for (ProductImage image : images) {
                 imageRepository.newPicture(image);
-                logger.info("Image saved");
             }
             return new ResponseEntity<>("Created successfully!", HttpStatus.CREATED);
         }catch (Exception e) {
@@ -153,10 +151,10 @@ public class ProductController {
     @GetMapping("/{productId}/image")
     @ResponseBody
     public ResponseEntity<List<ProductImage>> getImagesByProductId(@PathVariable int productId) {
-        logger.info("Finding images by product id: " + productId);
+        logger.info("Product " + productId + " getting images");
         try {
             List<ProductImage> images = imageRepository.getImagesByProductId(productId);
-            logger.info(images.size() + " images found");
+            logger.info("Product " + productId + " - " + images.size() + " images found");
             return new ResponseEntity<>(images, HttpStatus.OK);
         } catch (Exception e) {
             logger.error("Error getting images");
@@ -229,11 +227,11 @@ public class ProductController {
      */
     @GetMapping("/user/{userId}/history")
     public ResponseEntity<List<Product>> getUserRentalHistory(@PathVariable int userId) {
-        logger.info("Getting a users rental history" + userId + "products");
+        logger.info("User " + userId + " - getting rental history");
         try {
             List<Product> history = productRepository.getUserRentalHistory(userId);
             if (history.isEmpty()) {
-                logger.info("Rental history for user " + userId + " is empty.");
+                logger.info("User " + userId + " - rental history is empty.");
                 return new ResponseEntity<>(HttpStatus.OK);
             } else {
                 logger.info("Rental history for user " + userId + " retrieved successfully.");

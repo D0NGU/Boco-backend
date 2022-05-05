@@ -61,8 +61,8 @@ public class UserController {
      */
     @PostMapping("/user/save")
     public ResponseEntity<User> saveUser(@RequestBody User user) {
+        logger.info("Registrering new user");
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/save").toUriString());
-        System.out.println(user.toString());
         return ResponseEntity.created(uri).body(userService.saveUser(user));
     }
 
@@ -74,12 +74,11 @@ public class UserController {
      */
     @DeleteMapping("/user/delete")
     public ResponseEntity<String> deleteUser(@RequestParam int userId, @RequestParam String password) {
-        logger.info("Deleting user: {}", userId);
         if ((BCrypt.checkpw(password, userRepository.getUserById(userId).getPassword()))) {
             userService.deleteUser(userService.getUserById(userId));
-            return new ResponseEntity<>("Deletion was successful", HttpStatus.OK);
+            return new ResponseEntity<>("User " + userId + " - deleted", HttpStatus.OK);
         } else {
-            logger.info("User " + userId + " used wrong password");
+            logger.info("User " + userId + " - used wrong password or username");
             return new ResponseEntity<>("Wrong password", HttpStatus.FORBIDDEN);
         }
     }
@@ -91,19 +90,19 @@ public class UserController {
      */
     @PostMapping("/user/edit")
     public ResponseEntity<?> editUser(@RequestBody EditUserRequest editUserRequest){
-        logger.info("Edit user : {}",editUserRequest.getEmail());
         if (BCrypt.checkpw(editUserRequest.getOldPassword(), userRepository.getUser(editUserRequest.getEmail()).getPassword())) {
+            logger.info("User : " + editUserRequest.getEmail() + " - edited");
             return new ResponseEntity<>(userService.editUser(editUserRequest), HttpStatus.OK);
         }
         else {
-            logger.info("User " + editUserRequest.getEmail() + " used wrong password");
+            logger.info("User " + editUserRequest.getEmail() + " - used wrong password or username");
             return new ResponseEntity<>("Wrong password", HttpStatus.FORBIDDEN);
         }
     }
 
     @GetMapping("/user/get/{email}")
     public ResponseEntity<User> getUserByEmail(@PathVariable String email){
-        logger.info("Getting user by email: {}", email);
+        logger.info("Getting user " + email);
         return new ResponseEntity<>(userService.getUser(email), HttpStatus.OK);
     }
 
@@ -117,7 +116,7 @@ public class UserController {
      */
     @GetMapping("/user/{userId}/vertified")
     public ResponseEntity<Boolean> isUserVertified(@PathVariable int userId){
-        logger.info("Checking vertification of user" + userId);
+        logger.info("Checking vertification of user " + userId);
         try {
             // Get info needed
             double avg_stars = 0;
@@ -129,49 +128,48 @@ public class UserController {
                 signup = getUserById(userId).getBody().getSignup();
                 logger.info("Data: amount=" + amount + ", avg=" + avg_stars + ", singup='" + signup + "'.");
             } catch (Exception e) {
-                logger.error("Could not get vertified status", e);
+                logger.error("User " + userId + " - could not get vertified status");
             }
 
             // Check vertification
             // From product owner: "kan være å ha fått minst 10 anmeldelser som har et gjennomsnitt over 4 stjerner, og vært medlem i minst en måned"
             if (avg_stars>4.00 && amount>=10 && signup.isBefore(LocalDate.now().minusMonths(1))) {
-                logger.info("User is vertified");
+                logger.info("User " + userId + " - vertified");
                 return new ResponseEntity<>(true, HttpStatus.OK);
             }
-            logger.info("User not vertified");
+            logger.info("User " + userId + " - not vertified");
             return new ResponseEntity<>(false, HttpStatus.OK);
         } catch (Exception e) {
-            logger.error("Could not check if vertified");
-            e.printStackTrace();
+            logger.error("User " + userId + " - could not get vertified status");
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/user/get/")
     public ResponseEntity<User> getUserById(@RequestParam int userId){
-        logger.info("Getting user by id: {}", userId);
+        logger.info("User " + userId + " - getting user");
         try {
             return new ResponseEntity<>(userService.getUserById(userId), HttpStatus.OK);
         }catch (EmptyResultDataAccessException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         catch (Exception e){
-                e.printStackTrace();
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PostMapping("/user/{userid}/description")
     public ResponseEntity<?> newDescription(@PathVariable int userid, @RequestBody String description) {
-        logger.info("Adding description " + description + " to user "+ userid);
+        logger.info("User " + userid + " - adding description");
         userRepository.newDescription(userid, description);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("user/{userid}/description")
     public ResponseEntity<String> getDescription(@PathVariable int userid) {
-        logger.info("Getting description for " + userid + " : " + userService.getDescription(userid));
+        logger.info("User " + userid + " - getting description");
         return new ResponseEntity<>(userService.getDescription(userid), HttpStatus.OK);
     }
 
@@ -213,14 +211,14 @@ public class UserController {
     /**
      * Method for uploading a profile picture
      * @param base64 base 64 encoded image
-     * @param profileId
+     * @param userId
      */
-    @PutMapping("/{profileId}/picture")
-    public ResponseEntity<String> upload(@RequestBody ImgString base64, @PathVariable int profileId) {
-        logger.info("Setting new picture for user " +profileId);
+    @PutMapping("/{userId}/picture")
+    public ResponseEntity<String> upload(@RequestBody ImgString base64, @PathVariable int userId) {
+        logger.info("User " + userId + " - setting new profile picture");
         try {
             byte[] picBlob = Base64.getDecoder().decode(base64.getImg());
-            userRepository.setPicture(picBlob, profileId);
+            userRepository.setPicture(picBlob, userId);
             return new ResponseEntity<>("Picture uploaded?", HttpStatus.OK);
         }catch (Exception e) {
             e.printStackTrace();
@@ -230,13 +228,14 @@ public class UserController {
 
     /**
      * Method for getting a profile picture
-     * @param profileId
+     * @param userId
      * @return base 64 encode image
      */
-    @GetMapping("/{profileId}/picture")
-    public ResponseEntity<String> getPicture(@PathVariable int profileId) {
+    @GetMapping("/{userId}/picture")
+    public ResponseEntity<String> getPicture(@PathVariable int userId) {
+        logger.info("User " + userId + " - getting profile picture");
         try {
-            Byte[] blob = userRepository.getPicture(profileId);
+            Byte[] blob = userRepository.getPicture(userId);
             byte[] b = new byte[blob.length];
             for (var x = 0; x <blob.length; x++) {
                 b[x] = (byte) blob[x];

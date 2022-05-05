@@ -28,7 +28,7 @@ public class ReviewRepository {
     }
 
     // Methods for getting reviews
-    // TODO - Pagination when getting reviews
+    // TODO - Pagination when getting reviews?
     public List<Review> getAllReviews() {
         String sql = "SELECT * FROM reviews ORDER BY date DESC;";
         return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Review.class));

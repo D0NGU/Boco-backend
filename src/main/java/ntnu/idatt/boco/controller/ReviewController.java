@@ -116,7 +116,7 @@ public class ReviewController {
     @GetMapping("/user/{userId}/average")
     @ResponseBody
     public ResponseEntity<Double> getAverageScore(@PathVariable int userId) {
-        logger.info("Getting average review for user" + userId);
+        logger.info("User " + userId + " - getting average review score");
         try {
             return new ResponseEntity<>(reviewRepository.getAverageUserReviews(userId), HttpStatus.OK);
         } catch (Exception e) {
@@ -134,7 +134,7 @@ public class ReviewController {
     @GetMapping("/user/{userId}/average/owner")
     @ResponseBody
     public ResponseEntity<Double> getAverageScoreAsOwner(@PathVariable int userId) {
-        logger.info("Getting average review for user as an owner" + userId);
+        logger.info("User " + userId + " - getting average review score (owner)");
         try {
             return new ResponseEntity<>(reviewRepository.getAverageUserReviewsAsOwner(userId), HttpStatus.OK);
         } catch (Exception e) {
@@ -152,7 +152,7 @@ public class ReviewController {
     @GetMapping("/user/{userId}/average/renter")
     @ResponseBody
     public ResponseEntity<Double> getAverageScoreAsRenter(@PathVariable int userId) {
-        logger.info("Getting average review for user as a renter" + userId);
+        logger.info("User " + userId + " - getting average review score (renter)");
         try {
             return new ResponseEntity<>(reviewRepository.getAverageUserReviewsAsRenter(userId), HttpStatus.OK);
         } catch (Exception e) {
@@ -170,7 +170,7 @@ public class ReviewController {
     @GetMapping("/user/{userId}/amount")
     @ResponseBody
     public ResponseEntity<Integer> getAmountOfReviews(@PathVariable int userId) {
-        logger.info("Getting amount of reviews from user" + userId);
+        logger.info("User " + userId + " - getting amount of reviews written");
         try {
             return new ResponseEntity<>(reviewRepository.getAmountOfSubjectReviews(userId), HttpStatus.OK);
         } catch (Exception e) {

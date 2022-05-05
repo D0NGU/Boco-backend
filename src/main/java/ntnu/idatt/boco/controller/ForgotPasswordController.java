@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import net.bytebuddy.utility.RandomString;
 
@@ -19,11 +18,8 @@ import java.io.UnsupportedEncodingException;
 @RestController
 @RequestMapping("/api")
 public class ForgotPasswordController {
-    @Autowired
-    private JavaMailSender mailSender;
-
-    @Autowired
-    private UserRepository userRepository;
+    @Autowired private JavaMailSender mailSender;
+    @Autowired private UserRepository userRepository;
 
     Logger logger = LoggerFactory.getLogger(ForgotPasswordController.class);
 
@@ -32,12 +28,13 @@ public class ForgotPasswordController {
         String token = RandomString.make(30);
         try{
             if(userRepository.getUser(email) != null){
-                logger.info("Sending mail to " + email + "to reset password");
+                logger.info("Reset password - sending mail to " + email);
                 userRepository.updatePasswordToken(email,token);
                 String resetPasswordLink = "http://localhost:8081/password/reset?token=" + token;
                 sendEmail(email,resetPasswordLink);
                 return new ResponseEntity<>(true, HttpStatus.OK);
-            }else{
+            }else {
+                logger.info("Reset password - email not found");
                 return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
             }
         }catch (Exception e){
@@ -48,7 +45,7 @@ public class ForgotPasswordController {
     }
 
     public void sendEmail(String recipientEmail, String link){
-        try{
+        try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message);
             helper.setFrom("kontakt.boco@gmail.com","BoCo Brukerstøtte");
@@ -67,24 +64,23 @@ public class ForgotPasswordController {
             helper.setSubject(subject);
             helper.setText(content, true);
             mailSender.send(message);
-        }catch (MessagingException | UnsupportedEncodingException e){
+        } catch (MessagingException | UnsupportedEncodingException e){
             e.printStackTrace();
         }
     }
 
     @PutMapping("/reset_password")
     public ResponseEntity<Boolean> processRestPassword(@RequestParam String token, @RequestParam String password){
-        try{
-            logger.info("Reset password request");
+        try {
             if(userRepository.getByResetPasswordToken(token) != null){
                 userRepository.resetJustPassword(token, password);
-                logger.info("Password reset successful");
+                logger.info("Reset password - successful");
                 return new ResponseEntity<>(true, HttpStatus.OK);
-            }else{
-                logger.info("Could not find user when trying to reset password");
+            } else {
+                logger.info("Reset password - could not find user");
                 return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
             }
-        }catch (Exception e){
+        }catch (Exception e) {
             logger.error("Error resetting password");
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

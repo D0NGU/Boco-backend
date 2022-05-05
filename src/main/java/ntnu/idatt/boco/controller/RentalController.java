@@ -41,16 +41,16 @@ public class RentalController {
      */
     @PostMapping
     public ResponseEntity<String> registerNewRental(@RequestBody Rental rental) {
-        logger.info("New rental registration requested");
+        logger.info("Rental - new rental registration requested");
         try {
             if(checkIfAvailable(rental)) {
                 rentalRepository.saveRentalToDatabase(rental);
-                logger.info("Success - rental registered");
+                logger.info("Rental - success");
                 alertRepository.newAlert(new Alert(1, "Ny forespørsel om utleie.", LocalDate.now(), false,
                         rental.getProductId(), productRepository.getProduct(rental.getProductId()).getUserId()));
                 return new ResponseEntity<>("Registered successfully!", HttpStatus.CREATED);
             }else{
-                logger.info("Rental not available");
+                logger.info("Rental - not available");
                 return new ResponseEntity<>("Rental unavailable", HttpStatus.CONFLICT);
             }
 

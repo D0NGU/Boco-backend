@@ -41,7 +41,7 @@ public class ListingController {
     @GetMapping("/{productId}")
     @ResponseBody
     public ResponseEntity<Listing> getListingById(@PathVariable int productId) {
-        logger.info(productId + ": Creating listing");
+        logger.info("Product " + productId + " - creating listing");
         try {
             Product product = productRepository.getProduct(productId);
             User user = userService.getUserById(product.getUserId());
