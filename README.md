@@ -34,9 +34,13 @@ Clone repository locally, browse to project folder and execute:
   mvn install
   mvn spring-boot:run
 ```
-For running on the MySQL database
+For running on the MySQL database instead execute:
 ```cmd
   mvn spring-boot:run -'Dspring-boot.run.profiles=mysql'
+```
+To run unit tests execute:
+```cmd
+  mvn clean test
 ```
 
 ## Authors
