@@ -7,6 +7,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import ntnu.idatt.boco.model.EditUserRequest;
+import ntnu.idatt.boco.model.ImgString;
 import ntnu.idatt.boco.model.User;
 import ntnu.idatt.boco.repository.ReviewRepository;
 import ntnu.idatt.boco.repository.UserRepository;

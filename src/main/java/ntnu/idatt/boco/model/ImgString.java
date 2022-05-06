@@ -1,4 +1,4 @@
-package ntnu.idatt.boco.controller;
+package ntnu.idatt.boco.model;
 
 public class ImgString {
     private String img;
