@@ -105,6 +105,11 @@ public class UserController {
         }
     }
 
+    /**
+     * Endpoint for getting user by email
+     * @param email the email of a user that is requested
+     * @return user with the same email as requested
+     */
     @GetMapping("/user/get/{email}")
     public ResponseEntity<User> getUserByEmail(@PathVariable String email){
         try{
