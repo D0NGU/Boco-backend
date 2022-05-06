@@ -37,8 +37,8 @@ public class ProductService {
         List<AvailabilityWindow> requested = new ArrayList<>();
         List<AvailabilityWindow> available = new ArrayList<>();
 
-        logger.info("Product is available from " +product.getAvailableFrom());
-        logger.info("Product is available from " +product.getAvailableTo());
+        logger.info("Product " + product.getProductId() + " - available from " + product.getAvailableFrom());
+        logger.info("Product " + product.getProductId() + " - available to " + product.getAvailableTo());
         if(!rentals.isEmpty()){
 
             for (Rental rental : rentals) {

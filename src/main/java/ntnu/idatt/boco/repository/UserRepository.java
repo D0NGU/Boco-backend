@@ -36,7 +36,6 @@ public class UserRepository implements UserService, UserDetailsService {
      */
     @Override
     public User saveUser(User user) {
-        logger.info("Saving user: " + user.getEmail());
         jdbcTemplate.update("INSERT INTO user(fname, lname, password, email) VALUES (?,?,?,?)",
                 user.getFname(), user.getLname(), passwordEncoder.encode(user.getPassword()), user.getEmail());
         return user;
@@ -49,10 +48,8 @@ public class UserRepository implements UserService, UserDetailsService {
      */
     @Override
     public User getUser(String email) {
-        logger.info("Fetching user: " + email);
         User user = jdbcTemplate.queryForObject("SELECT * FROM user WHERE email = ?",
                 BeanPropertyRowMapper.newInstance(User.class), email);
-        logger.info("Found user " + user.getFname() +" "+ user.getLname());
         return user;
     }
 
@@ -63,7 +60,6 @@ public class UserRepository implements UserService, UserDetailsService {
      */
     @Override
     public User getUserById(Integer id) {
-        logger.info("Fetching user: " + id);
         return jdbcTemplate.queryForObject("SELECT * FROM user WHERE id = ?",
                 BeanPropertyRowMapper.newInstance(User.class), id);
     }
@@ -74,7 +70,7 @@ public class UserRepository implements UserService, UserDetailsService {
      */
     @Override
     public void deleteUser(User user) {
-        logger.info("deleting user: " + user.getId());
+        logger.info("User " + user.getId() + " - deleting user");
         jdbcTemplate.update("DELETE FROM user WHERE id = ?", user.getId());
     }
 
@@ -85,7 +81,6 @@ public class UserRepository implements UserService, UserDetailsService {
      */
     @Override
     public User editUser(EditUserRequest editUserRequest) {
-        logger.info("Editing user: " + editUserRequest.getEmail());
         jdbcTemplate.update("UPDATE user SET email = ?, password = ? WHERE id = ?", new Object[]{editUserRequest.getEmail(), passwordEncoder.encode(editUserRequest.getNewPassword()), editUserRequest.getId()});
         return getUserById(editUserRequest.getId());
     }
@@ -96,7 +91,6 @@ public class UserRepository implements UserService, UserDetailsService {
      */
     @Override
     public List<User> getUsers() {
-        logger.info("fetching all users");
         return jdbcTemplate.query("SELECT * FROM user", BeanPropertyRowMapper.newInstance(User.class));
     }
 
