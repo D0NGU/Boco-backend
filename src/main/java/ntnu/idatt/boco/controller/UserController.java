@@ -101,7 +101,7 @@ public class UserController {
         }
         else {
             logger.info("User " + editUserRequest.getEmail() + " - used wrong password or username");
-            return new ResponseEntity<>("Wrong password", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("Wrong password", HttpStatus.UNAUTHORIZED);
         }
     }
 
