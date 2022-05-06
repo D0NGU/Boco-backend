@@ -110,7 +110,7 @@ public class ProductRepository {
             order = "DESC";
         }
         if (env.acceptsProfiles(Profiles.of("mysql"))) {
-            return jdbcTemplate.query("SELECT * FROM products WHERE MATCH (title, description) AGAINST ('?' IN NATURAL LANGUAGE MODE) AND unlisted = false ORDER BY " + sortBy + " " + order , BeanPropertyRowMapper.newInstance(Product.class), new Object[]{word});
+            return jdbcTemplate.query(String.format("SELECT * FROM products WHERE MATCH (title, description) AGAINST ('%s' IN NATURAL LANGUAGE MODE) AND unlisted = false ORDER BY %s %s",word,sortBy,order),BeanPropertyRowMapper.newInstance(Product.class) );
         } else {
             String sql = "SELECT product_id,title,description,address,price,unlisted,available_from,available_to,user_id,category FROM products LEFT JOIN (FT_SEARCH_DATA('" + word + "', 0, 0)) ON products.product_id=keys[1] WHERE keys IS NOT NULL AND unlisted = false ORDER BY " + sortBy + " " + order + ";";
             return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Product.class));
@@ -141,7 +141,7 @@ public class ProductRepository {
         String inSql = String.join(",", Collections.nCopies(categories.size(), "?"));
         if (env.acceptsProfiles(Profiles.of("mysql"))) {
             return jdbcTemplate.query(String.format("SELECT * FROM products WHERE MATCH (title, description) AGAINST ('%s' IN NATURAL LANGUAGE MODE)" +
-                    " AND category IN (%s) AND unlisted = false ORDER BY %s %s", word, inSql, sortBy, order), BeanPropertyRowMapper.newInstance(Product.class), catNames.toArray());
+                    " AND category IN (%s) AND unlisted = %s ORDER BY %s %s", word, inSql, false, sortBy, order), BeanPropertyRowMapper.newInstance(Product.class), catNames.toArray());
         } else {
             return jdbcTemplate.query(String.format("SELECT product_id,title,description,address,price,unlisted,available_from,available_to,user_id,category FROM products LEFT JOIN (FT_SEARCH_DATA('" + word + "', 0, 0)) ON products.product_id=keys[1] WHERE keys IS NOT NULL AND unlisted = false" +
                     " AND category IN (%s) ORDER BY %s %s", inSql, sortBy, order), BeanPropertyRowMapper.newInstance(Product.class), catNames.toArray());
@@ -169,7 +169,7 @@ public class ProductRepository {
             catNames.add(cat.getCategory());
         }
         String inSql = String.join(",", Collections.nCopies(categories.size(), "?"));
-        return jdbcTemplate.query(String.format("SELECT * FROM products WHERE category IN (%s) AND unlisted = false ORDER BY %s %s", inSql, sortBy, order), BeanPropertyRowMapper.newInstance(Product.class), catNames.toArray());
+        return jdbcTemplate.query(String.format("SELECT * FROM products WHERE category IN (%s) AND unlisted = %s ORDER BY %s %s", inSql, false, sortBy, order), BeanPropertyRowMapper.newInstance(Product.class), catNames.toArray());
     }
 
     /**
