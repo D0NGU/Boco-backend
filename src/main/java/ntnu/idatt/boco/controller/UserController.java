@@ -84,7 +84,7 @@ public class UserController {
             return new ResponseEntity<>("User " + userId + " - deleted", HttpStatus.OK);
         } else {
             logger.info("User " + userId + " - used wrong password or username");
-            return new ResponseEntity<>("Wrong password", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("Wrong password", HttpStatus.UNAUTHORIZED);
         }
     }
 
