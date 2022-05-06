@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.Arrays;
@@ -34,7 +33,7 @@ public class ReviewControllerTest {
     //private final Review EXISTING_TEST_REVIEW_3 = new Review(3, "Not sure how to feel about this guy", 1, true, 2, 1, LocalDateTime.parse("2017-10-03T03:56:11"));
     private final Review TEST_REVIEW = new Review(4, "The best tester", 5, false, 2, 1, LocalDateTime.of(2022, 5, 15, 13, 46, 23));
     private final Review INVALID_TEST_REVIEW = new Review(5, "The best tester", 6, false, 2, 1, LocalDateTime.of(2022, 5, 15, 13, 46, 23));
-    private final Review INVALID_TEST_REVIEW_2 = new Review(5, null, 5, false, 2, 1, null);
+    //private final Review INVALID_TEST_REVIEW_2 = new Review(5, null, 5, false, 2, 1, null);
 
     @Test
     @Order(1)

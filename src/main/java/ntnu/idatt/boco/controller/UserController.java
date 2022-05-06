@@ -121,7 +121,7 @@ public class UserController {
      */
     @GetMapping("/user/{userId}/vertified")
     public ResponseEntity<Boolean> isUserVertified(@PathVariable int userId){
-        logger.info("Checking vertification of user " + userId);
+        logger.info("User " + userId + " - Checking vertification");
         try {
             // Get info needed
             double avg_stars = 0;

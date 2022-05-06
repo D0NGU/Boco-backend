@@ -1,7 +1,6 @@
 package ntnu.idatt.boco.controller;
 
 import ntnu.idatt.boco.model.Alert;
-import ntnu.idatt.boco.model.Category;
 import ntnu.idatt.boco.repository.AlertRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
