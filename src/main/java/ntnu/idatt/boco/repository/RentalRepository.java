@@ -1,6 +1,8 @@
 package ntnu.idatt.boco.repository;
 
 import ntnu.idatt.boco.model.Rental;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -9,10 +11,11 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * This class contains methods relating to managing rentals in the database.
+ * This class is responsible for communication with the database regarding {@link Rental}.
  */
 @Repository
 public class RentalRepository {
+    Logger logger = LoggerFactory.getLogger(RentalRepository.class);
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -51,6 +54,7 @@ public class RentalRepository {
      * @return the number of rows in the database that was affected by the SQL insertion
      */
     public int saveRentalToDatabase(Rental rental) {
+        logger.info("New rental " +rental.toString());
         return jdbcTemplate.update("INSERT INTO rentals (date_from, date_to, accepted, product_id, user_id) VALUES (?,?,?,?,?);",
                 new Object[] { rental.getDateFrom(), rental.getDateTo(), rental.isAccepted(), rental.getProductId(), rental.getUserId()});
     }
@@ -61,7 +65,7 @@ public class RentalRepository {
      * @return the number of rows in the database that was affected
      */
     public int acceptRental(int rentalId) {
-        return jdbcTemplate.update("UPDATE rentals SET accepted = ? WHERE rental_id = ?;", "true", rentalId);
+        return jdbcTemplate.update("UPDATE rentals SET accepted = ? WHERE rental_id = ?;", true, rentalId);
     }
 
     /**
@@ -69,8 +73,8 @@ public class RentalRepository {
      * @param rentalId the id of the rental
      * @return a list containing the retrieved rental
      */
-    public List<Rental> getRentalById(int rentalId) {
-        return jdbcTemplate.query("SELECT * FROM rentals WHERE rental_id = ?;", BeanPropertyRowMapper.newInstance(Rental.class), rentalId);
+    public Rental getRentalById(int rentalId) {
+        return jdbcTemplate.queryForObject("SELECT * FROM rentals WHERE rental_id = ?;", BeanPropertyRowMapper.newInstance(Rental.class), rentalId);
     }
 
     /**

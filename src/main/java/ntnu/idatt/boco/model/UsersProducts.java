@@ -9,7 +9,6 @@ import java.util.List;
 public class UsersProducts {
     User user;
     List<Product> products;
-    List<ProductImage> images;
 
     public UsersProducts() {}
 
@@ -17,12 +16,10 @@ public class UsersProducts {
      * Constructor for a UsersProducts object
      * @param user a user that owns products
      * @param products a list of all the products the user owns
-     * @param images a list of all the images of the products
      */
-    public UsersProducts(User user, List<Product> products, List<ProductImage> images) {
+    public UsersProducts(User user, List<Product> products) {
         this.user = user;
         this.products = products;
-        this.images = images;
     }
 
     public User getUser() {
@@ -31,17 +28,11 @@ public class UsersProducts {
     public List<Product> getProducts() {
         return products;
     }
-    public List<ProductImage> getImages() {
-        return images;
-    }
 
     public void setUser(User user) {
         this.user = user;
     }
     public void setProducts(List<Product> products) {
         this.products = products;
-    }
-    public void setImages(List<ProductImage> images) {
-        this.images = images;
     }
 }

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * This class contains methods responsible for handling HTTP requests regarding categories.
+ * This class contains methods responsible for handling HTTP requests regarding {@link Category}.
  */
 @CrossOrigin
 @RestController

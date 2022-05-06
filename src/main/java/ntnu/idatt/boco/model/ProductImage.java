@@ -14,6 +14,7 @@ public class ProductImage {
     private String imgName;
     private String img64;
     private byte[] imgBlob;
+    private String imgData;
     private int productId;
 
     public ProductImage() {}
@@ -25,20 +26,30 @@ public class ProductImage {
      * @param imgBlob the image blob
      * @param productId the id of the product the images belong to
      */
-    public ProductImage(int imgId, String imgName, byte[] imgBlob, int productId) {
+    public ProductImage(int imgId, String imgName, byte[] imgBlob, int productId, String imgData) {
         this.imgId = imgId;
         this.imgName = imgName;
         this.imgBlob = imgBlob;
         this.img64 = Base64.getEncoder().encodeToString(imgBlob);
         this.productId = productId;
+        this.imgData = imgData;
     }
 
-    public ProductImage(int imgId, String imgName, String img64, int productId) {
+    public ProductImage(int imgId, String imgName, String img64, int productId, String imgData) {
         this.imgId = imgId;
         this.imgName = imgName;
         this.img64 = img64;
         this.imgBlob = Base64.getDecoder().decode(img64);
         this.productId = productId;
+        this.imgData = imgData;
+    }
+
+    public ProductImage(String imgName, String img64, int productId, String imgData) {
+        this.imgName = imgName;
+        this.img64 = img64;
+        this.imgBlob = Base64.getDecoder().decode(img64);
+        this.productId = productId;
+        this.imgData = imgData;
     }
 
     public int getImgId() {
@@ -56,6 +67,9 @@ public class ProductImage {
     }
     public int getProductId() {
         return productId;
+    }
+    public String getImgData() {
+        return imgData;
     }
 
     public void setImgId(int imgId) {
@@ -75,6 +89,9 @@ public class ProductImage {
     public void setProductId(int productId) {
         this.productId = productId;
     }
+    public void setImgData(String imgData) {
+        this.imgData = imgData;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -82,5 +99,15 @@ public class ProductImage {
         if (o == null || getClass() != o.getClass()) return false;
         ProductImage that = (ProductImage) o;
         return imgId == that.imgId && productId == that.productId && Objects.equals(imgName, that.imgName) && img64.equals(that.img64) && Arrays.equals(imgBlob, that.imgBlob);
+    }
+
+    @Override
+    public String toString() {
+        return "ProductImage{" +
+                "imgId=" + imgId +
+                ", imgName='" + imgName + '\'' +
+                ", imgData='" + imgData + '\'' +
+                ", productId=" + productId +
+                '}';
     }
 }

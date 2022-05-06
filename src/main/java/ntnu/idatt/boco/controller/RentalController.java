@@ -1,12 +1,15 @@
 package ntnu.idatt.boco.controller;
 
+import ntnu.idatt.boco.model.Alert;
 import ntnu.idatt.boco.model.AvailabilityWindow;
 import ntnu.idatt.boco.model.Product;
 import ntnu.idatt.boco.model.Rental;
+import ntnu.idatt.boco.repository.AlertRepository;
 import ntnu.idatt.boco.repository.ProductRepository;
 import ntnu.idatt.boco.repository.RentalRepository;
 
 import ntnu.idatt.boco.service.ProductService;
+import ntnu.idatt.boco.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.slf4j.Logger;
@@ -14,10 +17,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
- * This class contains methods responsible for handling HTTP requests regarding rentals.
+ * This class contains methods responsible for handling HTTP requests regarding {@link Rental}.
  */
 @CrossOrigin
 @RestController
@@ -27,6 +31,8 @@ public class RentalController {
     @Autowired RentalRepository rentalRepository;
     @Autowired ProductRepository productRepository;
     @Autowired ProductService service;
+    @Autowired AlertRepository alertRepository;
+    @Autowired UserService userService;
 
     /**
      * Method for handling POST-requests for registering new rentals to the database.
@@ -38,14 +44,16 @@ public class RentalController {
      */
     @PostMapping
     public ResponseEntity<String> registerNewRental(@RequestBody Rental rental) {
-        logger.info("New rental registration requested");
+        logger.info("Rental - new rental registration requested");
         try {
             if(checkIfAvailable(rental)) {
                 rentalRepository.saveRentalToDatabase(rental);
-                logger.info("Success - rental registered");
+                logger.info("Rental - success");
+                alertRepository.newAlert(new Alert(1, "Ny forespørsel om utleie.", LocalDate.now(), false,
+                        rental.getProductId(), productRepository.getProduct(rental.getProductId()).getUserId()));
                 return new ResponseEntity<>("Registered successfully!", HttpStatus.CREATED);
             }else{
-                logger.info("Rental not available");
+                logger.info("Rental - not available");
                 return new ResponseEntity<>("Rental unavailable", HttpStatus.CONFLICT);
             }
 
@@ -64,7 +72,7 @@ public class RentalController {
      *          {@code 500} if error
      */
     @GetMapping("/product/{id}")
-    public ResponseEntity<List<Rental>> getRentals(@PathVariable("id") int id) {
+    public ResponseEntity<List<Rental>> getRentals(@PathVariable int id) {
         logger.info("New GET-request for rentals with product_id " + id);
         try {
             List<Rental> resultList = rentalRepository.getRentals(id);
@@ -90,7 +98,7 @@ public class RentalController {
      *          {@code 500} if error
      */
     @GetMapping("/product/{id}/{accepted}")
-    public ResponseEntity<List<Rental>> getAcceptedRentals(@PathVariable("id") int id, @PathVariable("accepted") boolean accepted) {
+    public ResponseEntity<List<Rental>> getAcceptedRentals(@PathVariable int id, @PathVariable boolean accepted) {
         if (accepted) logger.info("New GET-request for accepted rentals with product_id " + id);
         else logger.info("New GET-request for non-accepted rentals with product_id " + id);
         try {
@@ -116,7 +124,7 @@ public class RentalController {
      *          {@code 500} if error
      */
     @GetMapping("/user/{id}")
-    public ResponseEntity<List<Rental>> getAcceptedRentalsByUser(@PathVariable("id") int id) {
+    public ResponseEntity<List<Rental>> getAcceptedRentalsByUser(@PathVariable int id) {
         logger.info("New GET-request for accepted rentals with user_id " + id);
         try {
             List<Rental> resultList = rentalRepository.getAcceptedRentalsByUser(id, true);
@@ -145,10 +153,11 @@ public class RentalController {
     public ResponseEntity<String> acceptRental(@PathVariable int rentalId) {
         logger.info("Accept request for rental " + rentalId);
         try {
-            Rental rental = rentalRepository.getRentalById(rentalId).get(0);
+            Rental rental = rentalRepository.getRentalById(rentalId);
             if (checkIfAvailable(rental)) {
                 rentalRepository.acceptRental(rentalId);
                 logger.info("Rental " + rentalId + " was successfully accepted");
+                alertRepository.newAlert(new Alert(1, "Din forespørsel om utleie ble godtatt!", LocalDate.now(), false, rental.getProductId(), rental.getUserId()));
                 return new ResponseEntity<>("Acceptance was successful", HttpStatus.OK);
             } else {
                 logger.info("Rental " + rentalId + " could not be accepted due to date conflict");
@@ -173,8 +182,10 @@ public class RentalController {
     public ResponseEntity<String> deleteRental(@PathVariable int rentalId) {
         logger.info("Delete request for rental " + rentalId);
         try {
+            Rental rental = rentalRepository.getRentalById(rentalId);
             if (rentalRepository.deleteRental(rentalId) == 1) {
                 logger.info("Deletion of rental " + rentalId + " was successful");
+                alertRepository.newAlert(new Alert(1, "Din forespørsel om utleie ble avslått!", LocalDate.now(), false, rental.getProductId(), rental.getUserId()));
                 return new ResponseEntity<>("Deletion was successful", HttpStatus.OK);
             } else {
                 logger.info("Deletion of rental " + rentalId + " was unsuccessful. No rental with id = " + rentalId + " was found.");
@@ -194,12 +205,14 @@ public class RentalController {
      */
     private boolean checkIfAvailable(Rental rental) {
         boolean availableSpot = false;
-        Product test = productRepository.getProduct(rental.getProductId());
+        Product test = productRepository.getProduct(rental.getProductId()); 
         List<Rental> rentals = rentalRepository.getAcceptedRentals(test.getProductId(), true);
         List<AvailabilityWindow> availabilityWindows = service.getAvailability(test,rentals);
         for (AvailabilityWindow availabilityWindow : availabilityWindows){
-            if(!rental.getDateFrom().isBefore(availabilityWindow.getFrom()) && !rental.getDateTo().isAfter(availabilityWindow.getTo())){
+            if((rental.getDateFrom().isAfter(availabilityWindow.getFrom()) || rental.getDateFrom().equals(availabilityWindow.getFrom()))
+                    && (rental.getDateTo().isBefore(availabilityWindow.getTo()) || rental.getDateTo().equals(availabilityWindow.getTo()))){
                 availableSpot = true;
+                logger.info("Rental is available");
             }
         }
         return availableSpot;

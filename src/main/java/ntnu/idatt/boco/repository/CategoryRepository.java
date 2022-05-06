@@ -11,12 +11,11 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * This class contains methods relating to managing categories in the database.
+ * This class is responsible for communication with the database regarding {@link Category}.
  */
 @Repository
 public class CategoryRepository {
-    @Autowired
-    JdbcTemplate jdbcTemplate;
+    @Autowired JdbcTemplate jdbcTemplate;
 
     /**
      * Method for retrieving all categories stored in the database

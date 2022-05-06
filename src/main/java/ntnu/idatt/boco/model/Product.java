@@ -1,6 +1,7 @@
 package ntnu.idatt.boco.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 /**
  * This class represents a product.
@@ -16,6 +17,8 @@ public class Product {
     private LocalDate availableTo;
     private int userId;
     private String category;
+    private ArrayList<ProductImage> images;
+    private String tlf;
 
     public Product () {}
 
@@ -31,8 +34,9 @@ public class Product {
      * @param availableTo the date the product is available to rent to
      * @param userId the id of the user who owns the product
      * @param category the category of the product
+     * @param images a list of the product images
      */
-    public Product(int productId, String title, String description, String address, Double price, boolean unlisted, LocalDate availableFrom, LocalDate availableTo, int userId, String category) {
+    public Product(int productId, String title, String description, String address, Double price, boolean unlisted, LocalDate availableFrom, LocalDate availableTo, int userId, String category, ArrayList<ProductImage> images, String tlf) {
         this.productId = productId;
         this.title = title;
         this.description = description;
@@ -43,6 +47,35 @@ public class Product {
         this.availableTo = availableTo;
         this.userId = userId;
         this.category = category;
+        this.images = images;
+        this.tlf = tlf;
+    }
+
+    /**
+     * Constructor for a product object.
+     * @param productId the unique id of the product
+     * @param title the title of the product
+     * @param description a description of the product
+     * @param address the address where the product is to be picked up
+     * @param price the price of renting the product
+     * @param unlisted true if the product is unlisted, false otherwise
+     * @param availableFrom the date the product is available to rent from
+     * @param availableTo the date the product is available to rent to
+     * @param userId the id of the user who owns the product
+     * @param category the category of the product
+     */
+    public Product(int productId, String title, String description, String address, Double price, boolean unlisted, LocalDate availableFrom, LocalDate availableTo, int userId, String category, String tlf) {
+        this.productId = productId;
+        this.title = title;
+        this.description = description;
+        this.address = address;
+        this.price = price;
+        this.unlisted = unlisted;
+        this.availableFrom = availableFrom;
+        this.availableTo = availableTo;
+        this.userId = userId;
+        this.category = category;
+        this.tlf = tlf;
     }
 
     /**
@@ -55,7 +88,7 @@ public class Product {
      * @param availableTo the date the product is available to rent to
      * @param category the category of the product
      */
-    public Product(String description, String address, Double price, boolean unlisted, LocalDate availableFrom, LocalDate availableTo, String category) {
+    public Product(String description, String address, Double price, boolean unlisted, LocalDate availableFrom, LocalDate availableTo, String category, String tlf) {
         this.description = description;
         this.address = address;
         this.price = price;
@@ -63,6 +96,8 @@ public class Product {
         this.availableFrom = availableFrom;
         this.availableTo = availableTo;
         this.category = category;
+        this.images = new ArrayList<ProductImage>();
+        this.tlf = tlf;
     }
 
     public int getProductId() {
@@ -95,6 +130,12 @@ public class Product {
     public LocalDate getAvailableTo() {
         return availableTo;
     }
+    public ArrayList<ProductImage> getImages() {
+        return images;
+    }
+    public String getTlf() {
+        return tlf;
+    }
 
     public void setDescription(String description) {
         this.description = description;
@@ -126,6 +167,12 @@ public class Product {
     public void setAvailableTo(LocalDate availableTo) {
         this.availableTo = availableTo;
     }
+    public void setImages(ArrayList<ProductImage> images) {
+        this.images = images;
+    }
+    public void setTlf(String tlf) {
+        this.tlf = tlf;
+    }
 
     @Override
     public String toString() {
@@ -138,6 +185,8 @@ public class Product {
                 ", unlisted=" + unlisted +
                 ", userId=" + userId +
                 ", category='" + category + '\'' +
+                ", date_from=" + availableFrom +
+                ", date_to=" + availableTo +
                 '}';
     }
 }
