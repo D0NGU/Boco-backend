@@ -40,7 +40,8 @@ CREATE TABLE products (
     available_to DATE,
     user_id INTEGER NOT NULL,
     category VARCHAR(20),
-    PRIMARY KEY (product_id)
+    PRIMARY KEY (product_id),
+    tlf VARCHAR(8)
     -- FULLTEXT(title, description) -- Compatible with MySQL DBMS. To implement fulltext-search
 );
 
