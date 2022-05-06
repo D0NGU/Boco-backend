@@ -18,10 +18,11 @@ public class Product {
     private int userId;
     private String category;
     private ArrayList<ProductImage> images;
+    private String tlf;
 
     public Product () {}
 
-    public Product(int productId, String title, String description, String address, Double price, boolean unlisted, LocalDate availableFrom, LocalDate availableTo, int userId, String category, ArrayList<ProductImage> images) {
+    public Product(int productId, String title, String description, String address, Double price, boolean unlisted, LocalDate availableFrom, LocalDate availableTo, int userId, String category, ArrayList<ProductImage> images, String tlf) {
         this.productId = productId;
         this.title = title;
         this.description = description;
@@ -33,6 +34,7 @@ public class Product {
         this.userId = userId;
         this.category = category;
         this.images = images;
+        this.tlf = tlf;
     }
 
     /**
@@ -48,7 +50,7 @@ public class Product {
      * @param userId the id of the user who owns the product
      * @param category the category of the product
      */
-    public Product(int productId, String title, String description, String address, Double price, boolean unlisted, LocalDate availableFrom, LocalDate availableTo, int userId, String category) {
+    public Product(int productId, String title, String description, String address, Double price, boolean unlisted, LocalDate availableFrom, LocalDate availableTo, int userId, String category, String tlf) {
         this.productId = productId;
         this.title = title;
         this.description = description;
@@ -59,6 +61,7 @@ public class Product {
         this.availableTo = availableTo;
         this.userId = userId;
         this.category = category;
+        this.tlf = tlf;
     }
 
     /**
@@ -71,7 +74,7 @@ public class Product {
      * @param availableTo the date the product is available to rent to
      * @param category the category of the product
      */
-    public Product(String description, String address, Double price, boolean unlisted, LocalDate availableFrom, LocalDate availableTo, String category) {
+    public Product(String description, String address, Double price, boolean unlisted, LocalDate availableFrom, LocalDate availableTo, String category, String tlf) {
         this.description = description;
         this.address = address;
         this.price = price;
@@ -80,6 +83,7 @@ public class Product {
         this.availableTo = availableTo;
         this.category = category;
         this.images = new ArrayList<ProductImage>();
+        this.tlf = tlf;
     }
 
     public int getProductId() {
@@ -115,6 +119,9 @@ public class Product {
     public ArrayList<ProductImage> getImages() {
         return images;
     }
+    public String getTlf() {
+        return tlf;
+    }
 
     public void setDescription(String description) {
         this.description = description;
@@ -148,6 +155,9 @@ public class Product {
     }
     public void setImages(ArrayList<ProductImage> images) {
         this.images = images;
+    }
+    public void setTlf(String tlf) {
+        this.tlf = tlf;
     }
 
     @Override

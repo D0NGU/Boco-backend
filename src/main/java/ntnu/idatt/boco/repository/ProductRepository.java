@@ -38,8 +38,8 @@ public class ProductRepository {
      */
     public void newProduct(Product product) {
         System.out.println(product.getUserId());
-        jdbcTemplate.update("INSERT INTO products(title, description, address, price, unlisted, available_from, available_to, user_id, category) VALUES (?,?,?,?,?,?,?,?,?)",
-                new Object[]{product.getTitle(), product.getDescription(), product.getAddress(), product.getPrice(), product.isUnlisted(), product.getAvailableFrom(), product.getAvailableTo(), product.getUserId(), product.getCategory()});
+        jdbcTemplate.update("INSERT INTO products(title, description, address, price, unlisted, available_from, available_to, user_id, category, tlf) VALUES (?,?,?,?,?,?,?,?,?,?)",
+                new Object[]{product.getTitle(), product.getDescription(), product.getAddress(), product.getPrice(), product.isUnlisted(), product.getAvailableFrom(), product.getAvailableTo(), product.getUserId(), product.getCategory(), product.getTlf()});
     }
 
     /**
@@ -49,8 +49,8 @@ public class ProductRepository {
      * @param productId the id of the product to edit
      */
     public void editProduct(Product product, int productId) {
-        jdbcTemplate.update("UPDATE products SET description=?, address=?, price=?, unlisted=?, available_from=?, available_to=?, category=? WHERE product_id=?",
-                new Object[]{product.getDescription(), product.getAddress(), product.getPrice(), product.isUnlisted(), product.getAvailableFrom(), product.getAvailableTo(), product.getCategory(), productId});
+        jdbcTemplate.update("UPDATE products SET description=?, address=?, price=?, unlisted=?, category=?, tlf=? WHERE product_id=?",
+                new Object[]{product.getDescription(), product.getAddress(), product.getPrice(), product.isUnlisted(), product.getCategory(), product.getTlf(),productId});
     }
 
     /**
