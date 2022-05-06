@@ -29,7 +29,7 @@ public class ForgotPasswordController {
     /**
      * Endpoint for sending a "forgot password" email to a user
      * @param email the email address to send the "forgot password" mail to
-     * @return {@code: true} if the users email address is valid, {@code: false} if the email address is invalid
+     * @return {@code true} if the users email address is valid, {@code false} if the email address is invalid
      */
     @PostMapping("/forgot_password")
     public ResponseEntity<Boolean> processForgotPassword(@RequestParam String email) {
@@ -38,7 +38,7 @@ public class ForgotPasswordController {
             if(userRepository.getUser(email) != null){
                 logger.info("Reset password - sending mail to " + email);
                 userRepository.updatePasswordToken(email,token);
-                String resetPasswordLink = "http://localhost:8081/password/reset?token=" + token;
+                String resetPasswordLink = "http://localhost:8081/password/reset?token=" + token; // IKKE SIKKERT DENNE FUNKER PÅ MOBIL
                 sendEmail(email,resetPasswordLink);
                 return new ResponseEntity<>(true, HttpStatus.OK);
             }else {
@@ -86,7 +86,7 @@ public class ForgotPasswordController {
      * Endpoint for resetting a users password
      * @param token a token for identifying the user
      * @param password the new password
-     * @return {@code: true} if the user was found, {@code: false} if the user could not be found
+     * @return {@code true} if the user was found, {@code false} if the user could not be found
      */
     @PutMapping("/reset_password")
     public ResponseEntity<Boolean> processRestPassword(@RequestParam String token, @RequestParam String password){
