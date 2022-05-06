@@ -46,7 +46,7 @@ public class UserControllerTest {
     @Order(4)
     public void unSuccessfulEditUser(){
         EditUserRequest editedUser = new EditUserRequest(3,"navn@naver.no","pass","password1");
-        assertEquals(403,userController.editUser(editedUser).getStatusCodeValue());
+        assertEquals(401,userController.editUser(editedUser).getStatusCodeValue());
     }
 
     @Test
