@@ -57,7 +57,7 @@ public class AlertControllerTest {
     @Order(5)
     public void successfullyGetUnseenAlert() {
         List<Alert> list =Arrays.asList(TEST_ALERT1);
-        assertEquals(list.toString(), alertController.getUserAlerts(1).getBody().toString());
+        assertEquals(list.toString(), alertController.getUnSeenAlerts(1).getBody().toString());
     }
 
     @Test
@@ -69,7 +69,7 @@ public class AlertControllerTest {
     @Test
     @Order(7)
     public void successfullyMarkAlertAsSeenWhenNoChangeHappens() {
-        assertEquals(200, alertController.changeAlertToSeen(1).getStatusCodeValue());
+        assertEquals(200, alertController.changeAlertToSeen(5).getStatusCodeValue());
     }
 
     @Test
