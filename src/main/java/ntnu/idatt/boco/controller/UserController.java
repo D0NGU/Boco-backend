@@ -61,11 +61,16 @@ public class UserController {
      */
     @PostMapping("/user/save")
     public ResponseEntity<User> saveUser(@RequestBody User user) {
-        logger.info("Registrering new user");
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/save").toUriString());
-        return ResponseEntity.created(uri).body(userService.saveUser(user));
+        try {
+                logger.info("Registrering new user");
+                URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/save").toUriString());
+                return ResponseEntity.created(uri).body(userService.saveUser(user));
+        }catch (Exception e){
+            logger.info("Error registrating new user");
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
     }
-
 
     /**
      * Endpoint for deleting a user
