@@ -63,7 +63,7 @@ public class ReviewController {
 
     /**
      * Endpoint for getting a single {@link Review} from reviewId
-     * @param reviewId
+     * @param reviewId the id of the review
      * @return a {@link Review}
      */
     @GetMapping("/{reviewId}")

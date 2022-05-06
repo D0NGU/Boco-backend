@@ -95,10 +95,10 @@ public class UserRepository implements UserService, UserDetailsService {
     }
 
     /**
-     *
-     * @param email
-     * @return
-     * @throws UsernameNotFoundException
+     * Method for retrieving user by email
+     * @param email email of the user
+     * @return user details
+     * @throws UsernameNotFoundException error if user is not found
      */
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

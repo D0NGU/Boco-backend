@@ -163,12 +163,13 @@ public class ProductController {
         }
     }
 
-
     /**
      * Method for handling GET-requests for searching for products
      * @param q the word to search for
-     * @param page the page the user is getting redirected to
-     * @return a list of all the products matching the search-word
+     * @param category the category to search for
+     * @param sortBy the option to sort by
+     * @param ascending the order true = asc, false = desc
+     * @return  a list of all the products matching the search-word
      */
     @GetMapping("/search")
     @ResponseBody
